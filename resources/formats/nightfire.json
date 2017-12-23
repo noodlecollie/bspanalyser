@@ -1,0 +1,392 @@
+{
+	"version": 42,
+	
+	"lumps":
+	[
+		"Entities",
+		"Planes",
+		"Textures",
+		"Materials",
+		"Vertices",
+		"ZeroVertices",
+		"DrawIndices",
+		"Visibility",
+		"Nodes",
+		"Surfaces",
+		"Lighting",
+		"Leaves",
+		"LeafSurfaces",
+		"LeafBrushes",
+		"Models",
+		"Brushes",
+		"BrushSides",
+		"Projections"
+	],
+	
+	"enums":
+	[
+		{
+			"name": "PlaneType",
+			"values":
+			[
+				{
+					"name": "XAxis",
+					"value": 0
+				},
+				{
+					"name": "YAxis"
+				},
+				{
+					"name": "ZAxis"
+				},
+				{
+					"name": "XAxisClosest"
+				},
+				{
+					"name": "YAxisClosest"
+				},
+				{
+					"name": "ZAxisClosest"
+				}
+			]
+		},
+		{
+			"name": "SurfaceType",
+			"values":
+			[
+				{
+					"name": "Empty",
+					"value": 1
+				},
+				{
+					"name": "Solid",
+					"value": 2
+				}
+			]
+		}
+	],
+	
+	"lumpitems":
+	{
+		"Entities":
+		{
+			"type": "keyvalues"
+		},
+		"Planes":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Normal",
+					"type": "vector3"
+				},
+				{
+					"name": "Distance",
+					"type": "float"
+				},
+				{
+					"name": "Type",
+					"type": "int32",
+					"enum": "PlaneType"
+				}
+			]
+		},
+		"Textures":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Path",
+					"type": "string",
+					"stringsize": 64
+				}
+			]
+		},
+		"Materials":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Path",
+					"type": "string",
+					"stringsize": 64
+				}
+			]
+		},
+		"Vertices":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Point",
+					"type": "vector3"
+				}
+			]
+		},
+		"ZeroVertices":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Point",
+					"type": "vector3"
+				}
+			]
+		},
+		"DrawIndices":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "SurfaceVertex",
+					"type": "secondaryindex"
+				}
+			]
+		},
+		"Visibility":
+		{
+			"type": "visdata",
+			"rle": false
+		},
+		"Nodes":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "PlaneIndex",
+					"type": "primaryindex",
+					"indexlump": "Planes"
+				},
+				{
+					"name": "Child0",
+					"type": "binaryindex",
+					"positiveindex": "Nodes",
+					"negativeindex": "Leaves"
+				},
+				{
+					"name": "Child1",
+					"type": "binaryindex",
+					"positiveindex": "Nodes",
+					"negativeindex": "Leaves"
+				},
+				{
+					"name": "Bounds",
+					"type": "vector3aabb"
+				}
+			]
+		}
+	},
+	"Surfaces":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "PlaneIndex",
+				"type": "primaryindex",
+				"indexlump": "Planes"
+			},
+			{
+				"name": "Vertices",
+				"type": "primaryindexblock",
+				"indexlump": "Vertices"
+			},
+			{
+				"name": "DrawIndices",
+				"type": "primaryindexblock",
+				"indexlump": "DrawIndices"
+			},
+			{
+				"name": "flags",
+				"type": "flag32"
+			},
+			{
+				"name": "textureindex",
+				"type": "primaryindex",
+				"indexlump": "Textures"
+			},
+			{
+				"name": "materialindex",
+				"type": "primaryindex",
+				"indexlump": "Materials"
+			},
+			{
+				"name": "textureprojectionindex",
+				"type": "primaryindex",
+				"indexlump": "Projections"
+			},
+			{
+				"name": "lightmapprojectionindex",
+				"type": "primaryindex",
+				"indexlump": "Projections"
+			},
+			{
+				"name": "lightstyles",
+				"type": "array",
+				"arraytype": "uint8",
+				"arraysize": 4
+			},
+			{
+				"name": "lightingoffset",
+				"type": "primaryoffset",
+				"offsetlump": "Lighting"
+			}
+		],
+		"attributes":
+		[
+			{
+				"type": "secondaryindexmapping",
+				"source": "DrawIndices",
+				"destination": "Vertices"
+			}
+		]
+	},
+	"Lighting":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "Colour",
+				"type": "rgb8"
+			}
+		]
+	},
+	"Leaves":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "Type",
+				"type": "int32",
+				"enum": "surfacetype"
+			},
+			{
+				"name": "VisibilityOffset",
+				"type": "primaryoffset",
+				"offsetlump": "Visibility"
+			},
+			{
+				"name": "Bounds",
+				"type": "vector3aabb"
+			},
+			{
+				"name": "Surfaces",
+				"type": "primaryindexblock",
+				"indexlump": "LeafSurfaces"
+			},
+			{
+				"name": "Brushes",
+				"type": "primaryindexblock",
+				"indexlump": "LeafBrushes"
+			}
+		]
+	},
+	"LeafSurfaces":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "SurfaceIndex",
+				"type": "primaryindex",
+				"indexlump": "Surfaces"
+			}
+		]
+	},
+	"LeafBrushes":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "BrushIndex",
+				"type": "primaryindex",
+				"indexlump": "Brushes"
+			}
+		]
+	},
+	"Models":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "Bounds",
+				"type": "vector3aabb"
+			},
+			{
+				"name": "Hulls",
+				"type": "array",
+				"arraytype": "int32",
+				"arraysize": 4
+			},
+			{
+				"name": "Brushes",
+				"type": "primaryindexblock",
+				"indexlump": "Brushes"
+			},
+			{
+				"name": "Surfaces",
+				"type": "primaryindexblock",
+				"indexlump": "Surfaces"
+			}
+		]
+	},
+	"Brushes":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "Attributes",
+				"type": "int32"
+			},
+			{
+				"name": "Sides",
+				"type": "primaryindexblock",
+				"indexlump": "BrushSides"
+			}
+		]
+	},
+	"BrushSides":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "TextureIndex",
+				"type": "primaryindex",
+				"indexlump": "Textures"
+			},
+			{
+				"name": "PlaneIndex",
+				"type": "primaryindex",
+				"indexlump": "Planes"
+			}
+		]
+	},
+	"Projections":
+	{
+		"type": "struct",
+		"members":
+		[
+			{
+				"name": "SAxis",
+				"type": "vector4"
+			},
+			{
+				"name": "TAxis",
+				"type": "vector4"
+			}
+		]
+	}
+}
