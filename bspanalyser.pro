@@ -24,14 +24,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+        src/main.cpp \
+        src/widgets/mainwindow.cpp \
+    src/widgets/hexdisplaywidget.cpp \
+    src/widgets/mainwidget.cpp \
+    src/commands/mainwindowcommands.cpp
 
 HEADERS += \
-        mainwindow.h
+        src/widgets/mainwindow.h \
+    src/widgets/hexdisplaywidget.h \
+    src/widgets/mainwidget.h \
+    src/commands/mainwindowcommands.h
 
 FORMS += \
-        mainwindow.ui
+        src/widgets/mainwindow.ui
 
 RESOURCES += \
     resources/resources.qrc
+
+INCLUDEPATH += \
+    src
