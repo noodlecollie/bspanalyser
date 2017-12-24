@@ -32,7 +32,12 @@ SOURCES += \
     src/widgets/bsplumpviewarea.cpp \
     src/bsp/bsplumpdef.cpp \
     src/bsp/bspdatafragment.cpp \
-    src/model/bspfilemodel.cpp
+    src/model/bspfilemodel.cpp \
+    src/configs/bspformatreader.cpp \
+    src/bsp/bspfilestructure.cpp \
+    src/configs/jsonreaderutil.cpp \
+    src/configs/jsonreadpathtracker.cpp \
+    src/configs/jsonreadpathtrackeritem.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -44,7 +49,13 @@ HEADERS += \
     src/bsp/ibspdataitem.h \
     src/bsp/bspdatafragment.h \
     src/model/bspfilemodel.h \
-    src/bsp/bspdefs.h
+    src/bsp/bspdefs.h \
+    src/configs/bspformatreader.h \
+    src/bsp/bspfilestructure.h \
+    src/configs/readerexception.h \
+    src/configs/jsonreaderutil.h \
+    src/configs/jsonreadpathtracker.h \
+    src/configs/jsonreadpathtrackeritem.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
