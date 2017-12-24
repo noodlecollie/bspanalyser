@@ -4,7 +4,7 @@
 #include <QPlainTextEdit>
 #include <QSharedPointer>
 
-#include "model/bspfile.h"
+#include "model/bspfilemodel.h"
 
 class HexDisplayWidget : public QPlainTextEdit
 {
@@ -12,7 +12,7 @@ class HexDisplayWidget : public QPlainTextEdit
 public:
     explicit HexDisplayWidget(QWidget *parent = nullptr);
 
-    void setBSPFile(BSPFile* file);
+    void setBSPFile(BSPFileModel* file);
     void loadBSPData();
 
     void selectBinaryData(quint32 offset, quint32 count);
@@ -24,7 +24,7 @@ public slots:
 private:
     static quint32 byteIndexToTextIndex(quint32 byteIndex);
 
-    BSPFile* m_pBSPFile;
+    BSPFileModel* m_pBSPFile;
 };
 
 #endif // HEXDISPLAYWIDGET_H

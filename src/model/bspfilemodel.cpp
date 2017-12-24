@@ -1,29 +1,29 @@
-#include "bspfile.h"
+#include "bspfilemodel.h"
 #include <QFile>
 
-BSPFile::BSPFile(QObject *parent)
+BSPFileModel::BSPFileModel(QObject *parent)
     : QObject(parent),
       m_strFilePath(),
       m_arrData()
 {
 }
 
-QString BSPFile::filePath() const
+QString BSPFileModel::filePath() const
 {
     return m_strFilePath;
 }
 
-const QByteArray& BSPFile::contents() const
+const QByteArray& BSPFileModel::contents() const
 {
     return m_arrData;
 }
 
-bool BSPFile::isValid() const
+bool BSPFileModel::isValid() const
 {
     return !m_strFilePath.isEmpty();
 }
 
-bool BSPFile::load(const QString &filePath)
+bool BSPFileModel::load(const QString &filePath)
 {
     if ( filePath.isEmpty() )
     {
@@ -44,7 +44,7 @@ bool BSPFile::load(const QString &filePath)
     return true;
 }
 
-void BSPFile::clear()
+void BSPFileModel::clear()
 {
     bool wasValid = isValid();
 

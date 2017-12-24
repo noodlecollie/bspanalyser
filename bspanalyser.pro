@@ -30,7 +30,9 @@ SOURCES += \
     src/widgets/mainwidget.cpp \
     src/commands/mainwindowcommands.cpp \
     src/widgets/bsplumpviewarea.cpp \
-    src/model/bspfile.cpp
+    src/bsp/bsplumpdef.cpp \
+    src/bsp/bspdatafragment.cpp \
+    src/model/bspfilemodel.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -38,7 +40,11 @@ HEADERS += \
     src/widgets/mainwidget.h \
     src/commands/mainwindowcommands.h \
     src/widgets/bsplumpviewarea.h \
-    src/model/bspfile.h
+    src/bsp/bsplumpdef.h \
+    src/bsp/ibspdataitem.h \
+    src/bsp/bspdatafragment.h \
+    src/model/bspfilemodel.h \
+    src/bsp/bspdefs.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

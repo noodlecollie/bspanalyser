@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include "commands/mainwindowcommands.h"
-#include "model/bspfile.h"
+#include "model/bspfilemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,7 +20,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    BSPFile* bspFile();
+    BSPFileModel* bspFile();
 
     void showTemporaryStatusMessage(const QString& message, int timeout = DEFAULT_STATUS_MESSAGE_TIMEOUT);
 
@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MainWindowCommands* m_pCommands;
-    BSPFile* m_pBSPFile;
+    BSPFileModel* m_pBSPFile;
 };
 
 #endif // MAINWINDOW_H

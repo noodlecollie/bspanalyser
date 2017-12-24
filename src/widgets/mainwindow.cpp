@@ -7,14 +7,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_pCommands(new MainWindowCommands(this)),
-    m_pBSPFile(new BSPFile(this))
+    m_pBSPFile(new BSPFileModel(this))
 {
     ui->setupUi(this);
 
     ui->mainwidget->hexDisplayWidget()->setBSPFile(m_pBSPFile);
 
-    connect(m_pBSPFile, &BSPFile::loaded, this, &MainWindow::bspFileLoaded);
-    connect(m_pBSPFile, &BSPFile::cleared, this, &MainWindow::bspFileCleared);
+    connect(m_pBSPFile, &BSPFileModel::loaded, this, &MainWindow::bspFileLoaded);
+    connect(m_pBSPFile, &BSPFileModel::cleared, this, &MainWindow::bspFileCleared);
 
     connect(ui->actionOpen, &QAction::triggered, m_pCommands, &MainWindowCommands::menuLoadFile);
 }
@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-BSPFile* MainWindow::bspFile()
+BSPFileModel* MainWindow::bspFile()
 {
     return m_pBSPFile;
 }

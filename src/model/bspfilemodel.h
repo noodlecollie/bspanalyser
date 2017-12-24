@@ -1,15 +1,15 @@
-#ifndef BSPFILE_H
-#define BSPFILE_H
+#ifndef BSPFILEMODEL_H
+#define BSPFILEMODEL_H
 
 #include <QObject>
 #include <QString>
 #include <QByteArray>
 
-class BSPFile : public QObject
+class BSPFileModel : public QObject
 {
     Q_OBJECT
 public:
-    BSPFile(QObject* parent = nullptr);
+    BSPFileModel(QObject* parent = nullptr);
 
     QString filePath() const;
     const QByteArray& contents() const;
@@ -27,4 +27,4 @@ private:
     QByteArray m_arrData;
 };
 
-#endif // BSPFILE_H
+#endif // BSPFILEMODEL_H

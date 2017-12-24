@@ -22,7 +22,7 @@ HexDisplayWidget::HexDisplayWidget(QWidget *parent)
     setFont(font);
 }
 
-void HexDisplayWidget::setBSPFile(BSPFile *file)
+void HexDisplayWidget::setBSPFile(BSPFileModel *file)
 {
     m_pBSPFile = file;
 }
