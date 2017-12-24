@@ -2,10 +2,12 @@
 
 namespace
 {
-    static const char HEX_CHARS[16] =
+    static constexpr char HEX_CHARS[16] =
     {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
+
+    static constexpr int BYTES_PER_SPACE = 4;
 }
 
 HexDisplayWidget::HexDisplayWidget(QWidget *parent)
@@ -20,25 +22,19 @@ HexDisplayWidget::HexDisplayWidget(QWidget *parent)
     setFont(font);
 }
 
-void HexDisplayWidget::loadBinaryData(const QByteArray &data)
+void HexDisplayWidget::setBSPFile(BSPFile *file)
 {
-    clear();
-
-    QString contents;
-    contents.resize(data.length() * 2, '0');
-
-    for ( int index = 0; index < data.length(); ++index )
-    {
-        contents[2 * index] = HEX_CHARS[(data[index] & 0xF0) >> 4];
-        contents[(2 * index) + 1] = HEX_CHARS[data[index] & 0x0F];
-    }
-
-    setPlainText(contents);
+    m_pBSPFile = file;
 }
 
-void HexDisplayWidget::selectBinaryData(int offset, int count)
+void HexDisplayWidget::selectBinaryData(quint32 offset, quint32 count)
 {
-    int dataLength = binaryDataLength();
+    if ( !m_pBSPFile )
+    {
+        return;
+    }
+
+    quint32 dataLength = m_pBSPFile->contents().length();
 
     if ( offset < 0 )
     {
@@ -49,21 +45,52 @@ void HexDisplayWidget::selectBinaryData(int offset, int count)
         offset = dataLength;
     }
 
-    int endPos = offset + count;
+    quint32 endPos = offset + count;
     if ( endPos > dataLength )
     {
         endPos = dataLength;
     }
 
     QTextCursor newCursor;
-    newCursor.setPosition(offset, QTextCursor::MoveAnchor);
-    newCursor.setPosition(endPos, QTextCursor::KeepAnchor);
+    newCursor.setPosition(byteIndexToTextIndex(offset), QTextCursor::MoveAnchor);
+    newCursor.setPosition(byteIndexToTextIndex(endPos), QTextCursor::KeepAnchor);
 
     setTextCursor(newCursor);
 }
 
-int HexDisplayWidget::binaryDataLength() const
+void HexDisplayWidget::loadBSPData()
 {
-    // 2 text chars per byte of data.
-    return toPlainText().length() / 2;
+    if ( !m_pBSPFile )
+    {
+        return;
+    }
+
+    int bspLength = m_pBSPFile->contents().length();
+    quint32 indexOfLastByte = byteIndexToTextIndex(bspLength - 1);
+
+    QString textContents;
+
+    // +2 since each byte gets 2 characters.
+    textContents.resize(indexOfLastByte + 2, ' ');
+
+    for ( int index = 0; index < bspLength; ++index )
+    {
+        char byte = m_pBSPFile->contents().at(index);
+        quint32 textIndex = byteIndexToTextIndex(index);
+
+        textContents[textIndex] = HEX_CHARS[(byte & 0xF0) >> 4];
+        textContents[textIndex + 1] = HEX_CHARS[byte & 0x0F];
+    }
+
+    setPlainText(textContents);
+}
+
+quint32 HexDisplayWidget::byteIndexToTextIndex(quint32 byteIndex)
+{
+    // The following rules apply:
+    // - 2 text chars per byte
+    // - One blank space every BYTES_PER_SPACE bytes
+
+    int totalSpaces = byteIndex / BYTES_PER_SPACE;
+    return (2 * byteIndex) + totalSpaces;
 }

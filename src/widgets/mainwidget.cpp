@@ -5,7 +5,8 @@
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent),
       m_pSplitter(new QSplitter(this)),
-      m_pHexDisplayWidget(new HexDisplayWidget())
+      m_pHexDisplayWidget(new HexDisplayWidget()),
+      m_pLumpViewArea(new BSPLumpViewArea())
 {
     QLayout* layout = new QVBoxLayout();
     layout->setMargin(0);
@@ -14,6 +15,7 @@ MainWidget::MainWidget(QWidget *parent)
     m_pSplitter->setOrientation(Qt::Vertical);
 
     m_pSplitter->addWidget(m_pHexDisplayWidget);
+    m_pSplitter->addWidget(m_pLumpViewArea);
 
     layout->addWidget(m_pSplitter);
     setLayout(layout);
@@ -22,4 +24,9 @@ MainWidget::MainWidget(QWidget *parent)
 HexDisplayWidget* MainWidget::hexDisplayWidget()
 {
     return m_pHexDisplayWidget;
+}
+
+BSPLumpViewArea* MainWidget::lumpViewArea()
+{
+    return m_pLumpViewArea;
 }

@@ -24,18 +24,16 @@ void MainWindowCommands::menuLoadFile()
         return;
     }
 
-    QFile file(fileName);
-    if ( !file.open(QIODevice::ReadOnly) )
+    fileName = fileName.trimmed();
+
+    if ( !mainWindow->bspFile()->load(fileName) )
     {
         QMessageBox::critical(mainWindow, tr("Error"), tr("Could not open file '%0'.").arg(fileName));
         return;
     }
 
-    QByteArray contents = file.readAll();
-    file.close();
-    mainWindow->setHexDisplayContents(contents);
-
     setLastOpenDir(fileName);
+    mainWindow->showTemporaryStatusMessage(tr("Loaded file: %0").arg(fileName));
 }
 
 void MainWindowCommands::setLastOpenDir(const QString &fileName)

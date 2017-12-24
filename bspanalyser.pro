@@ -28,16 +28,21 @@ SOURCES += \
         src/widgets/mainwindow.cpp \
     src/widgets/hexdisplaywidget.cpp \
     src/widgets/mainwidget.cpp \
-    src/commands/mainwindowcommands.cpp
+    src/commands/mainwindowcommands.cpp \
+    src/widgets/bsplumpviewarea.cpp \
+    src/model/bspfile.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
     src/widgets/hexdisplaywidget.h \
     src/widgets/mainwidget.h \
-    src/commands/mainwindowcommands.h
+    src/commands/mainwindowcommands.h \
+    src/widgets/bsplumpviewarea.h \
+    src/model/bspfile.h
 
 FORMS += \
-        src/widgets/mainwindow.ui
+        src/widgets/mainwindow.ui \
+    src/widgets/bsplumpviewarea.ui
 
 RESOURCES += \
     resources/resources.qrc
