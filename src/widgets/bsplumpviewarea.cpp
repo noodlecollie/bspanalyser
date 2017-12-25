@@ -12,3 +12,8 @@ BSPLumpViewArea::~BSPLumpViewArea()
 {
     delete ui;
 }
+
+QListWidget* BSPLumpViewArea::lumpListWidget()
+{
+    return ui->lumpListWidget;
+}

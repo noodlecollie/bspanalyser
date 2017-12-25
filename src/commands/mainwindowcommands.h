@@ -15,6 +15,8 @@ public slots:
 
 private:
     void setLastOpenDir(const QString& fileName);
+    void loadFile(const QString& fileName);
+    void processLoadedFile(const QString& fileName);
 
     MainWindow* mainWindow;
 

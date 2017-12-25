@@ -11,7 +11,8 @@ namespace
 }
 
 HexDisplayWidget::HexDisplayWidget(QWidget *parent)
-    : QPlainTextEdit(parent)
+    : QPlainTextEdit(parent),
+      m_pBSPFile(nullptr)
 {
     setLineWrapMode(QPlainTextEdit::WidgetWidth);
     setPlaceholderText(tr("No file loaded."));
@@ -36,11 +37,7 @@ void HexDisplayWidget::selectBinaryData(quint32 offset, quint32 count)
 
     quint32 dataLength = m_pBSPFile->contents().length();
 
-    if ( offset < 0 )
-    {
-        offset = 0;
-    }
-    else if ( offset > dataLength )
+    if ( offset > dataLength )
     {
         offset = dataLength;
     }

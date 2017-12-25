@@ -45,10 +45,10 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QListWidget" name="listWidget"/>
+       <widget class="QListWidget" name="lumpListWidget"/>
       </item>
       <item>
-       <widget class="QTabWidget" name="tabWidget">
+       <widget class="QTabWidget" name="dataTabWidget">
         <property name="enabled">
          <bool>false</bool>
         </property>

@@ -1,6 +1,6 @@
 #include "bspformatreader.h"
 
-#include "readerexception.h"
+#include "exceptions/genericexception.h"
 #include "jsonreaderutil.h"
 
 BSPFormatReader::BSPFormatReader()
@@ -19,7 +19,7 @@ quint32 BSPFormatReader::readVersion(const QJsonDocument& document, QString& err
     {
         version = readVersionInternal(m_JsonTracker);
     }
-    catch (ReaderException& exception)
+    catch (GenericException& exception)
     {
         error = QString("Error reading version ('%0'). %1").arg(m_JsonTracker.cachedPath()).arg(exception.message());
     }
@@ -40,7 +40,7 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
         readJsonDocument(m_JsonTracker);
         success = true;
     }
-    catch (ReaderException& exception)
+    catch (GenericException& exception)
     {
         error = QString("Error encountered at '%0'. %1").arg(m_JsonTracker.cachedPath()).arg(exception.message());
     }
@@ -56,7 +56,7 @@ quint32 BSPFormatReader::readVersionInternal(JSONReadPathTracker &json)
 
     if ( version == 0 )
     {
-        throw ReaderException("Version identifier cannot be zero.");
+        throw GenericException("Version identifier cannot be zero.");
     }
 
     return version;
@@ -77,9 +77,7 @@ void BSPFormatReader::readLumpList(const QSharedPointer<JSONReadPathTrackerItem>
     {
         QSharedPointer<BSPLumpDef> lumpDef(new BSPLumpDef());
 
-        lumpDef->setIndex(lumpIndex);
         lumpDef->setName(lumpsList->getArrayItemOfType<QString>(lumpIndex));
-
         m_pCurrentFile->addLumpDef(lumpDef);
     }
 }

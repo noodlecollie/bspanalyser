@@ -5,7 +5,7 @@
 #include <QVariant>
 #include <QtGlobal>
 
-#include "readerexception.h"
+#include "exceptions/genericexception.h"
 
 namespace JSONReaderUtil
 {
@@ -54,14 +54,14 @@ namespace JSONReaderUtil
     {
         if ( value.type() != expectedType )
         {
-            throw ReaderException(QString("Expected JSON value of type '%0' but got '%1'.")
+            throw GenericException(QString("Expected JSON value of type '%0' but got '%1'.")
                                   .arg(TypeNameString(expectedType))
                                   .arg(TypeNameString(value.type())));
         }
     }
 
     template<typename T>
-    T ValueToType(const QJsonValue& value)
+    T ValueToType(const QJsonValue&)
     {
         // Specalised below.
         return T();

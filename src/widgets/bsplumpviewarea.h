@@ -2,6 +2,7 @@
 #define BSPLUMPVIEWAREA_H
 
 #include <QWidget>
+#include <QListWidget>
 
 namespace Ui {
 class BSPLumpViewArea;
@@ -14,6 +15,8 @@ class BSPLumpViewArea : public QWidget
 public:
     explicit BSPLumpViewArea(QWidget *parent = 0);
     ~BSPLumpViewArea();
+
+    QListWidget* lumpListWidget();
 
 private:
     Ui::BSPLumpViewArea *ui;

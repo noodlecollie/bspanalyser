@@ -15,6 +15,9 @@ public:
 
     void initialise();
 
+    bool hasFormat(quint32 version) const;
+    QSharedPointer<QByteArray> format(quint32 version) const;
+
 private:
     void loadFormat(const QString& filePath);
 

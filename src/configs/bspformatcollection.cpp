@@ -24,6 +24,16 @@ void BSPFormatCollection::initialise()
     }
 }
 
+bool BSPFormatCollection::hasFormat(quint32 version) const
+{
+    return m_hshFormatFiles.contains(version);
+}
+
+QSharedPointer<QByteArray> BSPFormatCollection::format(quint32 version) const
+{
+    return m_hshFormatFiles.value(version, QSharedPointer<QByteArray>());
+}
+
 void BSPFormatCollection::loadFormat(const QString &filePath)
 {
     QFile file(filePath);

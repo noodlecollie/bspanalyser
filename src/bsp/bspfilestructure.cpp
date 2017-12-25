@@ -1,8 +1,8 @@
 #include "bspfilestructure.h"
 
 BSPFileStructure::BSPFileStructure()
-    : m_liLumpDefs(),
-      m_nVersion(0)
+    : m_nVersion(0),
+      m_liLumpDefs()
 {
 
 }
@@ -24,6 +24,7 @@ void BSPFileStructure::addLumpDef(const QSharedPointer<BSPLumpDef>& lump)
         return;
     }
 
+    lump->setIndex(m_liLumpDefs.count());
     m_liLumpDefs.append(lump);
 }
 

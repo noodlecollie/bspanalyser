@@ -5,6 +5,7 @@
 
 #include "commands/mainwindowcommands.h"
 #include "model/applicationmodel.h"
+#include "widgets/mainwidget.h"
 
 namespace Ui {
 class MainWindow;

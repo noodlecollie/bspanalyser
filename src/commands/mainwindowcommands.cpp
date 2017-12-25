@@ -5,8 +5,11 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QtDebug>
+#include <QJsonDocument>
 
 #include "widgets/mainwindow.h"
+#include "exceptions/genericexception.h"
+#include "configs/bspformatreader.h"
 
 MainWindowCommands::MainWindowCommands(MainWindow* inMainWindow)
     : QObject(inMainWindow),
@@ -26,14 +29,57 @@ void MainWindowCommands::menuLoadFile()
 
     fileName = fileName.trimmed();
 
-    if ( !mainWindow->applicationModel()->bspFileModel()->load(fileName) )
+    try
     {
-        QMessageBox::critical(mainWindow, tr("Error"), tr("Could not open file '%0'.").arg(fileName));
-        return;
+        loadFile(fileName);
+        processLoadedFile(fileName);
+    }
+    catch (GenericException& exception)
+    {
+        QMessageBox::critical(mainWindow, tr("Error"), QString("Error loading '%0': %1").arg(fileName).arg(exception.message()));
+    }
+}
+
+void MainWindowCommands::loadFile(const QString &fileName)
+{
+    BSPFileModel* fileModel = mainWindow->applicationModel()->bspFileModel();
+
+    if ( !fileModel->load(fileName) )
+    {
+        throw GenericException("Could not load file from disk.");
     }
 
+    const QByteArray& contents = fileModel->contents();
+
+    if ( static_cast<quint32>(contents.length()) < sizeof(quint32) )
+    {
+        throw GenericException("File length was too short.");
+    }
+
+    const quint32* versionPtr = reinterpret_cast<const quint32*>(contents.constData());
+    BSPFormatCollection& formatCollection = mainWindow->applicationModel()->bspFormatCollection();
+    QSharedPointer<QByteArray> formatData = formatCollection.format(*versionPtr);
+
+    if ( !formatData )
+    {
+        throw GenericException(QString("BSP version %0 is not supported.").arg(*versionPtr));
+    }
+
+    // Don't need to validate, as this data is from a previously valid document.
+    QJsonDocument jsonDoc = QJsonDocument::fromBinaryData(*formatData, QJsonDocument::BypassValidation);
+    BSPFormatReader reader;
+    QString errorString;
+
+    if ( !reader.read(jsonDoc, mainWindow->applicationModel()->bspFileStructure(), errorString) )
+    {
+        throw GenericException(errorString);
+    }
+}
+
+void MainWindowCommands::processLoadedFile(const QString& fileName)
+{
     setLastOpenDir(fileName);
-    mainWindow->showTemporaryStatusMessage(tr("Loaded file: %0").arg(fileName));
+    mainWindow->showTemporaryStatusMessage(tr("Loaded file: '%0'").arg(fileName));
 }
 
 void MainWindowCommands::setLastOpenDir(const QString &fileName)

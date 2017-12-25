@@ -77,7 +77,7 @@ QSharedPointer<JSONReadPathTrackerItem> JSONReadPathTrackerItem::getArrayItem(in
 }
 
 template<typename T>
-QSharedPointer<JSONReadPathTrackerItem> JSONReadPathTrackerItem::getItemForType(const T& key, QJsonValue::Type desiredType)
+QSharedPointer<JSONReadPathTrackerItem> JSONReadPathTrackerItem::getItemForType(const T&, QJsonValue::Type)
 {
     // Specialised below.
     return QSharedPointer<JSONReadPathTrackerItem>();
