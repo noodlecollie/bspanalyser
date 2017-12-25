@@ -2,25 +2,41 @@
 #define BSPLUMPVIEWAREA_H
 
 #include <QWidget>
+#include <QTableWidget>
+#include <QTabWidget>
+#include <QLabel>
 
 #include "bsp/bspfilestructure.h"
-
-namespace Ui {
-class BSPLumpViewArea;
-}
 
 class BSPLumpViewArea : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit BSPLumpViewArea(QWidget *parent = 0);
-    ~BSPLumpViewArea();
+    explicit BSPLumpViewArea(QWidget *parent = nullptr);
 
-    void updateLumps(const BSPFileStructure& bspFileStructure);
+    void updateLumps(const BSPFileStructure &bspFileStructure);
+
+signals:
+
+public slots:
+
+private slots:
+    void handleTabCloseRequest(int index);
+    void handleLumpCellDoubleClicked(int row, int column);
 
 private:
-    Ui::BSPLumpViewArea *ui;
+    static QLabel* createPlaceholderTabContents();
+
+    void initDataArea();
+    void initLumpTable();
+    void clearLumpTable();
+    void clearDataArea();
+    void updateDataAreaTabs();
+    bool lumpTabExists(int lumpIndex) const;
+
+    QTableWidget* m_pLumpTable;
+    QTabWidget* m_pDataArea;
+    bool m_bPlaceholderActive;
 };
 
 #endif // BSPLUMPVIEWAREA_H

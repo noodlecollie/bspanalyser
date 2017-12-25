@@ -29,7 +29,6 @@ SOURCES += \
     src/widgets/hexdisplaywidget.cpp \
     src/widgets/mainwidget.cpp \
     src/commands/mainwindowcommands.cpp \
-    src/widgets/bsplumpviewarea.cpp \
     src/bsp/bsplumpdef.cpp \
     src/bsp/bspdatafragment.cpp \
     src/model/bspfilemodel.cpp \
@@ -39,14 +38,14 @@ SOURCES += \
     src/configs/jsonreadpathtracker.cpp \
     src/configs/jsonreadpathtrackeritem.cpp \
     src/model/applicationmodel.cpp \
-    src/configs/bspformatcollection.cpp
+    src/configs/bspformatcollection.cpp \
+    src/widgets/bsplumpviewarea.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
     src/widgets/hexdisplaywidget.h \
     src/widgets/mainwidget.h \
     src/commands/mainwindowcommands.h \
-    src/widgets/bsplumpviewarea.h \
     src/bsp/bsplumpdef.h \
     src/bsp/ibspdataitem.h \
     src/bsp/bspdatafragment.h \
@@ -59,11 +58,11 @@ HEADERS += \
     src/configs/jsonreadpathtrackeritem.h \
     src/model/applicationmodel.h \
     src/configs/bspformatcollection.h \
-    src/exceptions/genericexception.h
+    src/exceptions/genericexception.h \
+    src/widgets/bsplumpviewarea.h
 
 FORMS += \
-        src/widgets/mainwindow.ui \
-    src/widgets/bsplumpviewarea.ui
+        src/widgets/mainwindow.ui
 
 RESOURCES += \
     resources/resources.qrc

@@ -16,6 +16,8 @@ MainWidget::MainWidget(QWidget *parent)
 
     m_pSplitter->addWidget(m_pHexDisplayWidget);
     m_pSplitter->addWidget(m_pLumpViewArea);
+    m_pSplitter->setStretchFactor(0, 1);
+    m_pSplitter->setStretchFactor(1, 7);
 
     layout->addWidget(m_pSplitter);
     setLayout(layout);
