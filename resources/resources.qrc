@@ -1,2 +1,5 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/formats">
+        <file alias="nightfire.json">formats/nightfire.json</file>
+    </qresource>
+</RCC>

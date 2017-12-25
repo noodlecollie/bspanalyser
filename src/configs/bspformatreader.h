@@ -13,9 +13,12 @@ public:
     BSPFormatReader();
 
     bool read(const QJsonDocument& document, BSPFileStructure& outFile, QString& error);
+    quint32 readVersion(const QJsonDocument& document, QString& error);
 
 private:
+    quint32 readVersionInternal(JSONReadPathTracker& json);
     void readJsonDocument(JSONReadPathTracker& json);
+    void readLumpList(const QSharedPointer<JSONReadPathTrackerItem>& root);
 
     // Expected to be valid when calling private reading functions.
     BSPFileStructure* m_pCurrentFile;

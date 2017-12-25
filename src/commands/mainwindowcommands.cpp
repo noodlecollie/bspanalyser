@@ -26,7 +26,7 @@ void MainWindowCommands::menuLoadFile()
 
     fileName = fileName.trimmed();
 
-    if ( !mainWindow->bspFile()->load(fileName) )
+    if ( !mainWindow->applicationModel()->bspFileModel()->load(fileName) )
     {
         QMessageBox::critical(mainWindow, tr("Error"), tr("Could not open file '%0'.").arg(fileName));
         return;

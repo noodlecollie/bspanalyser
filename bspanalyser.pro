@@ -37,7 +37,9 @@ SOURCES += \
     src/bsp/bspfilestructure.cpp \
     src/configs/jsonreaderutil.cpp \
     src/configs/jsonreadpathtracker.cpp \
-    src/configs/jsonreadpathtrackeritem.cpp
+    src/configs/jsonreadpathtrackeritem.cpp \
+    src/model/applicationmodel.cpp \
+    src/configs/bspformatcollection.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -55,7 +57,9 @@ HEADERS += \
     src/configs/readerexception.h \
     src/configs/jsonreaderutil.h \
     src/configs/jsonreadpathtracker.h \
-    src/configs/jsonreadpathtrackeritem.h
+    src/configs/jsonreadpathtrackeritem.h \
+    src/model/applicationmodel.h \
+    src/configs/bspformatcollection.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

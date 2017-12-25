@@ -10,6 +10,24 @@ BSPFormatReader::BSPFormatReader()
 
 }
 
+quint32 BSPFormatReader::readVersion(const QJsonDocument& document, QString& error)
+{
+    quint32 version = 0;
+    m_JsonTracker = JSONReadPathTracker(document);
+
+    try
+    {
+        version = readVersionInternal(m_JsonTracker);
+    }
+    catch (ReaderException& exception)
+    {
+        error = QString("Error reading version ('%0'). %1").arg(m_JsonTracker.cachedPath()).arg(exception.message());
+    }
+
+    m_JsonTracker = JSONReadPathTracker();
+    return version;
+}
+
 bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outFile, QString &error)
 {
     bool success = false;
@@ -28,11 +46,40 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
     }
 
     m_pCurrentFile = nullptr;
+    m_JsonTracker = JSONReadPathTracker();
     return success;
+}
+
+quint32 BSPFormatReader::readVersionInternal(JSONReadPathTracker &json)
+{
+    quint32 version = json.getRootObjectItem()->getObjectItemOfType<quint32>("version");
+
+    if ( version == 0 )
+    {
+        throw ReaderException("Version identifier cannot be zero.");
+    }
+
+    return version;
 }
 
 void BSPFormatReader::readJsonDocument(JSONReadPathTracker& json)
 {
-    QSharedPointer<JSONReadPathTrackerItem> rootObject = json.getRootObjectItem();
-    m_pCurrentFile->setVersion(rootObject->getObjectItemOfType<quint32>("version"));
+    m_pCurrentFile->setVersion(readVersionInternal(json));
+    readLumpList(json.getRootObjectItem());
+}
+
+void BSPFormatReader::readLumpList(const QSharedPointer<JSONReadPathTrackerItem>& root)
+{
+    QSharedPointer<JSONReadPathTrackerItem> lumpsList = root->getObjectItem("lumps", QJsonValue::Array);
+    int lumpCount = (*lumpsList)->toArray().count();
+
+    for ( int lumpIndex = 0; lumpIndex < lumpCount; ++lumpIndex )
+    {
+        QSharedPointer<BSPLumpDef> lumpDef(new BSPLumpDef());
+
+        lumpDef->setIndex(lumpIndex);
+        lumpDef->setName(lumpsList->getArrayItemOfType<QString>(lumpIndex));
+
+        m_pCurrentFile->addLumpDef(lumpDef);
+    }
 }
