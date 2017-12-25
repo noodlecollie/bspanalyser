@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QCoreApplication>
+
 #include "mainwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainwidget->hexDisplayWidget()->setBSPFile(m_pApplicationModel->bspFileModel());
 
     connect(m_pCommands, &MainWindowCommands::newFileLoaded, this, &MainWindow::bspFileLoaded);
+
     connect(ui->actionOpen, &QAction::triggered, m_pCommands, &MainWindowCommands::menuLoadFile);
+    connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
 }
 
 MainWindow::~MainWindow()

@@ -32,7 +32,7 @@ private:
     void clearLumpTable();
     void clearDataArea();
     void updateDataAreaTabs();
-    bool lumpTabExists(int lumpIndex) const;
+    int tabIndexForLump(int lumpIndex) const;
 
     QTableWidget* m_pLumpTable;
     QTabWidget* m_pDataArea;

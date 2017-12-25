@@ -94,9 +94,15 @@ void BSPLumpViewArea::handleTabCloseRequest(int index)
 
 void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 {
-    if ( column != 0 || row < 0 || row >= m_pLumpTable->rowCount() ||
-         lumpTabExists(row))
+    if ( column != 0 || row < 0 || row >= m_pLumpTable->rowCount() )
     {
+        return;
+    }
+
+    int existingTabIndex = tabIndexForLump(row);
+    if ( existingTabIndex >= 0 )
+    {
+        m_pDataArea->setCurrentIndex(existingTabIndex);
         return;
     }
 
@@ -111,6 +117,9 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
     // TODO: Make useful
     m_pDataArea->addTab(new QLabel(QString("This is the tab widget for lump %0.").arg(lumpName)), lumpName);
     updateDataAreaTabs();
+
+    m_pDataArea->setCurrentIndex(m_pDataArea->count() - 1);
+    m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(row));
 }
 
 void BSPLumpViewArea::updateDataAreaTabs()
@@ -132,21 +141,21 @@ void BSPLumpViewArea::updateDataAreaTabs()
     }
 }
 
-// Assumes lump index is valid.
-bool BSPLumpViewArea::lumpTabExists(int lumpIndex) const
+int BSPLumpViewArea::tabIndexForLump(int lumpIndex) const
 {
     QTabBar* bar = m_pDataArea->tabBar();
-    QString lumpName = m_pLumpTable->item(lumpIndex, 0)->data(Qt::DisplayRole).toString();
 
     for ( int tabIndex = 0; tabIndex < bar->count(); ++tabIndex )
     {
-        if ( bar->tabText(tabIndex) == lumpName )
+        QVariant data = bar->tabData(tabIndex);
+
+        if ( data.type() == QVariant::Int && data.toInt() == lumpIndex )
         {
-            return true;
+            return tabIndex;
         }
     }
 
-    return false;
+    return -1;
 }
 
 QLabel* BSPLumpViewArea::createPlaceholderTabContents()
