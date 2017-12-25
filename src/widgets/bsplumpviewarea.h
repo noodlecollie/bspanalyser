@@ -2,7 +2,8 @@
 #define BSPLUMPVIEWAREA_H
 
 #include <QWidget>
-#include <QListWidget>
+
+#include "bsp/bspfilestructure.h"
 
 namespace Ui {
 class BSPLumpViewArea;
@@ -16,7 +17,7 @@ public:
     explicit BSPLumpViewArea(QWidget *parent = 0);
     ~BSPLumpViewArea();
 
-    QListWidget* lumpListWidget();
+    void updateLumps(const BSPFileStructure& bspFileStructure);
 
 private:
     Ui::BSPLumpViewArea *ui;

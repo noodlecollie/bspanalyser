@@ -11,6 +11,8 @@ class BSPFileStructure
 public:
     BSPFileStructure();
 
+    void clear();
+
     quint32 version() const;
     void setVersion(quint32 newVersion);
 

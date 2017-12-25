@@ -18,7 +18,7 @@ HexDisplayWidget::HexDisplayWidget(QWidget *parent)
     setPlaceholderText(tr("No file loaded."));
     setReadOnly(true);
 
-    QFont font("monospace", 10);
+    QFont font("Courier", 10);
     font.setStyleHint(QFont::Monospace);
     setFont(font);
 }

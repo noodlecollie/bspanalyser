@@ -34,6 +34,7 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
 
     m_pCurrentFile = &outFile;
     m_JsonTracker = JSONReadPathTracker(document);
+    m_pCurrentFile->clear();
 
     try
     {

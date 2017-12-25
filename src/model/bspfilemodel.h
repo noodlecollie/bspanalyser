@@ -18,10 +18,6 @@ public:
     bool load(const QString& filePath);
     void clear();
 
-signals:
-    void loaded();
-    void cleared();
-
 private:
     QString m_strFilePath;
     QByteArray m_arrData;

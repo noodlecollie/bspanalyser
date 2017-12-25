@@ -27,7 +27,6 @@ public:
 
 private slots:
     void bspFileLoaded();
-    void bspFileCleared();
 
 private:
     Ui::MainWindow *ui;

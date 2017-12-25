@@ -7,6 +7,12 @@ BSPFileStructure::BSPFileStructure()
 
 }
 
+void BSPFileStructure::clear()
+{
+    m_nVersion = 0;
+    clearLumpDefs();
+}
+
 quint32 BSPFileStructure::version() const
 {
     return m_nVersion;

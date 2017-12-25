@@ -13,9 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->mainwidget->hexDisplayWidget()->setBSPFile(m_pApplicationModel->bspFileModel());
 
-    connect(m_pApplicationModel->bspFileModel(), &BSPFileModel::loaded, this, &MainWindow::bspFileLoaded);
-    connect(m_pApplicationModel->bspFileModel(), &BSPFileModel::cleared, this, &MainWindow::bspFileCleared);
-
+    connect(m_pCommands, &MainWindowCommands::newFileLoaded, this, &MainWindow::bspFileLoaded);
     connect(ui->actionOpen, &QAction::triggered, m_pCommands, &MainWindowCommands::menuLoadFile);
 }
 
@@ -32,11 +30,7 @@ ApplicationModel* MainWindow::applicationModel()
 void MainWindow::bspFileLoaded()
 {
     ui->mainwidget->hexDisplayWidget()->loadBSPData();
-}
-
-void MainWindow::bspFileCleared()
-{
-    ui->mainwidget->hexDisplayWidget()->clear();
+    ui->mainwidget->lumpViewArea()->updateLumps(m_pApplicationModel->bspFileStructure());
 }
 
 void MainWindow::showTemporaryStatusMessage(const QString &message, int timeout)

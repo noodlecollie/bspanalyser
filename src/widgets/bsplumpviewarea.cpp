@@ -13,7 +13,11 @@ BSPLumpViewArea::~BSPLumpViewArea()
     delete ui;
 }
 
-QListWidget* BSPLumpViewArea::lumpListWidget()
+void BSPLumpViewArea::updateLumps(const BSPFileStructure &bspFileStructure)
 {
-    return ui->lumpListWidget;
+    for ( int lumpIndex = 0; lumpIndex < bspFileStructure.lumpDefCount(); ++lumpIndex )
+    {
+        QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure.lumpDef(lumpIndex);
+        ui->lumpListWidget->addItem(lumpDef->name());
+    }
 }

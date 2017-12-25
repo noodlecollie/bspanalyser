@@ -37,7 +37,10 @@ void MainWindowCommands::menuLoadFile()
     catch (GenericException& exception)
     {
         QMessageBox::critical(mainWindow, tr("Error"), QString("Error loading '%0': %1").arg(fileName).arg(exception.message()));
+        return;
     }
+
+    emit newFileLoaded();
 }
 
 void MainWindowCommands::loadFile(const QString &fileName)

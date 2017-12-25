@@ -40,19 +40,11 @@ bool BSPFileModel::load(const QString &filePath)
     m_strFilePath = filePath;
 
     file.close();
-    emit loaded();
     return true;
 }
 
 void BSPFileModel::clear()
 {
-    bool wasValid = isValid();
-
     m_strFilePath.clear();
     m_arrData.clear();
-
-    if ( wasValid )
-    {
-        emit cleared();
-    }
 }

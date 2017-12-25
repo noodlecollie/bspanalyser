@@ -7,11 +7,15 @@ class MainWindow;
 
 class MainWindowCommands : public QObject
 {
+    Q_OBJECT
 public:
     explicit MainWindowCommands(MainWindow* inMainWindow);
 
 public slots:
     void menuLoadFile();
+
+signals:
+    void newFileLoaded();
 
 private:
     void setLastOpenDir(const QString& fileName);
