@@ -39,7 +39,8 @@ SOURCES += \
     src/configs/jsonreadpathtrackeritem.cpp \
     src/model/applicationmodel.cpp \
     src/configs/bspformatcollection.cpp \
-    src/widgets/bsplumpviewarea.cpp
+    src/widgets/bsplumpviewarea.cpp \
+    src/bsp/keyvaluesjsonconverter.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -59,7 +60,8 @@ HEADERS += \
     src/model/applicationmodel.h \
     src/configs/bspformatcollection.h \
     src/exceptions/genericexception.h \
-    src/widgets/bsplumpviewarea.h
+    src/widgets/bsplumpviewarea.h \
+    src/bsp/keyvaluesjsonconverter.h
 
 FORMS += \
         src/widgets/mainwindow.ui
