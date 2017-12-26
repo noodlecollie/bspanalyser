@@ -26,7 +26,7 @@ public:
     void showTemporaryStatusMessage(const QString& message, int timeout = DEFAULT_STATUS_MESSAGE_TIMEOUT);
 
 private slots:
-    void bspFileLoaded();
+    void bspFileUpdated();
 
 private:
     Ui::MainWindow *ui;

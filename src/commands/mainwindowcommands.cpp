@@ -47,6 +47,13 @@ void MainWindowCommands::loadFile(const QString &fileName)
 {
     BSPFileModel* fileModel = mainWindow->applicationModel()->bspFileModel();
 
+    if ( fileModel->isValid() )
+    {
+        fileModel->clear();
+        mainWindow->applicationModel()->bspFileStructure().clear();
+        emit fileCleared();
+    }
+
     if ( !fileModel->load(fileName) )
     {
         throw GenericException("Could not load file from disk.");

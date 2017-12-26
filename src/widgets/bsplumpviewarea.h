@@ -25,6 +25,13 @@ private slots:
     void handleLumpCellDoubleClicked(int row, int column);
 
 private:
+    enum PlaceholderAction
+    {
+        PlaceholderIgnore,
+        PlaceholderCreate,
+        PlaceholderRemove
+    };
+
     static QLabel* createPlaceholderTabContents();
 
     void initDataArea();
@@ -33,10 +40,10 @@ private:
     void clearDataArea();
     void updateDataAreaTabs();
     int tabIndexForLump(int lumpIndex) const;
+    PlaceholderAction getPlaceholderTabAction() const;
 
     QTableWidget* m_pLumpTable;
     QTabWidget* m_pDataArea;
-    bool m_bPlaceholderActive;
 };
 
 #endif // BSPLUMPVIEWAREA_H

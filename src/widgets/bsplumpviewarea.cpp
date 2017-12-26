@@ -3,6 +3,7 @@
 #include <QSplitter>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QtDebug>
 
 namespace
 {
@@ -12,8 +13,7 @@ namespace
 BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     : QWidget(parent),
       m_pLumpTable(new QTableWidget()),
-      m_pDataArea(new QTabWidget()),
-      m_bPlaceholderActive(false)
+      m_pDataArea(new QTabWidget())
 {
     initDataArea();
     initLumpTable();
@@ -35,6 +35,8 @@ BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
 void BSPLumpViewArea::updateLumps(const BSPFileStructure &bspFileStructure)
 {
     clearLumpTable();
+    clearDataArea();
+
     m_pLumpTable->setRowCount(bspFileStructure.lumpDefCount());
 
     for ( int lumpIndex = 0; lumpIndex < bspFileStructure.lumpDefCount(); ++lumpIndex )
@@ -63,7 +65,7 @@ void BSPLumpViewArea::initLumpTable()
 
 void BSPLumpViewArea::clearDataArea()
 {
-    while ( m_pDataArea->count() > 1 )
+    while ( m_pDataArea->count() > 0 )
     {
         m_pDataArea->removeTab(0);
     }
@@ -116,28 +118,34 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 
     // TODO: Make useful
     m_pDataArea->addTab(new QLabel(QString("This is the tab widget for lump %0.").arg(lumpName)), lumpName);
-    updateDataAreaTabs();
-
     m_pDataArea->setCurrentIndex(m_pDataArea->count() - 1);
     m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(row));
+    updateDataAreaTabs();
 }
 
 void BSPLumpViewArea::updateDataAreaTabs()
 {
-    bool showPlaceholder = !m_bPlaceholderActive && m_pDataArea->count() < 1;
-
-    m_pDataArea->setTabsClosable(!showPlaceholder);
-
-    if ( showPlaceholder )
+    switch ( getPlaceholderTabAction() )
     {
-        m_pDataArea->addTab(createPlaceholderTabContents(), "...");
-        m_pDataArea->setTabEnabled(0, false);
-        m_bPlaceholderActive = true;
-    }
-    else if ( m_bPlaceholderActive )
-    {
-        m_pDataArea->removeTab(0);
-        m_bPlaceholderActive = false;
+        case PlaceholderCreate:
+        {
+            m_pDataArea->addTab(createPlaceholderTabContents(), "...");
+            m_pDataArea->setTabEnabled(0, false);
+            m_pDataArea->setTabsClosable(false);
+            break;
+        }
+
+        case PlaceholderRemove:
+        {
+            m_pDataArea->removeTab(0);
+            m_pDataArea->setTabsClosable(true);
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
     }
 }
 
@@ -163,4 +171,29 @@ QLabel* BSPLumpViewArea::createPlaceholderTabContents()
     QLabel* label = new QLabel(tr("No lump selected."));
     label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     return label;
+}
+
+BSPLumpViewArea::PlaceholderAction BSPLumpViewArea::getPlaceholderTabAction() const
+{
+    // If there are no tabs at all, create the placeholder.
+    if ( m_pDataArea->count() < 1 )
+    {
+        return PlaceholderCreate;
+    }
+
+    // If there's 1 tab, it's valid for it to be either the
+    // placeholder or a genuine tab. Either way, do nothing.
+    if ( m_pDataArea->count() == 1 )
+    {
+        return PlaceholderIgnore;
+    }
+
+    // If there's more than 1 tab, remove the placeholder if it exists.
+    QVariant data = m_pDataArea->tabBar()->tabData(0);
+    if ( data.type() == QVariant::Invalid )
+    {
+        return PlaceholderRemove;
+    }
+
+    return PlaceholderIgnore;
 }

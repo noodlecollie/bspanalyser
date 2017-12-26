@@ -16,6 +16,7 @@ public slots:
 
 signals:
     void newFileLoaded();
+    void fileCleared();
 
 private:
     void setLastOpenDir(const QString& fileName);

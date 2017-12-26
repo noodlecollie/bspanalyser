@@ -15,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->mainwidget->hexDisplayWidget()->setBSPFile(m_pApplicationModel->bspFileModel());
 
-    connect(m_pCommands, &MainWindowCommands::newFileLoaded, this, &MainWindow::bspFileLoaded);
+    connect(m_pCommands, &MainWindowCommands::newFileLoaded, this, &MainWindow::bspFileUpdated);
+    connect(m_pCommands, &MainWindowCommands::fileCleared, this, &MainWindow::bspFileUpdated);
 
     connect(ui->actionOpen, &QAction::triggered, m_pCommands, &MainWindowCommands::menuLoadFile);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
@@ -31,7 +32,7 @@ ApplicationModel* MainWindow::applicationModel()
     return m_pApplicationModel;
 }
 
-void MainWindow::bspFileLoaded()
+void MainWindow::bspFileUpdated()
 {
     ui->mainwidget->hexDisplayWidget()->loadBSPData();
     ui->mainwidget->lumpViewArea()->updateLumps(m_pApplicationModel->bspFileStructure());

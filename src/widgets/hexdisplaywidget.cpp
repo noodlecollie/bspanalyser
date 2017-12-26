@@ -63,6 +63,12 @@ void HexDisplayWidget::loadBSPData()
     }
 
     int bspLength = m_pBSPFile->contents().length();
+    if ( bspLength < 1 )
+    {
+        clear();
+        return;
+    }
+
     quint32 indexOfLastByte = byteIndexToTextIndex(bspLength - 1);
 
     QString textContents;
