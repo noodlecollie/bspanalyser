@@ -10,9 +10,12 @@ namespace
     };
 }
 
+const EnumNameMap<BSPLumpDef::LumpType> BSPLumpDef::lumpTypeNameMap(BSPLumpDef::staticMetaObject, "LumpType");
+
 BSPLumpDef::BSPLumpDef()
     : m_strName(),
-      m_nIndex(0)
+      m_nIndex(0),
+      m_nType(LumpType::Struct)
 {
 
 }
@@ -76,4 +79,14 @@ void BSPLumpDef::setIndex(quint32 newIndex)
 quint32 BSPLumpDef::headerLumpByteOffset() const
 {
     return BSPDefs::VERSION_BYTES + (m_nIndex * BSPDefs::HEADER_LUMP_DEF_BYTES);
+}
+
+BSPLumpDef::LumpType BSPLumpDef::type() const
+{
+    return m_nType;
+}
+
+void BSPLumpDef::setType(LumpType newType)
+{
+    m_nType = newType;
 }

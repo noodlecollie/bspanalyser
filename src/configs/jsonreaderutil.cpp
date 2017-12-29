@@ -50,16 +50,6 @@ namespace JSONReaderUtil
         }
     }
 
-    void ValidateType(const QJsonValue& value, QJsonValue::Type expectedType)
-    {
-        if ( value.type() != expectedType )
-        {
-            throw GenericException(QString("Expected JSON value of type '%0' but got '%1'.")
-                                  .arg(TypeNameString(expectedType))
-                                  .arg(TypeNameString(value.type())));
-        }
-    }
-
     template<typename T>
     T ValueToType(const QJsonValue&)
     {

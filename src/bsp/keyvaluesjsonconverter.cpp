@@ -41,7 +41,7 @@ public:
         throw *this;
     }
 
-    virtual EndOfInputException* clone() const override
+    virtual QException* clone() const override
     {
         return new EndOfInputException(*this);
     }
@@ -297,7 +297,7 @@ void KeyValuesJsonConverter::skipAllButNonEscapedQuotes()
 {
     validateInputIndex();
 
-    while ( m_nInIndex < static_cast<quint32>(m_pIn->length()) && ((*m_pIn)[m_nInIndex] != '"' || (m_nInIndex - 1 >= 0 && (*m_pIn)[m_nInIndex - 1] == '\\')) )
+    while ( m_nInIndex < static_cast<quint32>(m_pIn->length()) && ((*m_pIn)[m_nInIndex] != '"' || (m_nInIndex > 0 && (*m_pIn)[m_nInIndex - 1] == '\\')) )
     {
         copyOut((*m_pIn)[m_nInIndex]);
         ++m_nInIndex;

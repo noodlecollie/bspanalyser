@@ -9,6 +9,8 @@
 Q_LOGGING_CATEGORY(lcBSPFormatCollection, "BSPFormatCollection")
 
 BSPFormatCollection::BSPFormatCollection()
+    : m_hshFormatFiles(),
+      m_hshFormatFileNames()
 {
 
 }
@@ -67,6 +69,7 @@ void BSPFormatCollection::loadFormat(const QString &filePath)
 
     QSharedPointer<QByteArray> jsonBinaryData(new QByteArray());
     m_hshFormatFiles.insert(version, jsonBinaryData);
+    m_hshFormatFileNames.insert(version, filePath);
 
     int length = 0;
     const char* rawData = jsonDoc.rawData(&length);
@@ -74,4 +77,9 @@ void BSPFormatCollection::loadFormat(const QString &filePath)
     memcpy(jsonBinaryData->data(), rawData, length);
 
     qCDebug(lcBSPFormatCollection) << "Loaded format" << filePath;
+}
+
+QString BSPFormatCollection::sourceFileName(quint32 version) const
+{
+    return m_hshFormatFileNames.value(version);
 }

@@ -4,8 +4,7 @@
 #include "jsonreaderutil.h"
 
 BSPFormatReader::BSPFormatReader()
-    : m_pCurrentFile(nullptr),
-      m_JsonTracker()
+    : m_pCurrentFile(nullptr)
 {
 
 }
@@ -13,18 +12,16 @@ BSPFormatReader::BSPFormatReader()
 quint32 BSPFormatReader::readVersion(const QJsonDocument& document, QString& error)
 {
     quint32 version = 0;
-    m_JsonTracker = JSONReadPathTracker(document);
 
     try
     {
-        version = readVersionInternal(m_JsonTracker);
+        version = readVersionInternal(document);
     }
     catch (GenericException& exception)
     {
-        error = QString("Error reading version ('%0'). %1").arg(m_JsonTracker.cachedPath()).arg(exception.message());
+        error = exception.message();
     }
 
-    m_JsonTracker = JSONReadPathTracker();
     return version;
 }
 
@@ -33,27 +30,26 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
     bool success = false;
 
     m_pCurrentFile = &outFile;
-    m_JsonTracker = JSONReadPathTracker(document);
     m_pCurrentFile->clear();
 
     try
     {
-        readJsonDocument(m_JsonTracker);
+        readJsonDocument(document);
         success = true;
     }
     catch (GenericException& exception)
     {
-        error = QString("Error encountered at '%0'. %1").arg(m_JsonTracker.cachedPath()).arg(exception.message());
+        error = exception.message();
     }
 
     m_pCurrentFile = nullptr;
-    m_JsonTracker = JSONReadPathTracker();
     return success;
 }
 
-quint32 BSPFormatReader::readVersionInternal(JSONReadPathTracker &json)
+quint32 BSPFormatReader::readVersionInternal(const QJsonDocument& document)
 {
-    quint32 version = json.getRootObjectItem()->getObjectItemOfType<quint32>("version");
+    quint32 version = JSONReaderItem::getRootObjectItem(document)
+            ->getObjectItemOfType<quint32>("version");
 
     if ( version == 0 )
     {
@@ -63,15 +59,16 @@ quint32 BSPFormatReader::readVersionInternal(JSONReadPathTracker &json)
     return version;
 }
 
-void BSPFormatReader::readJsonDocument(JSONReadPathTracker& json)
+void BSPFormatReader::readJsonDocument(const QJsonDocument& document)
 {
-    m_pCurrentFile->setVersion(readVersionInternal(json));
-    readLumpList(json.getRootObjectItem());
+    m_pCurrentFile->setVersion(readVersionInternal(document));
+    readLumpList(JSONReaderItem::getRootObjectItem(document));
 }
 
-void BSPFormatReader::readLumpList(const QSharedPointer<JSONReadPathTrackerItem>& root)
+void BSPFormatReader::readLumpList(const JSONReaderItemPtr& root)
 {
-    QSharedPointer<JSONReadPathTrackerItem> lumpsList = root->getObjectItem("lumps", QJsonValue::Array);
+    JSONReaderItemPtr lumpsList = root->getObjectItem("lumps", QJsonValue::Array);
+    JSONReaderItemPtr lumpItemsObject = root->getObjectItem("lumpitems", QJsonValue::Object);
     int lumpCount = (*lumpsList)->toArray().count();
 
     for ( int lumpIndex = 0; lumpIndex < lumpCount; ++lumpIndex )
@@ -80,5 +77,24 @@ void BSPFormatReader::readLumpList(const QSharedPointer<JSONReadPathTrackerItem>
 
         lumpDef->setName(lumpsList->getArrayItemOfType<QString>(lumpIndex));
         m_pCurrentFile->addLumpDef(lumpDef);
+
+        readLumpData(lumpDef, lumpItemsObject);
+    }
+}
+
+void BSPFormatReader::readLumpData(const QSharedPointer<BSPLumpDef> &lumpDef,
+                                   const JSONReaderItemPtr &lumpItemsObject)
+{
+    JSONReaderItemPtr lumpItem = lumpItemsObject->getObjectItem(lumpDef->name(), QJsonValue::Object);
+    QString lumpItemType = lumpItem->getObjectItemOfType<QString>("type");
+
+    try
+    {
+        BSPLumpDef::LumpType type = BSPLumpDef::lumpTypeNameMap.value(lumpItemType);
+        lumpDef->setType(type);
+    }
+    catch (QException&)
+    {
+        throw GenericException(QString("Lump type '%0' unrecognised.").arg(lumpItemType));
     }
 }

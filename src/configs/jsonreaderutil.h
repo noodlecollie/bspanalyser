@@ -7,7 +7,6 @@
 namespace JSONReaderUtil
 {
     QString TypeNameString(QJsonValue::Type type);
-    void ValidateType(const QJsonValue& value, QJsonValue::Type expectedType);
 
     // Specialised for supported types.
     template<typename T>

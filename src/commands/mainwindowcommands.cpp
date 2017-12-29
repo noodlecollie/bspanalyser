@@ -36,7 +36,9 @@ void MainWindowCommands::menuLoadFile()
     }
     catch (GenericException& exception)
     {
-        QMessageBox::critical(mainWindow, tr("Error"), QString("Error loading '%0': %1").arg(fileName).arg(exception.message()));
+        QMessageBox messageBox(QMessageBox::Critical, tr("Error"), QString("Error loading '%0'.").arg(fileName));
+        messageBox.setDetailedText(exception.message());
+        messageBox.exec();
         return;
     }
 
@@ -82,7 +84,7 @@ void MainWindowCommands::loadFile(const QString &fileName)
 
     if ( !reader.read(jsonDoc, mainWindow->applicationModel()->bspFileStructure(), errorString) )
     {
-        throw GenericException(errorString);
+        throw GenericException(QString("Failed to read format file '%0'. %1").arg(formatCollection.sourceFileName(*versionPtr)).arg(errorString));
     }
 }
 

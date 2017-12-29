@@ -18,17 +18,17 @@ public:
         throw *this;
     }
 
-    virtual GenericException* clone() const override
+    virtual QException* clone() const override
     {
         return new GenericException(*this);
     }
 
-    const QString& message() const
+    virtual QString message() const
     {
         return m_strMessage;
     }
 
-private:
+protected:
     QString m_strMessage;
 };
 

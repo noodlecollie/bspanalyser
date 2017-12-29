@@ -7,31 +7,30 @@
 #include <QSharedPointer>
 
 #include "jsonreaderutil.h"
+#include "jsonreaderexception.h"
 
-class JSONReadPathTracker;
+class JSONReaderItem;
+typedef QSharedPointer<JSONReaderItem> JSONReaderItemPtr;
 
-class JSONReadPathTrackerItem
+class JSONReaderItem
 {
-    friend class JSONReadPathTracker;
-
-    JSONReadPathTrackerItem(JSONReadPathTracker* parent,
-                            const QSharedPointer<JSONReadPathTrackerItem>& parentItem,
-                            const QString& parentKey,
-                            QJsonValue parentValue);
-    void setWeakSelf(const QWeakPointer<JSONReadPathTrackerItem>& weakSelf);
-
 public:
-    ~JSONReadPathTrackerItem();
+    ~JSONReaderItem();
 
     bool isValid() const;
 
     QJsonValue* operator ->();
     QJsonValue& operator *();
 
-    void validate(QJsonValue::Type type);
+    void validate(QJsonValue::Type type) const;
 
-    QSharedPointer<JSONReadPathTrackerItem> getObjectItem(const QString& key, QJsonValue::Type desiredType = QJsonValue::Undefined);
-    QSharedPointer<JSONReadPathTrackerItem> getArrayItem(int index, QJsonValue::Type desiredType = QJsonValue::Undefined);
+    static JSONReaderItemPtr getRootObjectItem(const QJsonDocument& document);
+    static JSONReaderItemPtr getRootArrayItem(const QJsonDocument& document);
+
+    JSONReaderItemPtr getObjectItem(const QString& key, QJsonValue::Type desiredType = QJsonValue::Undefined);
+    JSONReaderItemPtr getArrayItem(int index, QJsonValue::Type desiredType = QJsonValue::Undefined);
+
+    QString computePath() const;
 
     template<typename T>
     T getObjectItemOfType(const QString& key)
@@ -46,10 +45,13 @@ public:
     }
 
 private:
-    template<typename T>
-    QSharedPointer<JSONReadPathTrackerItem> getItemForType(const T& key, QJsonValue::Type desiredType);
+    JSONReaderItem(const JSONReaderItemPtr& parentItem,
+                            const QString& parentKey,
+                            QJsonValue parentValue);
 
-    JSONReadPathTracker* m_pParent;
+    template<typename T>
+    JSONReaderItemPtr getItemForType(const T& key, QJsonValue::Type desiredType);
+    void setWeakSelf(const QWeakPointer<JSONReaderItem>& weakSelf);
 
     // A reference to the parent item is kept. This is to
     // help ensure that destruction order occurs correctly,
@@ -58,10 +60,10 @@ private:
     // pointer family, but it shouldn't keep a shared pointer
     // to itself or it will never die. Therefore it keeps a
     // weak pointer, which is promoted when creating children.
-    QWeakPointer<JSONReadPathTrackerItem> m_pWeakSelf;
+    QWeakPointer<JSONReaderItem> m_pWeakSelf;
 
     // This is the actual shared pointer to the parent.
-    QSharedPointer<JSONReadPathTrackerItem> m_pParentItem;
+    JSONReaderItemPtr m_pParentItem;
 
     QString m_strParentKey;
     QJsonValue m_ParentValue;

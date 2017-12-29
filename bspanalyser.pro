@@ -35,12 +35,11 @@ SOURCES += \
     src/configs/bspformatreader.cpp \
     src/bsp/bspfilestructure.cpp \
     src/configs/jsonreaderutil.cpp \
-    src/configs/jsonreadpathtracker.cpp \
-    src/configs/jsonreadpathtrackeritem.cpp \
     src/model/applicationmodel.cpp \
     src/configs/bspformatcollection.cpp \
     src/widgets/bsplumpviewarea.cpp \
-    src/bsp/keyvaluesjsonconverter.cpp
+    src/bsp/keyvaluesjsonconverter.cpp \
+    src/configs/jsonreaderitem.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -55,13 +54,14 @@ HEADERS += \
     src/configs/bspformatreader.h \
     src/bsp/bspfilestructure.h \
     src/configs/jsonreaderutil.h \
-    src/configs/jsonreadpathtracker.h \
-    src/configs/jsonreadpathtrackeritem.h \
     src/model/applicationmodel.h \
     src/configs/bspformatcollection.h \
     src/exceptions/genericexception.h \
     src/widgets/bsplumpviewarea.h \
-    src/bsp/keyvaluesjsonconverter.h
+    src/bsp/keyvaluesjsonconverter.h \
+    src/util/enumnamemap.h \
+    src/configs/jsonreaderexception.h \
+    src/configs/jsonreaderitem.h
 
 FORMS += \
         src/widgets/mainwindow.ui
