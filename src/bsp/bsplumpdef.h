@@ -21,7 +21,7 @@ public:
     Q_ENUM(LumpType)
 
     BSPLumpDef();
-    static const EnumNameMap<LumpType> lumpTypeNameMap;
+    static const EnumNameMap<LumpType>& lumpTypeNameMap();
 
     // Returns the entire lump data from the file.
     virtual BSPDataFragment getDataFragment(const QByteArray &data) const override;

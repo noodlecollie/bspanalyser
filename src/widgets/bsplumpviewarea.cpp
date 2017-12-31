@@ -51,7 +51,7 @@ void BSPLumpViewArea::updateLumps(const BSPFileStructure &bspFileStructure)
     {
         QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure.lumpDef(lumpIndex);
         m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
-        m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap.key(lumpDef->type())));
+        m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap().key(lumpDef->type())));
         m_pLumpTable->setRowHeight(lumpIndex, ROW_HEIGHT);
     }
 }

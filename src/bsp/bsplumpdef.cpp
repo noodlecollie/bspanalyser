@@ -10,14 +10,18 @@ namespace
     };
 }
 
-const EnumNameMap<BSPLumpDef::LumpType> BSPLumpDef::lumpTypeNameMap(BSPLumpDef::staticMetaObject, "LumpType");
-
 BSPLumpDef::BSPLumpDef()
     : m_strName(),
       m_nIndex(0),
       m_nType(LumpType::Struct)
 {
 
+}
+
+const EnumNameMap<BSPLumpDef::LumpType>& BSPLumpDef::lumpTypeNameMap()
+{
+    static const EnumNameMap<BSPLumpDef::LumpType> typeNameMap(BSPLumpDef::staticMetaObject, "LumpType");
+    return typeNameMap;
 }
 
 BSPDataFragment BSPLumpDef::getDataFragment(const QByteArray &data) const

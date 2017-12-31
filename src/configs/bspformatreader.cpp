@@ -90,7 +90,7 @@ void BSPFormatReader::readLumpData(const QSharedPointer<BSPLumpDef> &lumpDef,
 
     try
     {
-        BSPLumpDef::LumpType type = BSPLumpDef::lumpTypeNameMap.value(lumpItemType);
+        BSPLumpDef::LumpType type = BSPLumpDef::lumpTypeNameMap().value(lumpItemType);
         lumpDef->setType(type);
     }
     catch (QException&)
