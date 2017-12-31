@@ -8,6 +8,14 @@
 namespace
 {
     static constexpr int ROW_HEIGHT = 20;
+
+    enum LumpTableColumn
+    {
+        LumpNameColumn = 0,
+        LumpTypeColumn,
+
+        LumpTableColumnCount
+    };
 }
 
 BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
@@ -42,7 +50,8 @@ void BSPLumpViewArea::updateLumps(const BSPFileStructure &bspFileStructure)
     for ( int lumpIndex = 0; lumpIndex < bspFileStructure.lumpDefCount(); ++lumpIndex )
     {
         QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure.lumpDef(lumpIndex);
-        m_pLumpTable->setItem(lumpIndex, 0, new QTableWidgetItem(lumpDef->name()));
+        m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
+        m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap.key(lumpDef->type())));
         m_pLumpTable->setRowHeight(lumpIndex, ROW_HEIGHT);
     }
 }
@@ -76,10 +85,17 @@ void BSPLumpViewArea::clearDataArea()
 void BSPLumpViewArea::clearLumpTable()
 {
     m_pLumpTable->clear();
-    m_pLumpTable->setColumnCount(1);
+    m_pLumpTable->setColumnCount(LumpTableColumnCount);
     m_pLumpTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_pLumpTable->setHorizontalHeaderLabels(QStringList() << tr("Lumps"));
-    m_pLumpTable->horizontalHeader()->setStretchLastSection(true);
+    m_pLumpTable->setHorizontalHeaderLabels(QStringList() << tr("Lump") << tr("Type"));
+    m_pLumpTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    QHeaderView* horizontalHeader = m_pLumpTable->horizontalHeader();
+    for ( int section = 0; section < LumpTableColumnCount; ++section )
+    {
+        horizontalHeader->setSectionResizeMode(section, QHeaderView::Stretch);
+    }
+
     m_pLumpTable->verticalHeader()->setHidden(true);
 }
 
@@ -96,7 +112,7 @@ void BSPLumpViewArea::handleTabCloseRequest(int index)
 
 void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 {
-    if ( column != 0 || row < 0 || row >= m_pLumpTable->rowCount() )
+    if ( column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
     {
         return;
     }
@@ -108,7 +124,7 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
         return;
     }
 
-    QTableWidgetItem* item = m_pLumpTable->item(row, column);
+    QTableWidgetItem* item = m_pLumpTable->item(row, LumpNameColumn);
     if ( !item )
     {
         return;

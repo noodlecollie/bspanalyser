@@ -32,6 +32,8 @@ public:
         return value(key);
     }
 
+    QString key(ENUM value) const;
+
 private:
     QMetaEnum m_TargetEnum;
     QHash<QString, ENUM> m_hshLowercaseNameMap;
@@ -64,6 +66,12 @@ ENUM EnumNameMap<ENUM>::value(const QString &key) const
     }
 
     return m_hshLowercaseNameMap.value(lowercaseKey);
+}
+
+template<typename ENUM>
+QString EnumNameMap<ENUM>::key(ENUM value) const
+{
+    return m_TargetEnum.valueToKey(static_cast<int>(value));
 }
 
 #endif // ENUMNAMEMAP_H
