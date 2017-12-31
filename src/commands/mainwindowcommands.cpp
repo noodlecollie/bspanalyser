@@ -52,7 +52,7 @@ void MainWindowCommands::loadFile(const QString &fileName)
     if ( fileModel->isValid() )
     {
         fileModel->clear();
-        mainWindow->applicationModel()->bspFileStructure().clear();
+        mainWindow->applicationModel()->bspFileStructure()->clear();
         emit fileCleared();
     }
 
@@ -82,7 +82,7 @@ void MainWindowCommands::loadFile(const QString &fileName)
     BSPFormatReader reader;
     QString errorString;
 
-    if ( !reader.read(jsonDoc, mainWindow->applicationModel()->bspFileStructure(), errorString) )
+    if ( !reader.read(jsonDoc, *mainWindow->applicationModel()->bspFileStructure(), errorString) )
     {
         throw GenericException(QString("Failed to read format file '%0'. %1").arg(formatCollection.sourceFileName(*versionPtr)).arg(errorString));
     }

@@ -39,7 +39,8 @@ SOURCES += \
     src/configs/bspformatcollection.cpp \
     src/widgets/bsplumpviewarea.cpp \
     src/bsp/keyvaluesjsonconverter.cpp \
-    src/configs/jsonreaderitem.cpp
+    src/configs/jsonreaderitem.cpp \
+    src/widgets/lumpviewfactory.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -61,7 +62,9 @@ HEADERS += \
     src/bsp/keyvaluesjsonconverter.h \
     src/util/enumnamemap.h \
     src/configs/jsonreaderexception.h \
-    src/configs/jsonreaderitem.h
+    src/configs/jsonreaderitem.h \
+    src/widgets/lumpviewfactory.h \
+    src/widgets/ilumpviewwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui

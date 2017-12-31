@@ -5,6 +5,8 @@
 #include <QHeaderView>
 #include <QtDebug>
 
+#include "widgets/lumpviewfactory.h"
+
 namespace
 {
     static constexpr int ROW_HEIGHT = 20;
@@ -21,7 +23,8 @@ namespace
 BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     : QWidget(parent),
       m_pLumpTable(new QTableWidget()),
-      m_pDataArea(new QTabWidget())
+      m_pDataArea(new QTabWidget()),
+      m_pBSPFileStructure(nullptr)
 {
     initDataArea();
     initLumpTable();
@@ -40,16 +43,26 @@ BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     setLayout(hLayout);
 }
 
-void BSPLumpViewArea::updateLumps(const BSPFileStructure &bspFileStructure)
+void BSPLumpViewArea::setBSPFileStructure(const BSPFileStructure* fileStructure)
+{
+    m_pBSPFileStructure = fileStructure;
+}
+
+void BSPLumpViewArea::updateLumps()
 {
     clearLumpTable();
     clearDataArea();
 
-    m_pLumpTable->setRowCount(bspFileStructure.lumpDefCount());
-
-    for ( int lumpIndex = 0; lumpIndex < bspFileStructure.lumpDefCount(); ++lumpIndex )
+    if ( !m_pBSPFileStructure )
     {
-        QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure.lumpDef(lumpIndex);
+        return;
+    }
+
+    m_pLumpTable->setRowCount(m_pBSPFileStructure->lumpDefCount());
+
+    for ( int lumpIndex = 0; lumpIndex < m_pBSPFileStructure->lumpDefCount(); ++lumpIndex )
+    {
+        QSharedPointer<BSPLumpDef> lumpDef = m_pBSPFileStructure->lumpDef(lumpIndex);
         m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
         m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap().key(lumpDef->type())));
         m_pLumpTable->setRowHeight(lumpIndex, ROW_HEIGHT);
@@ -112,7 +125,7 @@ void BSPLumpViewArea::handleTabCloseRequest(int index)
 
 void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 {
-    if ( column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
+    if ( !m_pBSPFileStructure || column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
     {
         return;
     }
@@ -130,10 +143,19 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
         return;
     }
 
-    QString lumpName = item->data(Qt::DisplayRole).toString();
+    QSharedPointer<BSPLumpDef> lumpDef = m_pBSPFileStructure->lumpDef(row);
+    if ( !lumpDef )
+    {
+        return;
+    }
 
-    // TODO: Make useful
-    m_pDataArea->addTab(new QLabel(QString("This is the tab widget for lump %0.").arg(lumpName)), lumpName);
+    QWidget* viewWidget = LumpViewFactory(lumpDef).createWidget();
+    if ( !viewWidget )
+    {
+        return;
+    }
+
+    m_pDataArea->addTab(viewWidget, lumpDef->name());
     m_pDataArea->setCurrentIndex(m_pDataArea->count() - 1);
     m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(row));
     updateDataAreaTabs();

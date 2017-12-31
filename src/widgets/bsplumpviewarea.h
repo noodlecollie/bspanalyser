@@ -14,7 +14,8 @@ class BSPLumpViewArea : public QWidget
 public:
     explicit BSPLumpViewArea(QWidget *parent = nullptr);
 
-    void updateLumps(const BSPFileStructure &bspFileStructure);
+    void setBSPFileStructure(const BSPFileStructure* fileStructure);
+    void updateLumps();
 
 signals:
 
@@ -44,6 +45,7 @@ private:
 
     QTableWidget* m_pLumpTable;
     QTabWidget* m_pDataArea;
+    const BSPFileStructure* m_pBSPFileStructure;
 };
 
 #endif // BSPLUMPVIEWAREA_H

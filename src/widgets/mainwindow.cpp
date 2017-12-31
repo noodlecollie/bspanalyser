@@ -35,7 +35,8 @@ ApplicationModel* MainWindow::applicationModel()
 void MainWindow::bspFileUpdated()
 {
     ui->mainwidget->hexDisplayWidget()->loadBSPData();
-    ui->mainwidget->lumpViewArea()->updateLumps(m_pApplicationModel->bspFileStructure());
+    ui->mainwidget->lumpViewArea()->setBSPFileStructure(m_pApplicationModel->bspFileStructure());
+    ui->mainwidget->lumpViewArea()->updateLumps();
 }
 
 void MainWindow::showTemporaryStatusMessage(const QString &message, int timeout)

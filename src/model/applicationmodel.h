@@ -14,7 +14,7 @@ public:
     ApplicationModel(QObject* parent = nullptr);
 
     BSPFileModel* bspFileModel();
-    BSPFileStructure& bspFileStructure();
+    BSPFileStructure* bspFileStructure();
     BSPFormatCollection& bspFormatCollection();
 
 private:

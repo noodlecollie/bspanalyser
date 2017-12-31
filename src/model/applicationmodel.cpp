@@ -14,9 +14,9 @@ BSPFileModel* ApplicationModel::bspFileModel()
     return m_pBSPFileModel;
 }
 
-BSPFileStructure& ApplicationModel::bspFileStructure()
+BSPFileStructure* ApplicationModel::bspFileStructure()
 {
-    return m_BSPFileStructure;
+    return &m_BSPFileStructure;
 }
 
 BSPFormatCollection& ApplicationModel::bspFormatCollection()
