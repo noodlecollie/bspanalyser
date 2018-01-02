@@ -12,12 +12,17 @@ class ApplicationModel : public QObject
     Q_OBJECT
 public:
     ApplicationModel(QObject* parent = nullptr);
+    ~ApplicationModel();
+
+    static ApplicationModel* globalPointer();
 
     BSPFileModel* bspFileModel();
     BSPFileStructure* bspFileStructure();
     BSPFormatCollection& bspFormatCollection();
 
 private:
+    static ApplicationModel* m_pGlobalModel;
+
     BSPFileModel* m_pBSPFileModel;
     BSPFileStructure m_BSPFileStructure;
     BSPFormatCollection m_BSPFormatCollection;

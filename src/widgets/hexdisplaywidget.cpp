@@ -1,5 +1,7 @@
 #include "hexdisplaywidget.h"
 
+#include "util/textutil.h"
+
 namespace
 {
     static constexpr char HEX_CHARS[16] =
@@ -17,10 +19,7 @@ HexDisplayWidget::HexDisplayWidget(QWidget *parent)
     setLineWrapMode(QPlainTextEdit::WidgetWidth);
     setPlaceholderText(tr("No file loaded."));
     setReadOnly(true);
-
-    QFont font("Courier", 10);
-    font.setStyleHint(QFont::Monospace);
-    setFont(font);
+    setFont(TextUtil::monospacedFont(10));
 }
 
 void HexDisplayWidget::setBSPFile(BSPFileModel *file)

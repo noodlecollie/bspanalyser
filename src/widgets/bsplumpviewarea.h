@@ -8,13 +8,14 @@
 
 #include "bsp/bspfilestructure.h"
 
+class ILumpViewWidget;
+
 class BSPLumpViewArea : public QWidget
 {
     Q_OBJECT
 public:
     explicit BSPLumpViewArea(QWidget *parent = nullptr);
 
-    void setBSPFileStructure(const BSPFileStructure* fileStructure);
     void updateLumps();
 
 signals:
@@ -42,10 +43,10 @@ private:
     void updateDataAreaTabs();
     int tabIndexForLump(int lumpIndex) const;
     PlaceholderAction getPlaceholderTabAction() const;
+    void loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef>& lumpDef, ILumpViewWidget* lumpView);
 
     QTableWidget* m_pLumpTable;
     QTabWidget* m_pDataArea;
-    const BSPFileStructure* m_pBSPFileStructure;
 };
 
 #endif // BSPLUMPVIEWAREA_H

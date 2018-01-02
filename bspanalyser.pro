@@ -40,7 +40,9 @@ SOURCES += \
     src/widgets/bsplumpviewarea.cpp \
     src/bsp/keyvaluesjsonconverter.cpp \
     src/configs/jsonreaderitem.cpp \
-    src/widgets/lumpviewfactory.cpp
+    src/widgets/lumpviewfactory.cpp \
+    src/widgets/keyvalueslumpviewwidget.cpp \
+    src/util/textutil.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -64,7 +66,9 @@ HEADERS += \
     src/configs/jsonreaderexception.h \
     src/configs/jsonreaderitem.h \
     src/widgets/lumpviewfactory.h \
-    src/widgets/ilumpviewwidget.h
+    src/widgets/ilumpviewwidget.h \
+    src/widgets/keyvalueslumpviewwidget.h \
+    src/util/textutil.h
 
 FORMS += \
         src/widgets/mainwindow.ui

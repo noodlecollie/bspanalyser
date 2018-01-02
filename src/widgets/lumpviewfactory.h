@@ -5,13 +5,14 @@
 #include <QSharedPointer>
 
 #include "bsp/bsplumpdef.h"
+#include "widgets/ilumpviewwidget.h"
 
 class LumpViewFactory
 {
 public:
     LumpViewFactory(const QSharedPointer<BSPLumpDef>& lumpDef);
 
-    QWidget* createWidget() const;
+    ILumpViewWidget* createWidget() const;
 
 private:
     QSharedPointer<BSPLumpDef> m_pLumpDef;

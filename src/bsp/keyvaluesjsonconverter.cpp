@@ -276,7 +276,7 @@ char KeyValuesJsonConverter::consumeChar()
 
 void KeyValuesJsonConverter::validateInputIndex()
 {
-    if ( m_nInIndex >= static_cast<quint32>(m_pIn->length()) )
+    if ( m_nInIndex >= static_cast<quint32>(m_pIn->length()) || !(*m_pIn)[m_nInIndex] )
     {
         throw EndOfInputException(m_nState);
     }
@@ -339,7 +339,12 @@ void KeyValuesJsonConverter::changeSyntaxSection(const QString& logName, char de
 
     if ( nextChar[0] != delimiter )
     {
-        raiseExceptionAtCurrentIndex(QString("Expected '%0' to %1, but got '%2'.").arg(charAsTempString(delimiter)).arg(logName).arg(nextChar));
+        raiseExceptionAtCurrentIndex(QString("Expected '%0' (%1) to %2, but got '%3' (%4).")
+                                     .arg(charAsTempString(delimiter))
+                                     .arg(static_cast<int>(delimiter))
+                                     .arg(logName)
+                                     .arg(nextChar)
+                                     .arg(static_cast<int>(nextChar[0])));
     }
 
     copyOut(nextChar, 1);

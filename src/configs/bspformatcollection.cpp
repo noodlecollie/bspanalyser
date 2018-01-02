@@ -76,7 +76,9 @@ void BSPFormatCollection::loadFormat(const QString &filePath)
     jsonBinaryData->resize(length);
     memcpy(jsonBinaryData->data(), rawData, length);
 
-    qCDebug(lcBSPFormatCollection) << "Loaded format" << filePath;
+    qCDebug(lcBSPFormatCollection) << "Loaded"
+                                   << (filePath.startsWith(":") ? "built-in" : "custom")
+                                   << "format" << filePath;
 }
 
 QString BSPFormatCollection::sourceFileName(quint32 version) const

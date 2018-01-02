@@ -1,7 +1,6 @@
 #include "lumpviewfactory.h"
 
-// TODO: Remove me when implemented properly.
-#include <QLabel>
+#include "keyvalueslumpviewwidget.h"
 
 LumpViewFactory::LumpViewFactory(const QSharedPointer<BSPLumpDef> &lumpDef)
     : m_pLumpDef(lumpDef)
@@ -9,7 +8,7 @@ LumpViewFactory::LumpViewFactory(const QSharedPointer<BSPLumpDef> &lumpDef)
 
 }
 
-QWidget* LumpViewFactory::createWidget() const
+ILumpViewWidget* LumpViewFactory::createWidget() const
 {
     if ( !m_pLumpDef )
     {
@@ -20,8 +19,7 @@ QWidget* LumpViewFactory::createWidget() const
     {
         case BSPLumpDef::LumpType::Keyvalues:
         {
-            // TODO
-            return new QLabel("This is the view widget for Keyvalues lumps.");
+            return new KeyvaluesLumpViewWidget();
         }
 
         default:

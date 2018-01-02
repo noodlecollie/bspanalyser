@@ -14,7 +14,7 @@ BSPDataFragment::BSPDataFragment(const QByteArray& byteArray, quint32 inOffset, 
     sanitise();
 }
 
-const QByteArray& BSPDataFragment::data() const
+const QByteArray& BSPDataFragment::allData() const
 {
     return m_arrData;
 }
@@ -44,6 +44,11 @@ void BSPDataFragment::setLength(quint32 newLength)
 const char* BSPDataFragment::rawData() const
 {
     return m_arrData.constData() + m_nOffset;
+}
+
+QByteArray BSPDataFragment::data() const
+{
+    return m_arrData.mid(m_nOffset, m_nLength);
 }
 
 bool BSPDataFragment::isValid() const

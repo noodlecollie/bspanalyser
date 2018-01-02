@@ -5,7 +5,9 @@
 #include <QHeaderView>
 #include <QtDebug>
 
+#include "model/applicationmodel.h"
 #include "widgets/lumpviewfactory.h"
+#include "widgets/ilumpviewwidget.h"
 
 namespace
 {
@@ -23,8 +25,7 @@ namespace
 BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     : QWidget(parent),
       m_pLumpTable(new QTableWidget()),
-      m_pDataArea(new QTabWidget()),
-      m_pBSPFileStructure(nullptr)
+      m_pDataArea(new QTabWidget())
 {
     initDataArea();
     initLumpTable();
@@ -43,26 +44,18 @@ BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     setLayout(hLayout);
 }
 
-void BSPLumpViewArea::setBSPFileStructure(const BSPFileStructure* fileStructure)
-{
-    m_pBSPFileStructure = fileStructure;
-}
-
 void BSPLumpViewArea::updateLumps()
 {
     clearLumpTable();
     clearDataArea();
 
-    if ( !m_pBSPFileStructure )
-    {
-        return;
-    }
+    BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
 
-    m_pLumpTable->setRowCount(m_pBSPFileStructure->lumpDefCount());
+    m_pLumpTable->setRowCount(bspFileStructure->lumpDefCount());
 
-    for ( int lumpIndex = 0; lumpIndex < m_pBSPFileStructure->lumpDefCount(); ++lumpIndex )
+    for ( int lumpIndex = 0; lumpIndex < bspFileStructure->lumpDefCount(); ++lumpIndex )
     {
-        QSharedPointer<BSPLumpDef> lumpDef = m_pBSPFileStructure->lumpDef(lumpIndex);
+        QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(lumpIndex);
         m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
         m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap().key(lumpDef->type())));
         m_pLumpTable->setRowHeight(lumpIndex, ROW_HEIGHT);
@@ -125,10 +118,12 @@ void BSPLumpViewArea::handleTabCloseRequest(int index)
 
 void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 {
-    if ( !m_pBSPFileStructure || column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
+    if ( column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
     {
         return;
     }
+
+    BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
 
     int existingTabIndex = tabIndexForLump(row);
     if ( existingTabIndex >= 0 )
@@ -143,22 +138,36 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
         return;
     }
 
-    QSharedPointer<BSPLumpDef> lumpDef = m_pBSPFileStructure->lumpDef(row);
+    QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(row);
     if ( !lumpDef )
     {
         return;
     }
 
-    QWidget* viewWidget = LumpViewFactory(lumpDef).createWidget();
+    ILumpViewWidget* viewWidget = LumpViewFactory(lumpDef).createWidget();
     if ( !viewWidget )
     {
         return;
     }
 
-    m_pDataArea->addTab(viewWidget, lumpDef->name());
+    loadBSPDataIntoLumpView(lumpDef, viewWidget);
+
+    m_pDataArea->addTab(viewWidget->asWidget(), lumpDef->name());
     m_pDataArea->setCurrentIndex(m_pDataArea->count() - 1);
     m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(row));
     updateDataAreaTabs();
+}
+
+void BSPLumpViewArea::loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef> &lumpDef, ILumpViewWidget *lumpView)
+{
+    if ( Q_UNLIKELY(!lumpDef || !lumpView) )
+    {
+        return;
+    }
+
+    BSPFileModel* bspFileModel = ApplicationModel::globalPointer()->bspFileModel();
+    BSPDataFragment dataFragment = lumpDef->getDataFragment(bspFileModel->contents());
+    lumpView->loadLumpData(dataFragment);
 }
 
 void BSPLumpViewArea::updateDataAreaTabs()

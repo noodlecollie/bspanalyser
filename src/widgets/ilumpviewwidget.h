@@ -11,7 +11,7 @@ public:
     virtual ~ILumpViewWidget() {}
 
     virtual QWidget* asWidget() = 0;
-    virtual void loadLumpData(const BSPDataFragment& dataFragment) = 0;
+    virtual void loadLumpData(const BSPDataFragment& fragment) = 0;
 };
 
 #endif // ILUMPVIEWWIDGET_H

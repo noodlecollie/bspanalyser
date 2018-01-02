@@ -35,7 +35,6 @@ ApplicationModel* MainWindow::applicationModel()
 void MainWindow::bspFileUpdated()
 {
     ui->mainwidget->hexDisplayWidget()->loadBSPData();
-    ui->mainwidget->lumpViewArea()->setBSPFileStructure(m_pApplicationModel->bspFileStructure());
     ui->mainwidget->lumpViewArea()->updateLumps();
 }
 

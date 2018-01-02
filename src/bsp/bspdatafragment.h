@@ -9,7 +9,7 @@ public:
     BSPDataFragment(const QByteArray& byteArray);
     BSPDataFragment(const QByteArray& byteArray, quint32 inOffset, quint32 inLength);
 
-    const QByteArray& data() const;
+    const QByteArray& allData() const;
 
     quint32 offset() const;
     void setOffset(quint32 newOffset);
@@ -18,6 +18,7 @@ public:
     void setLength(quint32 newLength);
 
     const char* rawData() const;
+    QByteArray data() const;
 
     bool isValid() const;
 
