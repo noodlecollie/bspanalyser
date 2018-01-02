@@ -167,7 +167,7 @@ void BSPLumpViewArea::loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef> &
 
     BSPFileModel* bspFileModel = ApplicationModel::globalPointer()->bspFileModel();
     BSPDataFragment dataFragment = lumpDef->getDataFragment(bspFileModel->contents());
-    lumpView->loadLumpData(dataFragment);
+    lumpView->loadLumpData(lumpDef, dataFragment);
 }
 
 void BSPLumpViewArea::updateDataAreaTabs()

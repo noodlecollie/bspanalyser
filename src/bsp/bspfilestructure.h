@@ -20,6 +20,7 @@ public:
     int lumpDefCount() const;
     void clearLumpDefs();
     QSharedPointer<BSPLumpDef> lumpDef(int index) const;
+    QSharedPointer<BSPLumpDef> lumpDef(const QString& name) const;
 
 private:
     quint32 m_nVersion;

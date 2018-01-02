@@ -1,5 +1,8 @@
 #include "bsplumpdef.h"
+
 #include "bspdefs.h"
+#include "structlumpdef.h"
+#include "visibilitylumpdef.h"
 
 namespace
 {
@@ -16,6 +19,45 @@ BSPLumpDef::BSPLumpDef()
       m_nType(LumpType::Struct)
 {
 
+}
+
+QSharedPointer<BSPLumpDef> BSPLumpDef::createEmptyLumpDef(const QString& name, LumpType type)
+{
+    QSharedPointer<BSPLumpDef> lumpDef;
+
+    switch (type)
+    {
+        case LumpType::Keyvalues:
+        {
+            lumpDef = QSharedPointer<BSPLumpDef>(new BSPLumpDef());
+            break;
+        }
+
+        case LumpType::Struct:
+        {
+            lumpDef = QSharedPointer<BSPLumpDef>(new StructLumpDef());
+            break;
+        }
+
+        case LumpType::VisData:
+        {
+            lumpDef = QSharedPointer<BSPLumpDef>(new VisibilityLumpDef());
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+
+    if ( lumpDef )
+    {
+        lumpDef->setName(name);
+        lumpDef->setType(type);
+    }
+
+    return lumpDef;
 }
 
 const EnumNameMap<BSPLumpDef::LumpType>& BSPLumpDef::lumpTypeNameMap()

@@ -20,6 +20,8 @@ public:
     };
     Q_ENUM(LumpType)
 
+    static QSharedPointer<BSPLumpDef> createEmptyLumpDef(const QString& name, LumpType type);
+
     BSPLumpDef();
     static const EnumNameMap<LumpType>& lumpTypeNameMap();
 

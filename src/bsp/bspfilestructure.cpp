@@ -48,3 +48,17 @@ QSharedPointer<BSPLumpDef> BSPFileStructure::lumpDef(int index) const
 {
     return m_liLumpDefs.at(index);
 }
+
+QSharedPointer<BSPLumpDef> BSPFileStructure::lumpDef(const QString &name) const
+{
+    for ( int index = 0; index < m_liLumpDefs.count(); ++index )
+    {
+        QSharedPointer<BSPLumpDef> lump = m_liLumpDefs.at(index);
+        if ( lump && lump->name() == name )
+        {
+            return lump;
+        }
+    }
+
+    return QSharedPointer<BSPLumpDef>();
+}

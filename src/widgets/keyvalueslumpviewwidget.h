@@ -21,7 +21,7 @@ public:
 
     // ILumpViewWidget
     virtual QWidget* asWidget() override;
-    virtual void loadLumpData(const BSPDataFragment &fragment) override;
+    virtual void loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment) override;
 
 private:
     void initTree();

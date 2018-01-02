@@ -48,8 +48,10 @@ QWidget* KeyvaluesLumpViewWidget::asWidget()
     return this;
 }
 
-void KeyvaluesLumpViewWidget::loadLumpData(const BSPDataFragment &fragment)
+void KeyvaluesLumpViewWidget::loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment)
 {
+    Q_UNUSED(lumpDef);
+
     QByteArray lumpData = fragment.data();
     m_pRawView->setPlainText(lumpData.constData());
 

@@ -4,26 +4,14 @@
 #include <QString>
 #include <QMetaObject>
 #include <QMetaEnum>
-#include <QException>
 #include <QHash>
+
+#include "exceptions/enumvaluenotfoundexception.h"
 
 template<typename ENUM>
 class EnumNameMap
 {
 public:
-    class ValueNotFoundException : public QException
-    {
-    public:
-        virtual void raise() const override
-        {
-            throw *this;
-        }
-        virtual QException *clone() const override
-        {
-            return new ValueNotFoundException(*this);
-        }
-    };
-
     EnumNameMap(const QMetaObject& metaObject, const char* enumName);
 
     ENUM value(const QString& key) const;
@@ -62,7 +50,7 @@ ENUM EnumNameMap<ENUM>::value(const QString &key) const
     QString lowercaseKey = key.toLower();
     if ( !m_hshLowercaseNameMap.contains(lowercaseKey) )
     {
-        throw ValueNotFoundException();
+        throw EnumValueNotFoundException();
     }
 
     return m_hshLowercaseNameMap.value(lowercaseKey);

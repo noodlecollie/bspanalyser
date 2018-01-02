@@ -1,6 +1,7 @@
 #include "lumpviewfactory.h"
 
 #include "keyvalueslumpviewwidget.h"
+#include "visibilitylumpviewwidget.h"
 
 LumpViewFactory::LumpViewFactory(const QSharedPointer<BSPLumpDef> &lumpDef)
     : m_pLumpDef(lumpDef)
@@ -20,6 +21,11 @@ ILumpViewWidget* LumpViewFactory::createWidget() const
         case BSPLumpDef::LumpType::Keyvalues:
         {
             return new KeyvaluesLumpViewWidget();
+        }
+
+        case BSPLumpDef::LumpType::VisData:
+        {
+            return new VisibilityLumpViewWidget();
         }
 
         default:

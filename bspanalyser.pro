@@ -42,7 +42,11 @@ SOURCES += \
     src/configs/jsonreaderitem.cpp \
     src/widgets/lumpviewfactory.cpp \
     src/widgets/keyvalueslumpviewwidget.cpp \
-    src/util/textutil.cpp
+    src/util/textutil.cpp \
+    src/widgets/visibilitylumpviewwidget.cpp \
+    src/bsp/viscompressor.cpp \
+    src/bsp/visibilitylumpdef.cpp \
+    src/bsp/structlumpdef.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -68,10 +72,16 @@ HEADERS += \
     src/widgets/lumpviewfactory.h \
     src/widgets/ilumpviewwidget.h \
     src/widgets/keyvalueslumpviewwidget.h \
-    src/util/textutil.h
+    src/util/textutil.h \
+    src/widgets/visibilitylumpviewwidget.h \
+    src/bsp/viscompressor.h \
+    src/bsp/visibilitylumpdef.h \
+    src/bsp/structlumpdef.h \
+    src/exceptions/enumvaluenotfoundexception.h
 
 FORMS += \
-        src/widgets/mainwindow.ui
+        src/widgets/mainwindow.ui \
+    src/widgets/visibilitylumpviewwidget.ui
 
 RESOURCES += \
     resources/resources.qrc

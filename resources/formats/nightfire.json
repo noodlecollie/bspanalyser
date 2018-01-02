@@ -152,7 +152,8 @@
 		"Visibility":
 		{
 			"type": "visdata",
-			"rle": false
+			"rle": false,
+			"leaveslump": "Leaves"
 		},
 		"Nodes":
 		{
