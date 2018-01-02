@@ -31,6 +31,7 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
 
     m_pCurrentFile = &outFile;
     m_pCurrentFile->clear();
+    m_liLumpReaders.clear();
 
     try
     {
@@ -43,14 +44,14 @@ bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outF
         m_pCurrentFile->clear();
     }
 
+    m_liLumpReaders.clear();
     m_pCurrentFile = nullptr;
     return success;
 }
 
 quint32 BSPFormatReader::readVersionInternal(const QJsonDocument& document)
 {
-    quint32 version = JSONReaderItem::getRootObjectItem(document)
-            ->getObjectItemOfType<quint32>("version");
+    quint32 version = JSONReaderItem::getRootObjectItem(document)->getObjectItemOfType<quint32>("version");
 
     if ( version == 0 )
     {
@@ -72,7 +73,7 @@ void BSPFormatReader::readLumpList(const JSONReaderItemPtr& root)
     JSONReaderItemPtr lumpItemsObject = root->getObjectItem("lumpitems", QJsonValue::Object);
 
     readAllLumps(lumpsList, lumpItemsObject);
-    linkLumps(lumpItemsObject);
+    linkLumps();
 }
 
 void BSPFormatReader::readAllLumps(const JSONReaderItemPtr& lumpsList, const JSONReaderItemPtr& lumpItemsObject)
@@ -82,126 +83,38 @@ void BSPFormatReader::readAllLumps(const JSONReaderItemPtr& lumpsList, const JSO
     for ( int lumpIndex = 0; lumpIndex < lumpCount; ++lumpIndex )
     {
         QString lumpName = lumpsList->getArrayItemOfType<QString>(lumpIndex);
-        QSharedPointer<BSPLumpDef> lumpDef = readLumpData(lumpName, lumpItemsObject);
-        Q_ASSERT(lumpDef);
+        JSONReaderItemPtr lumpItem = lumpItemsObject->getObjectItem(lumpName, QJsonValue::Object);
+        QString lumpTypeString = lumpItem->getObjectItemOfType<QString>("type");
+        QSharedPointer<AbstractLumpConfigReader> lumpReader;
 
-        m_pCurrentFile->addLumpDef(lumpDef);
-    }
-}
-
-QSharedPointer<BSPLumpDef> BSPFormatReader::readLumpData(const QString& lumpName, const JSONReaderItemPtr& lumpItemsObject)
-{
-    JSONReaderItemPtr lumpItem = lumpItemsObject->getObjectItem(lumpName, QJsonValue::Object);
-    QString lumpItemType = lumpItem->getObjectItemOfType<QString>("type");
-    QSharedPointer<BSPLumpDef> lumpDef;
-
-    try
-    {
-        lumpDef = BSPLumpDef::createEmptyLumpDef(lumpName, BSPLumpDef::lumpTypeNameMap().value(lumpItemType));
-        if ( !lumpDef )
+        try
         {
-            // Just throw some exception.
-            // Doesn't really matter what, as long as it's caught below.
-            throw GenericException("Unrecognised");
+            BSPLumpDef::LumpType lumpType = BSPLumpDef::lumpTypeNameMap().value(lumpTypeString);
+            lumpReader = AbstractLumpConfigReader::createReader(lumpName, lumpType);
         }
-    }
-    catch (EnumValueNotFoundException&)
-    {
-        throw GenericException(QString("Lump type '%0' unrecognised.").arg(lumpItemType));
-    }
-
-    switch (lumpDef->type())
-    {
-        case BSPLumpDef::LumpType::VisData:
+        catch (EnumValueNotFoundException&)
         {
-            readLumpData(lumpDef.staticCast<VisibilityLumpDef>(), lumpItem);
-            break;
+            throw GenericException(QString("Lump '%0' had unrecognised type '%1'.")
+                                   .arg(lumpName)
+                                   .arg(lumpTypeString));
         }
 
-        case BSPLumpDef::LumpType::Struct:
-        {
-            readLumpData(lumpDef.staticCast<StructLumpDef>(), lumpItem);
-            break;
-        }
+        lumpReader->setLumpItemsObject(lumpItemsObject);
+        lumpReader->setBspFileStructure(m_pCurrentFile);
+        lumpReader->readLumpData();
 
-        default:
-        {
-            break;
-        }
+        QSharedPointer<BSPLumpDef> lumpDefPointer = lumpReader->lumpDef();
+        Q_ASSERT(lumpDefPointer);
+
+        m_pCurrentFile->addLumpDef(lumpDefPointer);
+        m_liLumpReaders.append(lumpReader);
     }
-
-    return lumpDef;
 }
 
-void BSPFormatReader::readLumpData(const QSharedPointer<VisibilityLumpDef>& lump, const JSONReaderItemPtr& lumpJson)
+void BSPFormatReader::linkLumps()
 {
-    lump->setIsCompressed(lumpJson->getObjectItemOfType<bool>("rle"));
-}
-
-void BSPFormatReader::readLumpData(const QSharedPointer<StructLumpDef>& lump, const JSONReaderItemPtr& lumpJson)
-{
-    // TODO
-    Q_UNUSED(lump);
-    Q_UNUSED(lumpJson);
-}
-
-void BSPFormatReader::linkLumps(const JSONReaderItemPtr& lumpItemsObject)
-{
-    for ( int lumpIndex = 0; lumpIndex < m_pCurrentFile->lumpDefCount(); ++lumpIndex )
+    for ( const QSharedPointer<AbstractLumpConfigReader>& lumpReader : m_liLumpReaders )
     {
-        QSharedPointer<BSPLumpDef> lumpDef = m_pCurrentFile->lumpDef(lumpIndex);
-        JSONReaderItemPtr lumpItem = lumpItemsObject->getObjectItem(lumpDef->name(), QJsonValue::Object);
-
-        switch ( lumpDef->type() )
-        {
-            case BSPLumpDef::LumpType::VisData:
-            {
-                linkLump(lumpDef.staticCast<VisibilityLumpDef>(), lumpItem);
-                break;
-            }
-
-            case BSPLumpDef::LumpType::Struct:
-            {
-                linkLump(lumpDef.staticCast<StructLumpDef>(), lumpItem);
-                break;
-            }
-
-            default:
-            {
-                break;
-            }
-        }
+        lumpReader->link();
     }
-}
-
-void BSPFormatReader::linkLump(const QSharedPointer<VisibilityLumpDef> &lump, const JSONReaderItemPtr &lumpJson)
-{
-    QString leavesLumpName = lumpJson->getObjectItemOfType<QString>("leaveslump");
-    QSharedPointer<BSPLumpDef> leavesLumpDef = m_pCurrentFile->lumpDef(leavesLumpName);
-
-    if ( !leavesLumpDef )
-    {
-        throw GenericException(QString("Visibility lump '%0' references leaves lump '%1' which was not found.")
-                               .arg(lump->name())
-                               .arg(leavesLumpName));
-    }
-
-    if ( leavesLumpDef->type() != BSPLumpDef::LumpType::Struct )
-    {
-        throw GenericException(QString("Visibility lump '%0' references leaves lump '%1' "
-                                       "which was of type '%2', not '%3'.")
-                               .arg(lump->name())
-                               .arg(leavesLumpName)
-                               .arg(BSPLumpDef::lumpTypeNameMap().key(leavesLumpDef->type()))
-                               .arg(BSPLumpDef::lumpTypeNameMap().key(BSPLumpDef::LumpType::Struct)));
-    }
-
-    lump->setLeavesLump(leavesLumpDef.staticCast<StructLumpDef>());
-}
-
-void BSPFormatReader::linkLump(const QSharedPointer<StructLumpDef> &lump, const JSONReaderItemPtr &lumpJson)
-{
-    // TODO
-    Q_UNUSED(lump);
-    Q_UNUSED(lumpJson);
 }

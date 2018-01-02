@@ -126,18 +126,26 @@ bool KeyvaluesLumpViewWidget::loadKeyvaluesDataIntoTree(const QByteArray &kv)
         QJsonValue classname = object["classname"];
         QJsonValue targetname = object["targetname"];
 
-        QString nameString = "?";
+        QString column1 = "[unknown class]";
+        QString column2;
+
         if ( targetname.isString() )
         {
-            nameString = QString("\"%0\"").arg(targetname.toString());
+            column2 = QString("(%0)").arg(targetname.toString());
         }
-        else if ( classname.isString() )
+
+        if ( classname.isString() )
         {
-            nameString = classname.toString();
+            column1 = classname.toString();
         }
 
         QTreeWidgetItem* treeItem = new QTreeWidgetItem();
-        treeItem->setData(KeyColumn, Qt::DisplayRole, nameString);
+        treeItem->setData(KeyColumn, Qt::DisplayRole, column1);
+
+        if ( !column2.isEmpty() )
+        {
+            treeItem->setData(ValueColumn, Qt::DisplayRole, column2);
+        }
 
         processTreeWidgetItem(treeItem, object);
         m_pTreeView->invisibleRootItem()->addChild(treeItem);

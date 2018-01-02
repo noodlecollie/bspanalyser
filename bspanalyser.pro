@@ -46,7 +46,11 @@ SOURCES += \
     src/widgets/visibilitylumpviewwidget.cpp \
     src/bsp/viscompressor.cpp \
     src/bsp/visibilitylumpdef.cpp \
-    src/bsp/structlumpdef.cpp
+    src/bsp/structlumpdef.cpp \
+    src/configs/abstractlumpconfigreader.cpp \
+    src/configs/visibilitylumpconfigreader.cpp \
+    src/configs/keyvalueslumpconfigreader.cpp \
+    src/configs/structlumpconfigreader.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -77,7 +81,11 @@ HEADERS += \
     src/bsp/viscompressor.h \
     src/bsp/visibilitylumpdef.h \
     src/bsp/structlumpdef.h \
-    src/exceptions/enumvaluenotfoundexception.h
+    src/exceptions/enumvaluenotfoundexception.h \
+    src/configs/abstractlumpconfigreader.h \
+    src/configs/visibilitylumpconfigreader.h \
+    src/configs/keyvalueslumpconfigreader.h \
+    src/configs/structlumpconfigreader.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
