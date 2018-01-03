@@ -260,7 +260,7 @@
 					"name": "SurfaceDrawIndices",
 					"sourceindex": "DrawIndicesIndex",
 					"sourcecount": "DrawIndicesCount"
-				}
+				},
 				{
 					"type": "secondaryindexmapping",
 					"indexblock": "SurfaceDrawIndices",

@@ -53,7 +53,8 @@ void BSPFormatCollection::loadFormat(const QString &filePath)
 
     if ( parseError.error != QJsonParseError::NoError )
     {
-        qCWarning(lcBSPFormatCollection).nospace() << "Error reading format JSON from " << filePath << ". " << parseError.errorString();
+        qCWarning(lcBSPFormatCollection).nospace() << "Error reading format JSON from " << filePath
+                                                   << ". At character " << parseError.offset << ": " << parseError.errorString();
         return;
     }
 
