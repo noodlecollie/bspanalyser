@@ -16,7 +16,7 @@ public:
                     BSPStructItem::ItemType arrayType = BSPStructItem::ItemType::Invalid);
 
 private:
-    BSPStructItem* createItem(BSPStructItem::ItemType type);
+    BSPStructItem* createItem(BSPStructItem::ItemType type, quint32 count);
 
     QVector<BSPStructItem*> m_liMembers;
 };

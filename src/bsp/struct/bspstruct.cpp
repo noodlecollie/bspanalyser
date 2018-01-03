@@ -3,10 +3,12 @@
 #include "bspstructitem_int8.h"
 #include "bspstructitem_int16.h"
 #include "bspstructitem_int32.h"
+#include "bspstructitem_float.h"
+#include "bspstructitem_string.h"
 
 #include "exceptions/genericexception.h"
 
-BSPStructItem* BSPStruct::createItem(BSPStructItem::ItemType type)
+BSPStructItem* BSPStruct::createItem(BSPStructItem::ItemType type, quint32 count)
 {
     if ( !BSPStructItem::typeIsValidForConstruction(type) )
     {
@@ -34,6 +36,16 @@ BSPStructItem* BSPStruct::createItem(BSPStructItem::ItemType type)
             return new BSPStructItem_Int32(this, BSPStructItem::typeIsUnsigned(type));
         }
 
+        case BSPStructItem::ItemType::Float:
+        {
+            return new BSPStructItem_Float(this);
+        }
+
+        case BSPStructItem::ItemType::String:
+        {
+            return new BSPStructItem_String(this, count);
+        }
+
         default:
         {
             return nullptr;
@@ -52,10 +64,9 @@ void BSPStruct::appendItem(BSPStructItem::ItemType type,
                            BSPStructItem::ItemType arrayType)
 {
     // TODO: Implement arrays.
-    Q_UNUSED(arrayCount);
     Q_UNUSED(arrayType);
 
-    BSPStructItem* item = createItem(type);
+    BSPStructItem* item = createItem(type, arrayCount);
     Q_ASSERT(item);
 
     quint32 nextOffset = 0;
