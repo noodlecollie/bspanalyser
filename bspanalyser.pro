@@ -58,7 +58,8 @@ SOURCES += \
     src/bsp/struct/bspstructitemtypeconverter_integer.cpp \
     src/bsp/struct/bspstructitemtypeconverter_float.cpp \
     src/bsp/struct/bspstructitemtypeconverter_fvector.cpp \
-    src/bsp/struct/bspstructitemtypeconverter_rgb8.cpp
+    src/bsp/struct/bspstructitemtypeconverter_rgb8.cpp \
+    src/bsp/axiallyalignedboundingbox.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -102,7 +103,8 @@ HEADERS += \
     src/bsp/struct/bspstructitemtypeconverter_integer.h \
     src/bsp/struct/bspstructitemtypeconverter_float.h \
     src/bsp/struct/bspstructitemtypeconverter_fvector.h \
-    src/bsp/struct/bspstructitemtypeconverter_rgb8.h
+    src/bsp/struct/bspstructitemtypeconverter_rgb8.h \
+    src/bsp/axiallyalignedboundingbox.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

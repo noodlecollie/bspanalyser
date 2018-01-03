@@ -1,7 +1,7 @@
 #ifndef BSPSTRUCTITEMTYPECONVERTER_H
 #define BSPSTRUCTITEMTYPECONVERTER_H
 
-#include <QString>
+#include <QVariant>
 #include <QByteArray>
 
 #include "bspstructgenericblock.h"
@@ -9,7 +9,7 @@
 class BSPStructItemTypeConverter
 {
 public:
-    virtual QString toString(const QByteArray& structData, quint32 index = 0) = 0;
+    virtual QVariant value(const QByteArray& structData, quint32 index = 0) = 0;
 
 protected:
     BSPStructItemTypeConverter(const BSPStructGenericBlock& member);

@@ -5,7 +5,7 @@ BSPStructItemTypeConverter_Integer::BSPStructItemTypeConverter_Integer(const BSP
 {
 }
 
-QString BSPStructItemTypeConverter_Integer::toString(const QByteArray &structData, quint32 index)
+QVariant BSPStructItemTypeConverter_Integer::value(const QByteArray &structData, quint32 index)
 {
     SignedUnsignedInt32 intermediateValue;
     intermediateValue.signedVal = 0;
@@ -38,10 +38,10 @@ QString BSPStructItemTypeConverter_Integer::toString(const QByteArray &structDat
 
     if ( BSPStructItemTypes::coreTypeIsUnsigned(m_Member.itemType()) )
     {
-        return QString::number(intermediateValue.unsignedVal);
+        return QVariant(intermediateValue.unsignedVal);
     }
     else
     {
-        return QString::number(intermediateValue.signedVal);
+        return QVariant(intermediateValue.signedVal);
     }
 }

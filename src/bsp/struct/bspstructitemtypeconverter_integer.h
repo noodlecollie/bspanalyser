@@ -8,7 +8,7 @@ class BSPStructItemTypeConverter_Integer : public BSPStructItemTypeConverter
 public:
     BSPStructItemTypeConverter_Integer(const BSPStructGenericBlock& member);
 
-    virtual QString toString(const QByteArray& structData, quint32 index) override;
+    virtual QVariant value(const QByteArray& structData, quint32 index) override;
 
 private:
     union SignedUnsignedInt32

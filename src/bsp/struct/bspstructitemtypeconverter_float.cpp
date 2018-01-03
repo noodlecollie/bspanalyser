@@ -5,7 +5,7 @@ BSPStructItemTypeConverter_Float::BSPStructItemTypeConverter_Float(const BSPStru
 {
 }
 
-QString BSPStructItemTypeConverter_Float::toString(const QByteArray &structData, quint32 index)
+QVariant BSPStructItemTypeConverter_Float::value(const QByteArray &structData, quint32 index)
 {
-    return QString::number(m_Member.item<float>(structData, index));
+    return QVariant(m_Member.item<float>(structData, index));
 }

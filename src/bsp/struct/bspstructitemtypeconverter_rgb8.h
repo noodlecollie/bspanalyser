@@ -8,7 +8,7 @@ class BSPStructItemTypeConverter_RGB8 : public BSPStructItemTypeConverter
 public:
     BSPStructItemTypeConverter_RGB8(const BSPStructGenericBlock& member);
 
-    virtual QString toString(const QByteArray &structData, quint32 index) override;
+    virtual QVariant value(const QByteArray &structData, quint32 index) override;
 
 private:
     struct LocalRGB8
