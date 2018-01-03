@@ -1,6 +1,8 @@
 #include "visibilitylumpviewwidget.h"
 #include "ui_visibilitylumpviewwidget.h"
 
+#include "model/applicationmodel.h"
+
 VisibilityLumpViewWidget::VisibilityLumpViewWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::VisibilityLumpViewWidget),
@@ -22,13 +24,7 @@ QWidget* VisibilityLumpViewWidget::asWidget()
 void VisibilityLumpViewWidget::loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment)
 {
     setLumpDef(lumpDef);
-
-    if ( !m_pLumpDef )
-    {
-        return;
-    }
-
-    // TODO
+    updateLabels();
 }
 
 void VisibilityLumpViewWidget::setLumpDef(const QSharedPointer<BSPLumpDef> &lumpDef)
@@ -44,7 +40,20 @@ void VisibilityLumpViewWidget::setLumpDef(const QSharedPointer<BSPLumpDef> &lump
 
 void VisibilityLumpViewWidget::updateLabels()
 {
-    // TODO
-    ui->lblBytesPerLine->setText("0");
+    ui->lblBytesPerLine->setText(QString::number(calculateNumberOfLeaves()));
     ui->lblTotalLeaves->setText("0");
+}
+
+quint32 VisibilityLumpViewWidget::calculateNumberOfLeaves()
+{
+    if ( !m_pLumpDef )
+    {
+        return 0;
+    }
+
+    QSharedPointer<StructLumpDef> leavesLump = m_pLumpDef->leavesLump();
+    BSPDataFragment leavesFragment = leavesLump->getDataFragment(ApplicationModel::globalPointer()->bspFileModel()->contents());
+
+    // TODO: Need length of leaves struct item to go any further.
+    return 0;
 }

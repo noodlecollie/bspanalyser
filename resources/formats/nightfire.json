@@ -205,7 +205,7 @@
 				},
 				{
 					"name": "flags",
-					"type": "flag32"
+					"type": "uint32"
 				},
 				{
 					"name": "textureindex",
@@ -231,7 +231,7 @@
 					"name": "lightstyles",
 					"type": "array",
 					"arraytype": "uint8",
-					"arraysize": 4
+					"arraycount": 4
 				},
 				{
 					"name": "lightingoffset",
@@ -327,7 +327,7 @@
 					"name": "Hulls",
 					"type": "array",
 					"arraytype": "int32",
-					"arraysize": 4
+					"arraycount": 4
 				},
 				{
 					"name": "Brushes",

@@ -27,6 +27,7 @@ public:
 private:
     void setLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
     void updateLabels();
+    quint32 calculateNumberOfLeaves();
 
     Ui::VisibilityLumpViewWidget *ui;
     QSharedPointer<VisibilityLumpDef> m_pLumpDef;
