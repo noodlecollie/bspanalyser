@@ -4,21 +4,20 @@
 #include <QObject>
 #include <QVector>
 
-#include "bspstructitem.h"
+#include "bspstructitemtypes.h"
+#include "bspstructgenericblock.h"
+
 class BSPStruct : public QObject
 {
     Q_OBJECT
 public:
     BSPStruct(QObject* parent = nullptr);
+    ~BSPStruct();
 
-    void appendItem(BSPStructItem::ItemType type,
-                    quint32 arrayCount = 1,
-                    BSPStructItem::ItemType arrayType = BSPStructItem::ItemType::Invalid);
+    void addMember(BSPStructItemTypes::CoreItemType type, quint32 count = 1);
 
 private:
-    BSPStructItem* createItem(BSPStructItem::ItemType type, quint32 count);
-
-    QVector<BSPStructItem*> m_liMembers;
+    QVector<BSPStructGenericBlock*> m_liMembers;
 };
 
 #endif // BSPSTRUCT_H

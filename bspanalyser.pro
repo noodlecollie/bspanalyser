@@ -51,11 +51,9 @@ SOURCES += \
     src/configs/visibilitylumpconfigreader.cpp \
     src/configs/keyvalueslumpconfigreader.cpp \
     src/configs/structlumpconfigreader.cpp \
-    src/bsp/struct/bspstructitem.cpp \
     src/bsp/struct/bspstruct.cpp \
-    src/bsp/struct/bspstructitem_integer.cpp \
-    src/bsp/struct/bspstructitem_float.cpp \
-    src/bsp/struct/bspstructitem_string.cpp
+    src/bsp/struct/bspstructitemtypes.cpp \
+    src/bsp/struct/bspstructgenericblock.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -91,11 +89,10 @@ HEADERS += \
     src/configs/visibilitylumpconfigreader.h \
     src/configs/keyvalueslumpconfigreader.h \
     src/configs/structlumpconfigreader.h \
-    src/bsp/struct/bspstructitem.h \
     src/bsp/struct/bspstruct.h \
-    src/bsp/struct/bspstructitem_integer.h \
-    src/bsp/struct/bspstructitem_float.h \
-    src/bsp/struct/bspstructitem_string.h
+    src/bsp/struct/bspstructitemtypes.h \
+    src/bsp/struct/bspstructgenericblock.h \
+    src/exceptions/bspstructexceptions.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

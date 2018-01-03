@@ -1,75 +1,25 @@
 #include "bspstruct.h"
 
-#include "bspstructitem_integer.h"
-#include "bspstructitem_float.h"
-#include "bspstructitem_string.h"
-
-#include "exceptions/genericexception.h"
-
-BSPStructItem* BSPStruct::createItem(BSPStructItem::ItemType type, quint32 count)
-{
-    if ( !BSPStructItem::typeIsValidForConstruction(type) )
-    {
-        throw GenericException(QString("Struct item type '%0' was not valid.")
-                               .arg(BSPStructItem::itemTypeNameMap().key(type)));
-    }
-
-    switch (type)
-    {
-        case BSPStructItem::ItemType::Int8:
-        case BSPStructItem::ItemType::UInt8:
-        case BSPStructItem::ItemType::Int16:
-        case BSPStructItem::ItemType::UInt16:
-        case BSPStructItem::ItemType::Int32:
-        case BSPStructItem::ItemType::UInt32:
-        case BSPStructItem::ItemType::PrimaryIndex32:
-        case BSPStructItem::ItemType::PrimaryOffset32:
-        case BSPStructItem::ItemType::SecondaryIndex32:
-        case BSPStructItem::ItemType::BinaryIndex32:
-        {
-            return new BSPStructItem_Integer(this, type);
-        }
-
-        case BSPStructItem::ItemType::Float:
-        {
-            return new BSPStructItem_Float(this);
-        }
-
-        case BSPStructItem::ItemType::String:
-        {
-            return new BSPStructItem_String(this, count);
-        }
-
-        default:
-        {
-            return nullptr;
-        }
-    }
-}
-
 BSPStruct::BSPStruct(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_liMembers()
 {
-
 }
 
-void BSPStruct::appendItem(BSPStructItem::ItemType type,
-                           quint32 arrayCount,
-                           BSPStructItem::ItemType arrayType)
+BSPStruct::~BSPStruct()
 {
-    // TODO: Implement arrays.
-    Q_UNUSED(arrayType);
+    qDeleteAll(m_liMembers);
+}
 
-    BSPStructItem* item = createItem(type, arrayCount);
-    Q_ASSERT(item);
+void BSPStruct::addMember(BSPStructItemTypes::CoreItemType type, quint32 count)
+{
+    quint32 currentOffset = 0;
 
-    quint32 nextOffset = 0;
     if ( !m_liMembers.isEmpty() )
     {
-        BSPStructItem* lastItem = m_liMembers.last();
-        nextOffset = lastItem->offsetInParent() + lastItem->size();
+        BSPStructGenericBlock* lastMember = m_liMembers.last();
+        currentOffset = lastMember->offset() + lastMember->totalSize();
     }
 
-    item->setOffsetInParent(nextOffset);
-    m_liMembers.append(item);
+    m_liMembers.append(new BSPStructGenericBlock(currentOffset, BSPStructItemTypes::sizeOfCoreType(type), count));
 }
