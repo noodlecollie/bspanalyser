@@ -1,8 +1,6 @@
 #include "bspstruct.h"
 
-#include "bspstructitem_int8.h"
-#include "bspstructitem_int16.h"
-#include "bspstructitem_int32.h"
+#include "bspstructitem_integer.h"
 #include "bspstructitem_float.h"
 #include "bspstructitem_string.h"
 
@@ -20,20 +18,16 @@ BSPStructItem* BSPStruct::createItem(BSPStructItem::ItemType type, quint32 count
     {
         case BSPStructItem::ItemType::Int8:
         case BSPStructItem::ItemType::UInt8:
-        {
-            return new BSPStructItem_Int8(this, BSPStructItem::typeIsUnsigned(type));
-        }
-
         case BSPStructItem::ItemType::Int16:
         case BSPStructItem::ItemType::UInt16:
-        {
-            return new BSPStructItem_Int16(this, BSPStructItem::typeIsUnsigned(type));
-        }
-
         case BSPStructItem::ItemType::Int32:
         case BSPStructItem::ItemType::UInt32:
+        case BSPStructItem::ItemType::PrimaryIndex32:
+        case BSPStructItem::ItemType::PrimaryOffset32:
+        case BSPStructItem::ItemType::SecondaryIndex32:
+        case BSPStructItem::ItemType::BinaryIndex32:
         {
-            return new BSPStructItem_Int32(this, BSPStructItem::typeIsUnsigned(type));
+            return new BSPStructItem_Integer(this, type);
         }
 
         case BSPStructItem::ItemType::Float:

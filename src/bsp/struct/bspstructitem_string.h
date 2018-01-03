@@ -5,6 +5,7 @@
 
 class BSPStructItem_String : public BSPStructItem
 {
+    Q_OBJECT
 public:
     BSPStructItem_String(BSPStruct* parent, quint32 maxLength);
 

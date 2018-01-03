@@ -53,10 +53,7 @@ SOURCES += \
     src/configs/structlumpconfigreader.cpp \
     src/bsp/struct/bspstructitem.cpp \
     src/bsp/struct/bspstruct.cpp \
-    src/bsp/struct/bspstructitem_int8.cpp \
     src/bsp/struct/bspstructitem_integer.cpp \
-    src/bsp/struct/bspstructitem_int16.cpp \
-    src/bsp/struct/bspstructitem_int32.cpp \
     src/bsp/struct/bspstructitem_float.cpp \
     src/bsp/struct/bspstructitem_string.cpp
 
@@ -96,10 +93,7 @@ HEADERS += \
     src/configs/structlumpconfigreader.h \
     src/bsp/struct/bspstructitem.h \
     src/bsp/struct/bspstruct.h \
-    src/bsp/struct/bspstructitem_int8.h \
     src/bsp/struct/bspstructitem_integer.h \
-    src/bsp/struct/bspstructitem_int16.h \
-    src/bsp/struct/bspstructitem_int32.h \
     src/bsp/struct/bspstructitem_float.h \
     src/bsp/struct/bspstructitem_string.h
 

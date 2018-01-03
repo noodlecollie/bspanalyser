@@ -22,8 +22,8 @@
  * PrimaryIndexBlock    2x UInt32. Indexes one or more items in a separate Struct lump. The first
  *                      number is the item offset and the second is the item count.
  * Array                Specifies several consecutive types in the same lump. The array must
- *                      specify an item type (which can be any type other than another array)
- *                      and an item count.
+ *                      specify an item type and count. Currently the item type can only be
+ *                      primitive.
  * String               An array of chars of a known length. Null-terminated strings are not
  *                      currently supported.
  * Vector3AABB          2x Vector3. Used to specify an axially-aligned bounding box.
@@ -41,7 +41,16 @@ public:
     // This enum must contain all possible strings that could occur in a format document.
     enum class ItemType
     {
+        // Modifiers
+        Mod_IsUnsigned = (1 << 6),
+        Mod_IsPrimaryIndex = (1 << 7),
+        Mod_IsPrimaryOffset = (1 << 8),
+        Mod_IsSecondaryIndex = (1 << 9),
+        Mod_IsBinaryIndex = (1 << 10),
+
         Invalid = 0,
+
+        //-------------------------------
 
         // Primitives
         Int8 = 1,
@@ -50,34 +59,41 @@ public:
         Float = 4,
         String = 5,
 
-        // Primitives with semantics
-        PrimaryIndex = 6,
-        PrimaryOffset = 7,
-        SecondaryIndex = 8,
-        BinaryIndex = 9,
-
         // Tuples
-        Vector3 = 10,
-        Vector4 = 11,
-        RGB8 = 12,
-        PrimaryIndexBlock = 13,
+        Vector3 = 6,
+        Vector4 = 7,
+        RGB8 = 8,
+        PrimaryIndexBlock = 9,
 
         // Aggregates
-        Array = 14,
-        Vector3AABB = 15,
-
-        // Max legal type index: 63
-        Mask_LegalType = 63,
-
-        // Modifiers
-        Mod_IsUnsigned = (1 << 6),
+        Array = 10,
+        Vector3AABB = 11,
 
         // Convenience combinations
         UInt8 = Int8 | Mod_IsUnsigned,
         UInt16 = Int16 | Mod_IsUnsigned,
         UInt32 = Int32 | Mod_IsUnsigned,
+
+        PrimaryIndex32 = UInt32 | Mod_IsPrimaryIndex,
+        PrimaryOffset32 = UInt32 | Mod_IsPrimaryOffset,
+        SecondaryIndex32 = UInt32 | Mod_IsSecondaryIndex,
+        BinaryIndex32 = UInt32 | Mod_IsBinaryIndex,
+
+        //-------------------------------
+
+        // Max legal type index: 63
+        Mask_LegalType = 63,
     };
     Q_ENUM(ItemType)
+
+    enum class IndexType
+    {
+        NoIndex = 0,
+        PrimaryIndex,
+        PrimaryOffset,
+        SecondaryIndex,
+        BinaryIndex
+    };
 
     static const EnumNameMap<ItemType>& itemTypeNameMap();
 
@@ -99,6 +115,13 @@ public:
                 type != ItemType::Mask_LegalType &&
                 type != ItemType::Mod_IsUnsigned;
     }
+
+    static constexpr ItemType unmodifiedType(ItemType type)
+    {
+        return static_cast<ItemType>(static_cast<quint32>(type) & static_cast<quint32>(ItemType::Mask_LegalType));
+    }
+
+    static IndexType indexTypeOfItem(ItemType type);
 
     BSPStruct* parentStruct() const;
     quint32 offsetInParent() const;
