@@ -2,8 +2,14 @@
 
 #include <QColor>
 
+#include "bspstructgenericblock.h"
+
 BSPStructItemTypeConverter_RGB8::BSPStructItemTypeConverter_RGB8(const BSPStructGenericBlock &member)
     : BSPStructItemTypeConverter(member)
+{
+}
+
+BSPStructItemTypeConverter_RGB8::~BSPStructItemTypeConverter_RGB8()
 {
 }
 

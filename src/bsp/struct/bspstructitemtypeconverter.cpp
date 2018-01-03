@@ -4,3 +4,7 @@ BSPStructItemTypeConverter::BSPStructItemTypeConverter(const BSPStructGenericBlo
     : m_Member(member)
 {
 }
+
+BSPStructItemTypeConverter::~BSPStructItemTypeConverter()
+{
+}

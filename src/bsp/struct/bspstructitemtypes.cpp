@@ -50,3 +50,9 @@ quint32 BSPStructItemTypes::sizeOfCoreType(CoreItemType type)
         }
     }
 }
+
+const EnumNameMap<BSPStructItemTypes::PublicItemType> BSPStructItemTypes::publicItemTypeNameMap()
+{
+    static EnumNameMap<BSPStructItemTypes::PublicItemType> nameMap(BSPStructItemTypes::staticMetaObject, "PublicItemType");
+    return nameMap;
+}

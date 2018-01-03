@@ -48,8 +48,3 @@ void VisibilityLumpConfigReader::linkInternal()
 
     m_pVisibilityLumpDef->setLeavesLump(leavesLumpDef.staticCast<StructLumpDef>());
 }
-
-JSONReaderItemPtr VisibilityLumpConfigReader::getLumpItemObject() const
-{
-    return m_pLumpItemsObject->getObjectItem(m_strLumpName, QJsonValue::Object);
-}

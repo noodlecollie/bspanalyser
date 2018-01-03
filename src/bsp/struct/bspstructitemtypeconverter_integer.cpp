@@ -1,7 +1,14 @@
 #include "bspstructitemtypeconverter_integer.h"
 
+#include "bspstructitemtypes.h"
+#include "bspstructgenericblock.h"
+
 BSPStructItemTypeConverter_Integer::BSPStructItemTypeConverter_Integer(const BSPStructGenericBlock &member)
     : BSPStructItemTypeConverter(member)
+{
+}
+
+BSPStructItemTypeConverter_Integer::~BSPStructItemTypeConverter_Integer()
 {
 }
 

@@ -94,9 +94,10 @@ void BSPFormatReader::readAllLumps(const JSONReaderItemPtr& lumpsList, const JSO
         }
         catch (EnumValueNotFoundException&)
         {
-            throw GenericException(QString("Lump '%0' had unrecognised type '%1'.")
-                                   .arg(lumpName)
-                                   .arg(lumpTypeString));
+            throw JSONReaderException(lumpItem->getObjectItem("type")->computePath(),
+                                      QString("Lump '%0' had unrecognised type '%1'.")
+                                      .arg(lumpName)
+                                      .arg(lumpTypeString));
         }
 
         lumpReader->setLumpItemsObject(lumpItemsObject);

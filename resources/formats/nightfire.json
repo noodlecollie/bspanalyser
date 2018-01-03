@@ -145,7 +145,7 @@
 			[
 				{
 					"name": "SurfaceVertex",
-					"type": "secondaryindex"
+					"type": "secondaryindex32"
 				}
 			]
 		},
@@ -162,18 +162,18 @@
 			[
 				{
 					"name": "PlaneIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Planes"
 				},
 				{
 					"name": "Child0",
-					"type": "binaryindex",
+					"type": "binaryindex32",
 					"positiveindex": "Nodes",
 					"negativeindex": "Leaves"
 				},
 				{
 					"name": "Child1",
-					"type": "binaryindex",
+					"type": "binaryindex32",
 					"positiveindex": "Nodes",
 					"negativeindex": "Leaves"
 				},
@@ -190,12 +190,12 @@
 			[
 				{
 					"name": "PlaneIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Planes"
 				},
 				{
 					"name": "VerticesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Vertices"
 				},
 				{
@@ -204,7 +204,7 @@
 				},
 				{
 					"name": "DrawIndicesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "DrawIndices"
 				},
 				{
@@ -217,22 +217,22 @@
 				},
 				{
 					"name": "TextureIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Textures"
 				},
 				{
 					"name": "MaterialIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Materials"
 				},
 				{
 					"name": "TextureProjectionIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Projections"
 				},
 				{
 					"name": "LightmapProjectionIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Projections"
 				},
 				{
@@ -243,7 +243,7 @@
 				},
 				{
 					"name": "LightingOffset",
-					"type": "primaryoffset",
+					"type": "primaryoffset32",
 					"offsetlump": "Lighting"
 				}
 			],
@@ -291,7 +291,7 @@
 				},
 				{
 					"name": "VisibilityOffset",
-					"type": "primaryoffset",
+					"type": "primaryoffset32",
 					"offsetlump": "Visibility"
 				},
 				{
@@ -300,7 +300,7 @@
 				},
 				{
 					"name": "SurfacesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "LeafSurfaces"
 				},
 				{
@@ -309,7 +309,7 @@
 				},
 				{
 					"name": "BrushesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "LeafBrushes"
 				},
 				{
@@ -340,7 +340,7 @@
 			[
 				{
 					"name": "SurfaceIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Surfaces"
 				}
 			]
@@ -352,7 +352,7 @@
 			[
 				{
 					"name": "BrushIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Brushes"
 				}
 			]
@@ -374,7 +374,7 @@
 				},
 				{
 					"name": "BrushesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Brushes"
 				},
 				{
@@ -383,7 +383,7 @@
 				},
 				{
 					"name": "SurfacesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Surfaces"
 				},
 				{
@@ -418,7 +418,7 @@
 				},
 				{
 					"name": "SidesIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "BrushSides"
 				},
 				{
@@ -434,12 +434,12 @@
 			[
 				{
 					"name": "TextureIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Textures"
 				},
 				{
 					"name": "PlaneIndex",
-					"type": "primaryindex",
+					"type": "primaryindex32",
 					"indexlump": "Planes"
 				}
 			]

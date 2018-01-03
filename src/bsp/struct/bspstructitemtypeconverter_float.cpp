@@ -1,7 +1,13 @@
 #include "bspstructitemtypeconverter_float.h"
 
+#include "bspstructgenericblock.h"
+
 BSPStructItemTypeConverter_Float::BSPStructItemTypeConverter_Float(const BSPStructGenericBlock &member)
     : BSPStructItemTypeConverter(member)
+{
+}
+
+BSPStructItemTypeConverter_Float::~BSPStructItemTypeConverter_Float()
 {
 }
 

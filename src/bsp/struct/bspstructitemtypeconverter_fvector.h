@@ -7,6 +7,7 @@ class BSPStructItemTypeConverter_FVector : public BSPStructItemTypeConverter
 {
 public:
     BSPStructItemTypeConverter_FVector(const BSPStructGenericBlock& member);
+    ~BSPStructItemTypeConverter_FVector();
 
     virtual QVariant value(const QByteArray &structData, quint32 index) override;
 

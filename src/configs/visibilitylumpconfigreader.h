@@ -17,8 +17,6 @@ protected:
     virtual void linkInternal() override;
 
 private:
-    JSONReaderItemPtr getLumpItemObject() const;
-
     QSharedPointer<VisibilityLumpDef> m_pVisibilityLumpDef;
 };
 

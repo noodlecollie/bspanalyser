@@ -95,3 +95,8 @@ QSharedPointer<BSPLumpDef> AbstractLumpConfigReader::lumpDef() const
 {
     return m_pLumpDef;
 }
+
+JSONReaderItemPtr AbstractLumpConfigReader::getLumpItemObject() const
+{
+    return m_pLumpItemsObject->getObjectItem(m_strLumpName, QJsonValue::Object);
+}

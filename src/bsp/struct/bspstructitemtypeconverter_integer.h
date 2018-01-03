@@ -7,6 +7,7 @@ class BSPStructItemTypeConverter_Integer : public BSPStructItemTypeConverter
 {
 public:
     BSPStructItemTypeConverter_Integer(const BSPStructGenericBlock& member);
+    ~BSPStructItemTypeConverter_Integer();
 
     virtual QVariant value(const QByteArray& structData, quint32 index) override;
 

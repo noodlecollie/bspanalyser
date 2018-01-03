@@ -32,6 +32,8 @@ protected:
     virtual void readLumpDataInternal() = 0;
     virtual void linkInternal() = 0;
 
+    JSONReaderItemPtr getLumpItemObject() const;
+
     QString m_strLumpName;
     JSONReaderItemPtr m_pLumpItemsObject;
     BSPFileStructure* m_pBspFileStructure;

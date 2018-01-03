@@ -2,10 +2,18 @@
 
 #include <QVector3D>
 #include <QVector4D>
+
+#include "bspstructgenericblock.h"
+#include "bspstructitemtypes.h"
+
 #include "bsp/axiallyalignedboundingbox.h"
 
 BSPStructItemTypeConverter_FVector::BSPStructItemTypeConverter_FVector(const BSPStructGenericBlock &member)
     : BSPStructItemTypeConverter(member)
+{
+}
+
+BSPStructItemTypeConverter_FVector::~BSPStructItemTypeConverter_FVector()
 {
 }
 

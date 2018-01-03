@@ -42,6 +42,7 @@ public:
         Mod_IsSecondaryIndex = (1 << 8),
         Mod_IsBinaryIndex = (1 << 9),
         Mod_IsArray = (1 << 10),
+        Mod_InterpretAsString = (1 << 11),
 
         // ================
         // Unmodified Types
@@ -59,6 +60,9 @@ public:
         Type_RGB8 = 7,
         Type_FVector3AABB = 8,
 
+        // Meta - depend on further config data for type resolution
+        Meta_Array = 9,
+
         // ==============
         // Modified Types
         // ==============
@@ -70,7 +74,9 @@ public:
         Type_PrimaryIndex32 = Type_UInt32 | Mod_IsPrimaryIndex,
         Type_PrimaryOffset32 = Type_UInt32 | Mod_IsPrimaryOffset,
         Type_SecondaryIndex32 = Type_UInt32 | Mod_IsSecondaryIndex,
-        Type_BinaryIndex32 = Type_UInt32 | Mod_IsBinaryIndex,
+        Type_BinaryIndex32 = Type_Int32 | Mod_IsBinaryIndex,
+
+        Type_String = Type_Int8 | Mod_IsArray | Mod_InterpretAsString,
 
         //-------------------------------
 
@@ -78,6 +84,35 @@ public:
         // Any bits above this mask are reserved for modifiers.
         Mask_LegalType = 31,
     };
+
+    // In a clean, meta-object-exposed enum to avoid all the implementation
+    // bitmashing that goes on in the other enum.
+    enum class PublicItemType
+    {
+        Int8 = Type_Int8,
+        Int16 = Type_Int16,
+        Int32 = Type_Int32,
+        UInt8 = Type_UInt8,
+        UInt16 = Type_UInt16,
+        UInt32 = Type_UInt32,
+        Float = Type_Float,
+
+        PrimaryIndex32 = Type_PrimaryIndex32,
+        PrimaryOffset32 = Type_PrimaryOffset32,
+        SecondaryIndex32 = Type_SecondaryIndex32,
+        BinaryIndex32 = Type_BinaryIndex32,
+
+        Vector3 = Type_FVector3,
+        Vector4 = Type_FVector4,
+        Vector3AABB = Type_FVector3AABB,
+        RGB8 = Type_RGB8,
+
+        String = Type_String,
+        Array = Meta_Array,
+    };
+    Q_ENUM(PublicItemType)
+
+    static const EnumNameMap<PublicItemType> publicItemTypeNameMap();
 
     static constexpr CoreItemType unmodifiedCoreType(CoreItemType type)
     {

@@ -59,7 +59,12 @@ SOURCES += \
     src/bsp/struct/bspstructitemtypeconverter_float.cpp \
     src/bsp/struct/bspstructitemtypeconverter_fvector.cpp \
     src/bsp/struct/bspstructitemtypeconverter_rgb8.cpp \
-    src/bsp/axiallyalignedboundingbox.cpp
+    src/bsp/axiallyalignedboundingbox.cpp \
+    src/bsp/struct/bspstructitemtypeconverterfactory.cpp \
+    src/configs/structmembers/structmemberconfigreader.cpp \
+    src/configs/structmembers/structmemberconfigreaderfactory.cpp \
+    src/configs/structmembers/structmemberconfigreader_integer.cpp \
+    src/configs/structmembers/structmemberconfigreader_simple.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -104,7 +109,12 @@ HEADERS += \
     src/bsp/struct/bspstructitemtypeconverter_float.h \
     src/bsp/struct/bspstructitemtypeconverter_fvector.h \
     src/bsp/struct/bspstructitemtypeconverter_rgb8.h \
-    src/bsp/axiallyalignedboundingbox.h
+    src/bsp/axiallyalignedboundingbox.h \
+    src/bsp/struct/bspstructitemtypeconverterfactory.h \
+    src/configs/structmembers/structmemberconfigreader.h \
+    src/configs/structmembers/structmemberconfigreaderfactory.h \
+    src/configs/structmembers/structmemberconfigreader_integer.h \
+    src/configs/structmembers/structmemberconfigreader_simple.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

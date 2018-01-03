@@ -2,9 +2,12 @@
 #define BSPSTRUCTGENERICBLOCK_H
 
 #include <QByteArray>
+#include <QSharedPointer>
+
+#include "bspstructitemtypes.h"
+#include "bspstructitemtypeconverter.h"
 
 #include "exceptions/bspstructexceptions.h"
-#include "bspstructitemtypes.h"
 
 class BSPStructGenericBlock
 {
@@ -16,6 +19,11 @@ public:
     quint32 itemSize() const;
     quint32 itemCount() const;
     quint32 totalSize() const;
+
+    QString name() const;
+    void setName(const QString& newName);
+
+    QSharedPointer<BSPStructItemTypeConverter> typeConverter() const;
 
     // *Technically* T doesn't have to be the same size as the item being requested.
     // If it's not, you'd better know what you're doing.
@@ -56,6 +64,8 @@ private:
     quint32 m_nOffsetInStruct;
     BSPStructItemTypes::CoreItemType m_nItemType;
     quint32 m_nItemCount;
+    QString m_strName;
+    QSharedPointer<BSPStructItemTypeConverter> m_pConverter;
 };
 
 #endif // BSPSTRUCTGENERICBLOCK_H

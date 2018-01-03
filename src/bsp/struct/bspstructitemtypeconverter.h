@@ -4,11 +4,12 @@
 #include <QVariant>
 #include <QByteArray>
 
-#include "bspstructgenericblock.h"
+class BSPStructGenericBlock;
 
 class BSPStructItemTypeConverter
 {
 public:
+    virtual ~BSPStructItemTypeConverter();
     virtual QVariant value(const QByteArray& structData, quint32 index = 0) = 0;
 
 protected:

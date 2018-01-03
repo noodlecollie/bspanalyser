@@ -7,14 +7,14 @@
 #include "bspstructitemtypes.h"
 #include "bspstructgenericblock.h"
 
-class BSPStruct : public QObject
+class BSPStruct
 {
-    Q_OBJECT
 public:
-    BSPStruct(QObject* parent = nullptr);
+    BSPStruct();
     ~BSPStruct();
 
-    bool addMember(BSPStructItemTypes::CoreItemType type, quint32 count = 1);
+    BSPStructGenericBlock* addMember(BSPStructItemTypes::CoreItemType type, quint32 count = 1);
+    void clear();
 
 private:
     QVector<BSPStructGenericBlock*> m_liMembers;

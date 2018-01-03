@@ -7,6 +7,7 @@ class BSPStructItemTypeConverter_Float : public BSPStructItemTypeConverter
 {
 public:
     BSPStructItemTypeConverter_Float(const BSPStructGenericBlock& member);
+    virtual ~BSPStructItemTypeConverter_Float();
 
     virtual QVariant value(const QByteArray &structData, quint32 index) override;
 };

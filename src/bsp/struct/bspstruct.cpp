@@ -1,21 +1,20 @@
 #include "bspstruct.h"
 
-BSPStruct::BSPStruct(QObject *parent)
-    : QObject(parent),
-      m_liMembers()
+BSPStruct::BSPStruct()
+    : m_liMembers()
 {
 }
 
 BSPStruct::~BSPStruct()
 {
-    qDeleteAll(m_liMembers);
+    clear();
 }
 
-bool BSPStruct::addMember(BSPStructItemTypes::CoreItemType type, quint32 count)
+BSPStructGenericBlock* BSPStruct::addMember(BSPStructItemTypes::CoreItemType type, quint32 count)
 {
     if ( BSPStructItemTypes::sizeOfCoreType(type) < 1 || count < 1 )
     {
-        return false;
+        return nullptr;
     }
 
     quint32 currentOffset = 0;
@@ -26,6 +25,13 @@ bool BSPStruct::addMember(BSPStructItemTypes::CoreItemType type, quint32 count)
         currentOffset = lastMember->offset() + lastMember->totalSize();
     }
 
-    m_liMembers.append(new BSPStructGenericBlock(currentOffset, type, count));
-    return true;
+    BSPStructGenericBlock* member = new BSPStructGenericBlock(currentOffset, type, count);
+    m_liMembers.append(member);
+    return member;
+}
+
+void BSPStruct::clear()
+{
+    qDeleteAll(m_liMembers);
+    m_liMembers.clear();
 }
