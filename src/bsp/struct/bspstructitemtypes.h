@@ -18,8 +18,6 @@
  *                      "secondaryindexmapping" attribute.
  * BinaryIndex          1x UInt32. Indexes one of two Struct lumps, depending on whether the
  *                      index is positive or negative. A negative index N is treated as (-N) - 1.
- * PrimaryIndexBlock    2x UInt32. Indexes one or more items in a separate Struct lump. The first
- *                      number is the item offset and the second is the item count.
  * Array                Specifies several consecutive types in the same lump. The array must
  *                      specify an item type and count. Currently the item type can only be
  *                      primitive.
@@ -59,8 +57,7 @@ public:
         Type_FVector3 = 5,
         Type_FVector4 = 6,
         Type_RGB8 = 7,
-        Type_Int32Pair = 8,
-        Type_FVector3AABB = 9,
+        Type_FVector3AABB = 8,
 
         // ==============
         // Modified Types
@@ -74,7 +71,6 @@ public:
         Type_PrimaryOffset32 = Type_UInt32 | Mod_IsPrimaryOffset,
         Type_SecondaryIndex32 = Type_UInt32 | Mod_IsSecondaryIndex,
         Type_BinaryIndex32 = Type_UInt32 | Mod_IsBinaryIndex,
-        Type_PrimaryIndexBlock32 = Type_Int32Pair | Mod_IsUnsigned | Mod_IsPrimaryIndex,
 
         //-------------------------------
 
@@ -86,6 +82,11 @@ public:
     static constexpr CoreItemType unmodifiedCoreType(CoreItemType type)
     {
         return static_cast<CoreItemType>(type & Mask_LegalType);
+    }
+
+    static constexpr bool coreTypeIsUnsigned(CoreItemType type)
+    {
+        return type & Mod_IsUnsigned;
     }
 
     static quint32 sizeOfCoreType(CoreItemType type);

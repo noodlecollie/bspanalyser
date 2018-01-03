@@ -194,47 +194,55 @@
 					"indexlump": "Planes"
 				},
 				{
-					"name": "Vertices",
-					"type": "primaryindexblock",
+					"name": "VerticesIndex",
+					"type": "primaryindex",
 					"indexlump": "Vertices"
 				},
 				{
-					"name": "DrawIndices",
-					"type": "primaryindexblock",
-					"indexlump": "DrawIndices"
-				},
-				{
-					"name": "flags",
+					"name": "VerticesCount",
 					"type": "uint32"
 				},
 				{
-					"name": "textureindex",
+					"name": "DrawIndicesIndex",
+					"type": "primaryindex",
+					"indexlump": "DrawIndices"
+				},
+				{
+					"name": "DrawIndicesCount",
+					"type": "uint32"
+				},
+				{
+					"name": "Flags",
+					"type": "uint32"
+				},
+				{
+					"name": "TextureIndex",
 					"type": "primaryindex",
 					"indexlump": "Textures"
 				},
 				{
-					"name": "materialindex",
+					"name": "MaterialIndex",
 					"type": "primaryindex",
 					"indexlump": "Materials"
 				},
 				{
-					"name": "textureprojectionindex",
+					"name": "TextureProjectionIndex",
 					"type": "primaryindex",
 					"indexlump": "Projections"
 				},
 				{
-					"name": "lightmapprojectionindex",
+					"name": "LightmapProjectionIndex",
 					"type": "primaryindex",
 					"indexlump": "Projections"
 				},
 				{
-					"name": "lightstyles",
+					"name": "LightStyles",
 					"type": "array",
 					"arraytype": "uint8",
 					"arraycount": 4
 				},
 				{
-					"name": "lightingoffset",
+					"name": "LightingOffset",
 					"type": "primaryoffset",
 					"offsetlump": "Lighting"
 				}
@@ -242,9 +250,21 @@
 			"attributes":
 			[
 				{
+					"type": "foreignblock",
+					"name": "SurfaceVertices",
+					"sourceindex": "VerticesIndex",
+					"sourcecount": "VerticesCount"
+				},
+				{
+					"type": "foreignblock",
+					"name": "SurfaceDrawIndices",
+					"sourceindex": "DrawIndicesIndex",
+					"sourcecount": "DrawIndicesCount"
+				}
+				{
 					"type": "secondaryindexmapping",
-					"source": "DrawIndices",
-					"destination": "Vertices"
+					"indexblock": "SurfaceDrawIndices",
+					"targetblock": "SurfaceVertices"
 				}
 			]
 		},
@@ -279,14 +299,37 @@
 					"type": "vector3aabb"
 				},
 				{
-					"name": "Surfaces",
-					"type": "primaryindexblock",
+					"name": "SurfacesIndex",
+					"type": "primaryindex",
 					"indexlump": "LeafSurfaces"
 				},
 				{
-					"name": "Brushes",
-					"type": "primaryindexblock",
+					"name": "SurfacesCount",
+					"type": "uint32"
+				},
+				{
+					"name": "BrushesIndex",
+					"type": "primaryindex",
 					"indexlump": "LeafBrushes"
+				},
+				{
+					"name": "BrushesCount",
+					"type": "uint32"
+				}
+			],
+			"attributes":
+			[
+				{
+					"type": "foreignblock",
+					"name": "LeafSurfaces",
+					"sourceindex": "SurfacesIndex",
+					"sourcecount": "SurfacesCount"
+				},
+				{
+					"type": "foreignblock",
+					"name": "LeafBrushes",
+					"sourceindex": "BrushesIndex",
+					"sourcecount": "BrushesCount"
 				}
 			]
 		},
@@ -330,14 +373,37 @@
 					"arraycount": 4
 				},
 				{
-					"name": "Brushes",
-					"type": "primaryindexblock",
+					"name": "BrushesIndex",
+					"type": "primaryindex",
 					"indexlump": "Brushes"
 				},
 				{
-					"name": "Surfaces",
-					"type": "primaryindexblock",
+					"name": "BrushesCount",
+					"type": "uint32"
+				},
+				{
+					"name": "SurfacesIndex",
+					"type": "primaryindex",
 					"indexlump": "Surfaces"
+				},
+				{
+					"name": "SurfacesCount",
+					"type": "uint32"
+				}
+			],
+			"attributes":
+			[
+				{
+					"type": "foreignblock",
+					"name": "ModelBrushes",
+					"sourceindex": "BrushesIndex",
+					"sourcecount": "BrushesCount"
+				},
+				{
+					"type": "foreignblock",
+					"name": "ModelSurfaces",
+					"sourceindex": "SurfacesIndex",
+					"sourcecount": "SurfacesCount"
 				}
 			]
 		},
@@ -351,9 +417,13 @@
 					"type": "int32"
 				},
 				{
-					"name": "Sides",
-					"type": "primaryindexblock",
+					"name": "SidesIndex",
+					"type": "primaryindex",
 					"indexlump": "BrushSides"
+				},
+				{
+					"name": "SidesCount",
+					"type": "uint32"
 				}
 			]
 		},

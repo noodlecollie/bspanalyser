@@ -53,7 +53,12 @@ SOURCES += \
     src/configs/structlumpconfigreader.cpp \
     src/bsp/struct/bspstruct.cpp \
     src/bsp/struct/bspstructitemtypes.cpp \
-    src/bsp/struct/bspstructgenericblock.cpp
+    src/bsp/struct/bspstructgenericblock.cpp \
+    src/bsp/struct/bspstructitemtypeconverter.cpp \
+    src/bsp/struct/bspstructitemtypeconverter_integer.cpp \
+    src/bsp/struct/bspstructitemtypeconverter_float.cpp \
+    src/bsp/struct/bspstructitemtypeconverter_fvector.cpp \
+    src/bsp/struct/bspstructitemtypeconverter_rgb8.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -92,7 +97,12 @@ HEADERS += \
     src/bsp/struct/bspstruct.h \
     src/bsp/struct/bspstructitemtypes.h \
     src/bsp/struct/bspstructgenericblock.h \
-    src/exceptions/bspstructexceptions.h
+    src/exceptions/bspstructexceptions.h \
+    src/bsp/struct/bspstructitemtypeconverter.h \
+    src/bsp/struct/bspstructitemtypeconverter_integer.h \
+    src/bsp/struct/bspstructitemtypeconverter_float.h \
+    src/bsp/struct/bspstructitemtypeconverter_fvector.h \
+    src/bsp/struct/bspstructitemtypeconverter_rgb8.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

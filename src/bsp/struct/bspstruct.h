@@ -14,7 +14,7 @@ public:
     BSPStruct(QObject* parent = nullptr);
     ~BSPStruct();
 
-    void addMember(BSPStructItemTypes::CoreItemType type, quint32 count = 1);
+    bool addMember(BSPStructItemTypes::CoreItemType type, quint32 count = 1);
 
 private:
     QVector<BSPStructGenericBlock*> m_liMembers;
