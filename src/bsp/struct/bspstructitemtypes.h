@@ -41,18 +41,19 @@ public:
         Mod_IsPrimaryOffset = (1 << 7),
         Mod_IsSecondaryIndex = (1 << 8),
         Mod_IsBinaryIndex = (1 << 9),
-        Mod_IsArray = (1 << 10),
-        Mod_InterpretAsString = (1 << 11),
+        Mod_InterpretAsString = (1 << 10),
 
         // ================
         // Unmodified Types
         // ================
 
+        Type_Invalid = 0,
+
         // Primitives
-        Type_Int8 = 0,
-        Type_Int16 = 1,
-        Type_Int32 = 2,
-        Type_Float = 3,
+        Type_Int8 = 1,
+        Type_Int16 = 2,
+        Type_Int32 = 3,
+        Type_Float = 4,
 
         // Tuples
         Type_FVector3 = 5,
@@ -76,7 +77,8 @@ public:
         Type_SecondaryIndex32 = Type_UInt32 | Mod_IsSecondaryIndex,
         Type_BinaryIndex32 = Type_Int32 | Mod_IsBinaryIndex,
 
-        Type_String = Type_Int8 | Mod_IsArray | Mod_InterpretAsString,
+        Type_String = Meta_Array | Mod_InterpretAsString,
+        Type_StringChar = Type_Int8 | Mod_InterpretAsString,
 
         //-------------------------------
 
@@ -119,9 +121,9 @@ public:
         return static_cast<CoreItemType>(type & Mask_LegalType);
     }
 
-    static constexpr bool coreTypeIsUnsigned(CoreItemType type)
+    static constexpr bool coreTypeHasModifier(CoreItemType type, CoreItemType modifier)
     {
-        return type & Mod_IsUnsigned;
+        return type & modifier;
     }
 
     static quint32 sizeOfCoreType(CoreItemType type);

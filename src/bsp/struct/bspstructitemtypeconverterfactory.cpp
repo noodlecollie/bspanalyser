@@ -4,6 +4,7 @@
 #include "bspstructitemtypeconverter_fvector.h"
 #include "bspstructitemtypeconverter_integer.h"
 #include "bspstructitemtypeconverter_rgb8.h"
+#include "bspstructitemtypeconverter_string.h"
 
 namespace BSPStructItemTypeConverterFactory
 {
@@ -14,6 +15,16 @@ namespace BSPStructItemTypeConverterFactory
         switch ( BSPStructItemTypes::unmodifiedCoreType(member.itemType()) )
         {
             case BSPStructItemTypes::Type_Int8:
+            {
+                if ( BSPStructItemTypes::coreTypeHasModifier(member.itemType(), BSPStructItemTypes::Mod_InterpretAsString) )
+                {
+                    converter = new BSPStructItemTypeConverter_String(member);
+                    break;
+                }
+
+                // Deliberate fall-through
+            }
+
             case BSPStructItemTypes::Type_Int16:
             case BSPStructItemTypes::Type_Int32:
             {

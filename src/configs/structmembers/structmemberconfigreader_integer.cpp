@@ -14,14 +14,10 @@ StructMemberConfigReader_Integer::~StructMemberConfigReader_Integer()
 
 BSPStructGenericBlock* StructMemberConfigReader_Integer::loadAndCreateMember()
 {
-    bool referencesEnum = (*m_pMemberObject)->toObject().contains("enum");
-    if ( referencesEnum )
-    {
-        QString referencedEnum = m_pMemberObject->getObjectItemOfType<QString>("enum");
+    BSPStructGenericBlock* member = m_pStructLumpDef->bspStruct().addMember(m_nType, m_nCount);
 
-        // TODO: Work out how to set up enums.
-        Q_UNUSED(referencedEnum);
-    }
+    setAttributeIfExists<QString>(member, BSPStructItemAttributes::Attribute::Enum);
+    setAttributeIfExists<bool>(member, BSPStructItemAttributes::Attribute::DisplayHex);
 
-    return m_pStructLumpDef->bspStruct().addMember(m_nType, m_nCount);
+    return member;
 }

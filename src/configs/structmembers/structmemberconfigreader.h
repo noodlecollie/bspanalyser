@@ -20,6 +20,17 @@ protected:
                              const JSONReaderItemPtr& memberObject,
                              quint32 count);
 
+    template<typename T>
+    void setAttributeIfExists(BSPStructGenericBlock* member, BSPStructItemAttributes::Attribute attribute)
+    {
+        QString attributeName = BSPStructItemAttributes::attributeNameMap().key(attribute).toLower();
+
+        if ( (*m_pMemberObject)->toObject().contains(attributeName) )
+        {
+            member->attributes().setAttributeValue(attribute, QVariant::fromValue<T>(m_pMemberObject->getObjectItemOfType<T>(attributeName)));
+        }
+    }
+
     BSPStructItemTypes::CoreItemType m_nType;
     QSharedPointer<StructLumpDef> m_pStructLumpDef;
     JSONReaderItemPtr m_pMemberObject;

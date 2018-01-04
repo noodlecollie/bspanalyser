@@ -44,6 +44,11 @@ public:
         return JSONReaderUtil::ValueToType<T>(**getItemForType<int>(index, JSONReaderUtil::EnumValueForType<T>()));
     }
 
+    inline JSONReaderException createException(const QString& message)
+    {
+        return JSONReaderException(computePath(), message);
+    }
+
 private:
     JSONReaderItem(const JSONReaderItemPtr& parentItem,
                             const QString& parentKey,

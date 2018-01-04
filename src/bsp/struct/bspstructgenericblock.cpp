@@ -7,7 +7,8 @@ BSPStructGenericBlock::BSPStructGenericBlock(quint32 inOffset, BSPStructItemType
       m_nItemType(inType),
       m_nItemCount(inItemCount),
       m_strName(),
-      m_pConverter()
+      m_pConverter(),
+      m_Attributes()
 {
     // Make sure this is done after the rest of the initialisation.
     m_pConverter = BSPStructItemTypeConverterFactory::createConverter(*this);
@@ -51,4 +52,14 @@ QString BSPStructGenericBlock::name() const
 void BSPStructGenericBlock::setName(const QString &newName)
 {
     m_strName = newName;
+}
+
+BSPStructItemAttributes& BSPStructGenericBlock::attributes()
+{
+    return m_Attributes;
+}
+
+const BSPStructItemAttributes& BSPStructGenericBlock::attributes() const
+{
+    return m_Attributes;
 }

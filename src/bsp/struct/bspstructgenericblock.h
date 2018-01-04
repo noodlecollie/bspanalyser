@@ -6,6 +6,7 @@
 
 #include "bspstructitemtypes.h"
 #include "bspstructitemtypeconverter.h"
+#include "bspstructitemattributes.h"
 
 #include "exceptions/bspstructexceptions.h"
 
@@ -25,13 +26,14 @@ public:
 
     QSharedPointer<BSPStructItemTypeConverter> typeConverter() const;
 
-    // *Technically* T doesn't have to be the same size as the item being requested.
-    // If it's not, you'd better know what you're doing.
+    BSPStructItemAttributes& attributes();
+    const BSPStructItemAttributes& attributes() const;
+
     template<typename T>
     const T* itemPointer(const QByteArray& data, quint32 index = 0) const
     {
         quint32 sizeOfItem = itemSize();
-        Q_ASSERT_X(sizeof(T) <= sizeOfItem, Q_FUNC_INFO, "Requested type larger than item!");
+        Q_ASSERT_X(sizeof(T) == sizeOfItem, Q_FUNC_INFO, "Size of requested type does not match item size!");
 
         if ( index >= m_nItemCount )
         {
@@ -66,6 +68,7 @@ private:
     quint32 m_nItemCount;
     QString m_strName;
     QSharedPointer<BSPStructItemTypeConverter> m_pConverter;
+    BSPStructItemAttributes m_Attributes;
 };
 
 #endif // BSPSTRUCTGENERICBLOCK_H

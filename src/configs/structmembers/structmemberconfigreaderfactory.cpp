@@ -12,20 +12,24 @@ namespace StructMemberConfigReaderFactory
     {
         StructMemberConfigReader* reader = nullptr;
 
-        switch ( BSPStructItemTypes::unmodifiedCoreType(type) )
+        // Then unmodified types.
+        if ( !reader )
         {
-            case BSPStructItemTypes::Type_Int8:
-            case BSPStructItemTypes::Type_Int16:
-            case BSPStructItemTypes::Type_Int32:
+            switch ( BSPStructItemTypes::unmodifiedCoreType(type) )
             {
-                reader = new StructMemberConfigReader_Integer(type, structLumpDef, memberObject, count);
-                break;
-            }
+                case BSPStructItemTypes::Type_Int8:
+                case BSPStructItemTypes::Type_Int16:
+                case BSPStructItemTypes::Type_Int32:
+                {
+                    reader = new StructMemberConfigReader_Integer(type, structLumpDef, memberObject, count);
+                    break;
+                }
 
-            default:
-            {
-                reader = new StructMemberConfigReader_Simple(type, structLumpDef, memberObject, count);
-                break;
+                default:
+                {
+                    reader = new StructMemberConfigReader_Simple(type, structLumpDef, memberObject, count);
+                    break;
+                }
             }
         }
 

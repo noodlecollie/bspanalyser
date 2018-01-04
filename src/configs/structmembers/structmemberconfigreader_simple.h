@@ -10,7 +10,7 @@ public:
                                     const QSharedPointer<StructLumpDef>& structLumpDef,
                                     const JSONReaderItemPtr& memberObject,
                                     quint32 count);
-    ~StructMemberConfigReader_Simple();
+    virtual ~StructMemberConfigReader_Simple();
 
     virtual BSPStructGenericBlock* loadAndCreateMember() override;
 };

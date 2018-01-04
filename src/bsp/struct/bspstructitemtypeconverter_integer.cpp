@@ -43,7 +43,7 @@ QVariant BSPStructItemTypeConverter_Integer::value(const QByteArray &structData,
         }
     }
 
-    if ( BSPStructItemTypes::coreTypeIsUnsigned(m_Member.itemType()) )
+    if ( BSPStructItemTypes::coreTypeHasModifier(m_Member.itemType(), BSPStructItemTypes::Mod_IsUnsigned) )
     {
         return QVariant(intermediateValue.unsignedVal);
     }

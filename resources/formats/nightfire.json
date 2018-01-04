@@ -213,7 +213,8 @@
 				},
 				{
 					"name": "Flags",
-					"type": "uint32"
+					"type": "uint32",
+					"displayhex": true
 				},
 				{
 					"name": "TextureIndex",

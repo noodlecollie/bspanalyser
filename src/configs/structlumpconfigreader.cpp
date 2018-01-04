@@ -34,31 +34,48 @@ void StructLumpConfigReader::readLumpDataInternal()
 void StructLumpConfigReader::readMember(const JSONReaderItemPtr &memberObject)
 {
     QString memberName = memberObject->getObjectItemOfType<QString>("name");
+
     BSPStructItemTypes::PublicItemType memberType = getPublicType(memberObject, "type");
     BSPStructItemTypes::CoreItemType coreType = static_cast<BSPStructItemTypes::CoreItemType>(memberType);
     qint32 itemCount = 1;
 
-    if ( memberType == BSPStructItemTypes::PublicItemType::Array )
+    if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Meta_Array )
     {
-        BSPStructItemTypes::PublicItemType arrayType = getPublicType(memberObject, "arraytype");
-        coreType = static_cast<BSPStructItemTypes::CoreItemType>(arrayType);
-
-        if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Meta_Array )
+        if ( BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
         {
-            throw JSONReaderException(memberObject->getObjectItem("arraytype")->computePath(),
-                                      "Array type cannot be 'array'.");
+            coreType = BSPStructItemTypes::Type_StringChar;
+            itemCount = memberObject->getObjectItemOfType<qint32>("stringsize");
+
+            if ( itemCount < 1 )
+            {
+                throw memberObject->getObjectItem("stringsize")->createException("String size must be greater than 0.");
+            }
         }
-
-        itemCount = memberObject->getObjectItemOfType<qint32>("arraycount");
-        if ( itemCount < 1 )
+        else
         {
-            throw JSONReaderException(memberObject->getObjectItem("arraycount")->computePath(),
-                                      "Array count must be greater than 0.");
+            BSPStructItemTypes::PublicItemType arrayType = getPublicType(memberObject, "arraytype");
+            coreType = static_cast<BSPStructItemTypes::CoreItemType>(arrayType);
+
+            if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Meta_Array )
+            {
+                throw memberObject->getObjectItem("arraytype")->createException("Array type cannot be 'array'.");
+            }
+
+            if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Type_String )
+            {
+                throw memberObject->getObjectItem("arraytype")->createException("Array type cannot be 'string'.");
+            }
+
+            itemCount = memberObject->getObjectItemOfType<qint32>("arraycount");
+            if ( itemCount < 1 )
+            {
+                throw memberObject->getObjectItem("arraycount")->createException("Array count must be greater than 0.");
+            }
         }
     }
 
     QSharedPointer<StructMemberConfigReader> memberReader =
-            StructMemberConfigReaderFactory::createReader(coreType, m_pStructLumpDef, memberObject);
+            StructMemberConfigReaderFactory::createReader(coreType, m_pStructLumpDef, memberObject, static_cast<quint32>(itemCount));
 
     BSPStructGenericBlock* member = memberReader->loadAndCreateMember();
     Q_ASSERT(member);
@@ -76,8 +93,8 @@ BSPStructItemTypes::PublicItemType StructLumpConfigReader::getPublicType(const J
     }
     catch (EnumValueNotFoundException&)
     {
-        throw JSONReaderException(memberObject->getObjectItem(key)->computePath(),
-                                  QString("'%0' of '%1' was unrecognised.").arg(key).arg(typeString));
+        throw memberObject->getObjectItem(key)->createException(QString("Value of '%0' was unrecognised.")
+                                                                .arg(typeString));
     }
 }
 

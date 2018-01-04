@@ -64,7 +64,9 @@ SOURCES += \
     src/configs/structmembers/structmemberconfigreader.cpp \
     src/configs/structmembers/structmemberconfigreaderfactory.cpp \
     src/configs/structmembers/structmemberconfigreader_integer.cpp \
-    src/configs/structmembers/structmemberconfigreader_simple.cpp
+    src/configs/structmembers/structmemberconfigreader_simple.cpp \
+    src/bsp/struct/bspstructitemattributes.cpp \
+    src/bsp/struct/bspstructitemtypeconverter_string.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -114,7 +116,9 @@ HEADERS += \
     src/configs/structmembers/structmemberconfigreader.h \
     src/configs/structmembers/structmemberconfigreaderfactory.h \
     src/configs/structmembers/structmemberconfigreader_integer.h \
-    src/configs/structmembers/structmemberconfigreader_simple.h
+    src/configs/structmembers/structmemberconfigreader_simple.h \
+    src/bsp/struct/bspstructitemattributes.h \
+    src/bsp/struct/bspstructitemtypeconverter_string.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
