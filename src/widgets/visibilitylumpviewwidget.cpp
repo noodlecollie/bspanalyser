@@ -23,6 +23,9 @@ QWidget* VisibilityLumpViewWidget::asWidget()
 
 void VisibilityLumpViewWidget::loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment)
 {
+    // TODO
+    Q_UNUSED(fragment)
+
     setLumpDef(lumpDef);
     updateLabels();
 }
@@ -55,5 +58,6 @@ quint32 VisibilityLumpViewWidget::calculateNumberOfLeaves()
     BSPDataFragment leavesFragment = leavesLump->getDataFragment(ApplicationModel::globalPointer()->bspFileModel()->contents());
 
     // TODO: Need length of leaves struct item to go any further.
+    Q_UNUSED(leavesFragment);
     return 0;
 }

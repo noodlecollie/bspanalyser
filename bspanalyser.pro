@@ -66,7 +66,8 @@ SOURCES += \
     src/configs/structmembers/structmemberconfigreader_integer.cpp \
     src/configs/structmembers/structmemberconfigreader_simple.cpp \
     src/bsp/struct/bspstructitemattributes.cpp \
-    src/bsp/struct/bspstructitemtypeconverter_string.cpp
+    src/bsp/struct/bspstructitemtypeconverter_string.cpp \
+    src/widgets/structlumpviewwidget.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -118,11 +119,13 @@ HEADERS += \
     src/configs/structmembers/structmemberconfigreader_integer.h \
     src/configs/structmembers/structmemberconfigreader_simple.h \
     src/bsp/struct/bspstructitemattributes.h \
-    src/bsp/struct/bspstructitemtypeconverter_string.h
+    src/bsp/struct/bspstructitemtypeconverter_string.h \
+    src/widgets/structlumpviewwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
-    src/widgets/visibilitylumpviewwidget.ui
+    src/widgets/visibilitylumpviewwidget.ui \
+    src/widgets/structlumpviewwidget.ui
 
 RESOURCES += \
     resources/resources.qrc

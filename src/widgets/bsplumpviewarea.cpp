@@ -11,8 +11,6 @@
 
 namespace
 {
-    static constexpr int ROW_HEIGHT = 20;
-
     enum LumpTableColumn
     {
         LumpNameColumn = 0,
@@ -46,7 +44,7 @@ BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
 
 void BSPLumpViewArea::updateLumps()
 {
-    clearLumpTable();
+    m_pLumpTable->clearContents();
     clearDataArea();
 
     BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
@@ -58,13 +56,14 @@ void BSPLumpViewArea::updateLumps()
         QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(lumpIndex);
         m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
         m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap().key(lumpDef->type())));
-        m_pLumpTable->setRowHeight(lumpIndex, ROW_HEIGHT);
     }
 }
 
 void BSPLumpViewArea::initDataArea()
 {
     m_pDataArea->tabBar()->setUsesScrollButtons(true);
+    m_pDataArea->tabBar()->setMovable(true);
+    m_pDataArea->tabBar()->setElideMode(Qt::ElideNone);
 
     connect(m_pDataArea->tabBar(), &QTabBar::tabCloseRequested, this, &BSPLumpViewArea::handleTabCloseRequest);
 
@@ -73,9 +72,21 @@ void BSPLumpViewArea::initDataArea()
 
 void BSPLumpViewArea::initLumpTable()
 {
-    connect(m_pLumpTable, &QTableWidget::cellDoubleClicked, this, &BSPLumpViewArea::handleLumpCellDoubleClicked);
+    m_pLumpTable->setColumnCount(LumpTableColumnCount);
+    m_pLumpTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_pLumpTable->setHorizontalHeaderLabels(QStringList() << tr("Lump") << tr("Type"));
+    m_pLumpTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    clearLumpTable();
+    m_pLumpTable->verticalHeader()->setHidden(true);
+    m_pLumpTable->verticalHeader()->setDefaultSectionSize(20);
+
+    QHeaderView* horizontalHeader = m_pLumpTable->horizontalHeader();
+    for ( int section = 0; section < LumpTableColumnCount; ++section )
+    {
+        horizontalHeader->setSectionResizeMode(section, QHeaderView::Stretch);
+    }
+
+    connect(m_pLumpTable, &QTableWidget::cellDoubleClicked, this, &BSPLumpViewArea::handleLumpCellDoubleClicked);
 }
 
 void BSPLumpViewArea::clearDataArea()
@@ -86,23 +97,6 @@ void BSPLumpViewArea::clearDataArea()
     }
 
     updateDataAreaTabs();
-}
-
-void BSPLumpViewArea::clearLumpTable()
-{
-    m_pLumpTable->clear();
-    m_pLumpTable->setColumnCount(LumpTableColumnCount);
-    m_pLumpTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_pLumpTable->setHorizontalHeaderLabels(QStringList() << tr("Lump") << tr("Type"));
-    m_pLumpTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    QHeaderView* horizontalHeader = m_pLumpTable->horizontalHeader();
-    for ( int section = 0; section < LumpTableColumnCount; ++section )
-    {
-        horizontalHeader->setSectionResizeMode(section, QHeaderView::Stretch);
-    }
-
-    m_pLumpTable->verticalHeader()->setHidden(true);
 }
 
 void BSPLumpViewArea::handleTabCloseRequest(int index)

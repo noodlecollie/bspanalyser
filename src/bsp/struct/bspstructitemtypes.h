@@ -86,8 +86,9 @@ public:
         // Any bits above this mask are reserved for modifiers.
         Mask_LegalType = 31,
     };
+    Q_ENUM(CoreItemType)
 
-    // In a clean, meta-object-exposed enum to avoid all the implementation
+    // In a clean enum to avoid all the implementation
     // bitmashing that goes on in the other enum.
     // Each entry MUST correspond to a CoreItemType.
     // Only types here are allowed to be specified in a format document.
@@ -116,6 +117,7 @@ public:
     };
     Q_ENUM(PublicItemType)
 
+    static const EnumNameMap<CoreItemType> coreItemTypeNameMap();
     static const EnumNameMap<PublicItemType> publicItemTypeNameMap();
 
     static constexpr CoreItemType unmodifiedCoreType(CoreItemType type)

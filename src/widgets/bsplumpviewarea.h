@@ -38,7 +38,6 @@ private:
 
     void initDataArea();
     void initLumpTable();
-    void clearLumpTable();
     void clearDataArea();
     void updateDataAreaTabs();
     int tabIndexForLump(int lumpIndex) const;

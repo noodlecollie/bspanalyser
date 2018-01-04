@@ -30,8 +30,18 @@ BSPStructGenericBlock* BSPStruct::addMember(BSPStructItemTypes::CoreItemType typ
     return member;
 }
 
+BSPStructGenericBlock* BSPStruct::member(int index) const
+{
+    return m_liMembers.at(index);
+}
+
 void BSPStruct::clear()
 {
     qDeleteAll(m_liMembers);
     m_liMembers.clear();
+}
+
+int BSPStruct::memberCount() const
+{
+    return m_liMembers.count();
 }
