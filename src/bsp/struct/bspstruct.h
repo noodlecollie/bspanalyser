@@ -18,6 +18,8 @@ public:
     void clear();
     int memberCount() const;
 
+    quint32 size() const;
+
 private:
     QVector<BSPStructGenericBlock*> m_liMembers;
 };

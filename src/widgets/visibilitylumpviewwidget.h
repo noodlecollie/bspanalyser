@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSharedPointer>
+#include <QTextEdit>
 
 #include "widgets/ilumpviewwidget.h"
 #include "bsp/visibilitylumpdef.h"
@@ -26,11 +27,18 @@ public:
 
 private:
     void setLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
+    void initInformationArea();
+    void updateInformationArea();
     void updateLabels();
-    quint32 calculateNumberOfLeaves();
+    void updateNotesBox();
+    void calculateNumberOfLeaves();
 
     Ui::VisibilityLumpViewWidget *ui;
+    QTextEdit* m_pNotesBox;
+
     QSharedPointer<VisibilityLumpDef> m_pLumpDef;
+    quint32 m_nLeafCount;
+    QVector<QString> m_liNotes;
 };
 
 #endif // VISIBILITYLUMPVIEWWIDGET_H

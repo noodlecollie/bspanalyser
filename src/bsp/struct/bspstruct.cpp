@@ -45,3 +45,15 @@ int BSPStruct::memberCount() const
 {
     return m_liMembers.count();
 }
+
+quint32 BSPStruct::size() const
+{
+    quint32 outSize = 0;
+
+    for ( BSPStructGenericBlock* member : m_liMembers )
+    {
+        outSize += member->totalSize();
+    }
+
+    return outSize;
+}
