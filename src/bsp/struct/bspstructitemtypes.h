@@ -89,6 +89,8 @@ public:
 
     // In a clean, meta-object-exposed enum to avoid all the implementation
     // bitmashing that goes on in the other enum.
+    // Each entry MUST correspond to a CoreItemType.
+    // Only types here are allowed to be specified in a format document.
     enum class PublicItemType
     {
         Int8 = Type_Int8,

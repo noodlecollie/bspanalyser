@@ -36,17 +36,33 @@ void StructLumpConfigReader::readMember(const JSONReaderItemPtr &memberObject)
     QString memberName = memberObject->getObjectItemOfType<QString>("name");
 
     BSPStructItemTypes::PublicItemType memberType = getPublicType(memberObject, "type");
-    BSPStructItemTypes::CoreItemType coreType = static_cast<BSPStructItemTypes::CoreItemType>(memberType);
-    qint32 itemCount = 1;
+    m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(memberType);
+    m_nCurrentItemCount = 1;
 
-    if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Meta_Array )
+    checkForArrayType(memberObject);
+
+    QSharedPointer<StructMemberConfigReader> memberReader =
+            StructMemberConfigReaderFactory::createReader(m_nCurrentCoreType,
+                                                          m_pStructLumpDef,
+                                                          memberObject,
+                                                          static_cast<quint32>(m_nCurrentItemCount));
+
+    BSPStructGenericBlock* member = memberReader->loadAndCreateMember();
+    Q_ASSERT(member);
+
+    member->setName(memberName);
+}
+
+void StructLumpConfigReader::checkForArrayType(const JSONReaderItemPtr &memberObject)
+{
+    if ( BSPStructItemTypes::unmodifiedCoreType(m_nCurrentCoreType) == BSPStructItemTypes::Meta_Array )
     {
-        if ( BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
+        if ( BSPStructItemTypes::coreTypeHasModifier(m_nCurrentCoreType, BSPStructItemTypes::Mod_InterpretAsString) )
         {
-            coreType = BSPStructItemTypes::Type_StringChar;
-            itemCount = memberObject->getObjectItemOfType<qint32>("stringsize");
+            m_nCurrentCoreType = BSPStructItemTypes::Type_StringChar;
+            m_nCurrentItemCount = memberObject->getObjectItemOfType<qint32>("stringsize");
 
-            if ( itemCount < 1 )
+            if ( m_nCurrentItemCount < 1 )
             {
                 throw memberObject->getObjectItem("stringsize")->createException("String size must be greater than 0.");
             }
@@ -54,33 +70,20 @@ void StructLumpConfigReader::readMember(const JSONReaderItemPtr &memberObject)
         else
         {
             BSPStructItemTypes::PublicItemType arrayType = getPublicType(memberObject, "arraytype");
-            coreType = static_cast<BSPStructItemTypes::CoreItemType>(arrayType);
+            m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(arrayType);
 
-            if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Meta_Array )
+            if ( BSPStructItemTypes::unmodifiedCoreType(m_nCurrentCoreType) == BSPStructItemTypes::Meta_Array )
             {
-                throw memberObject->getObjectItem("arraytype")->createException("Array type cannot be 'array'.");
+                throw memberObject->getObjectItem("arraytype")->createException("Array type must be a primitive.");
             }
 
-            if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Type_String )
-            {
-                throw memberObject->getObjectItem("arraytype")->createException("Array type cannot be 'string'.");
-            }
-
-            itemCount = memberObject->getObjectItemOfType<qint32>("arraycount");
-            if ( itemCount < 1 )
+            m_nCurrentItemCount = memberObject->getObjectItemOfType<qint32>("arraycount");
+            if ( m_nCurrentItemCount < 1 )
             {
                 throw memberObject->getObjectItem("arraycount")->createException("Array count must be greater than 0.");
             }
         }
     }
-
-    QSharedPointer<StructMemberConfigReader> memberReader =
-            StructMemberConfigReaderFactory::createReader(coreType, m_pStructLumpDef, memberObject, static_cast<quint32>(itemCount));
-
-    BSPStructGenericBlock* member = memberReader->loadAndCreateMember();
-    Q_ASSERT(member);
-
-    member->setName(memberName);
 }
 
 BSPStructItemTypes::PublicItemType StructLumpConfigReader::getPublicType(const JSONReaderItemPtr& memberObject, const QString& key)

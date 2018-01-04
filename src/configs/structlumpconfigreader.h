@@ -19,9 +19,12 @@ protected:
 
 private:
     void readMember(const JSONReaderItemPtr& memberObject);
+    void checkForArrayType(const JSONReaderItemPtr &memberObject);
     BSPStructItemTypes::PublicItemType getPublicType(const JSONReaderItemPtr& memberObject, const QString& key);
 
     QSharedPointer<StructLumpDef> m_pStructLumpDef;
+    BSPStructItemTypes::CoreItemType m_nCurrentCoreType;
+    qint32 m_nCurrentItemCount;
 };
 
 #endif // STRUCTLUMPCONFIGREADER_H
