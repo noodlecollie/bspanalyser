@@ -21,7 +21,7 @@ ILumpViewWidget* LumpViewFactory::createWidget() const
     {
         case BSPLumpDef::LumpType::Keyvalues:
         {
-            return new KeyvaluesLumpViewWidget();
+            return new KeyValuesLumpViewWidget();
         }
 
         case BSPLumpDef::LumpType::Struct:

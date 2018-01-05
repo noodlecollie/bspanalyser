@@ -41,7 +41,6 @@ SOURCES += \
     src/bsp/keyvaluesjsonconverter.cpp \
     src/configs/jsonreaderitem.cpp \
     src/widgets/lumpviewfactory.cpp \
-    src/widgets/keyvalueslumpviewwidget.cpp \
     src/util/textutil.cpp \
     src/widgets/visibilitylumpviewwidget.cpp \
     src/bsp/viscompressor.cpp \
@@ -69,7 +68,10 @@ SOURCES += \
     src/bsp/struct/bspstructitemtypeconverter_string.cpp \
     src/widgets/structlumpviewwidget.cpp \
     src/widgets/visibilitychartrenderer.cpp \
-    src/widgets/visibilitychartview.cpp
+    src/widgets/visibilitychartview.cpp \
+    src/widgets/infodisplaygroupbox.cpp \
+    src/widgets/keyvaluesview.cpp \
+    src/widgets/keyvalueslumpviewwidget.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -94,7 +96,6 @@ HEADERS += \
     src/configs/jsonreaderitem.h \
     src/widgets/lumpviewfactory.h \
     src/widgets/ilumpviewwidget.h \
-    src/widgets/keyvalueslumpviewwidget.h \
     src/util/textutil.h \
     src/widgets/visibilitylumpviewwidget.h \
     src/bsp/viscompressor.h \
@@ -124,12 +125,16 @@ HEADERS += \
     src/bsp/struct/bspstructitemtypeconverter_string.h \
     src/widgets/structlumpviewwidget.h \
     src/widgets/visibilitychartrenderer.h \
-    src/widgets/visibilitychartview.h
+    src/widgets/visibilitychartview.h \
+    src/widgets/infodisplaygroupbox.h \
+    src/widgets/keyvaluesview.h \
+    src/widgets/keyvalueslumpviewwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
     src/widgets/visibilitylumpviewwidget.ui \
-    src/widgets/structlumpviewwidget.ui
+    src/widgets/structlumpviewwidget.ui \
+    src/widgets/keyvalueslumpviewwidget.ui
 
 RESOURCES += \
     resources/resources.qrc

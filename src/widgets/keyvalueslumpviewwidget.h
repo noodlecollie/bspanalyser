@@ -2,37 +2,28 @@
 #define KEYVALUESLUMPVIEWWIDGET_H
 
 #include <QWidget>
-#include <QSplitter>
-#include <QPlainTextEdit>
-#include <QTreeWidget>
-#include <QLoggingCategory>
 
 #include "ilumpviewwidget.h"
 
-Q_DECLARE_LOGGING_CATEGORY(lcKeyValuesLumpView)
+namespace Ui {
+class KeyValuesLumpViewWidget;
+}
 
-class KeyvaluesLumpViewWidget : public QWidget,
+class KeyValuesLumpViewWidget : public QWidget,
                                 public ILumpViewWidget
 {
     Q_OBJECT
+
 public:
-    explicit KeyvaluesLumpViewWidget(QWidget *parent = 0);
-    ~KeyvaluesLumpViewWidget();
+    explicit KeyValuesLumpViewWidget(QWidget *parent = 0);
+    ~KeyValuesLumpViewWidget();
 
     // ILumpViewWidget
     virtual QWidget* asWidget() override;
-    virtual void loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment) override;
+    virtual void loadLumpData(const QSharedPointer<BSPLumpDef> &lumpDef, const BSPDataFragment &fragment) override;
 
 private:
-    void initTree();
-    void initRaw();
-    void initWithGroupBox(const QString& title, QWidget* widget);
-    bool loadKeyvaluesDataIntoTree(const QByteArray& kv);
-    void processTreeWidgetItem(QTreeWidgetItem* item, const QJsonObject& kvObject);
-
-    QSplitter* m_pSplitter;
-    QTreeWidget* m_pTreeView;
-    QPlainTextEdit* m_pRawView;
+    Ui::KeyValuesLumpViewWidget *ui;
 };
 
 #endif // KEYVALUESLUMPVIEWWIDGET_H

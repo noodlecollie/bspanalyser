@@ -32,20 +32,15 @@ protected:
 
 private:
     void setLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
-    void initInformationArea();
-    void updateInformationArea();
     void updateLabels();
-    void updateNotesBox();
     void calculateNumberOfLeaves();
     void initGraphicsScene();
     QGraphicsScene* createEmptyVisChart();
 
     Ui::VisibilityLumpViewWidget *ui;
-    QTextEdit* m_pNotesBox;
 
     QSharedPointer<VisibilityLumpDef> m_pLumpDef;
     quint32 m_nLeafCount;
-    QVector<QString> m_liNotes;
     QScopedPointer<QGraphicsScene> m_pGraphicsScene;
     bool m_bFitSceneInView;
 };

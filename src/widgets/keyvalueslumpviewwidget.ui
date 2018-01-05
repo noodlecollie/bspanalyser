@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>VisibilityLumpViewWidget</class>
- <widget class="QWidget" name="VisibilityLumpViewWidget">
+ <class>KeyValuesLumpViewWidget</class>
+ <widget class="QWidget" name="KeyValuesLumpViewWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>508</width>
-    <height>355</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="VisibilityChartView" name="graphicsView">
+    <widget class="KeyValuesView" name="kvView" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -41,17 +41,18 @@
      <property name="title">
       <string>Information</string>
      </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QLabel" name="lblBytesPerLine">
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblSize">
         <property name="text">
-         <string>0</string>
+         <string>0 bytes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Total size:</string>
         </property>
        </widget>
       </item>
@@ -68,27 +69,6 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Total leaves:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Uncompressed bytes/leaf:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="lblTotalLeaves">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -96,14 +76,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VisibilityChartView</class>
-   <extends>QGraphicsView</extends>
-   <header>widgets/visibilitychartview.h</header>
-  </customwidget>
-  <customwidget>
    <class>InfoDisplayGroupBox</class>
    <extends>QGroupBox</extends>
    <header>widgets/infodisplaygroupbox.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KeyValuesView</class>
+   <extends>QWidget</extends>
+   <header>widgets/keyvaluesview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
