@@ -67,7 +67,9 @@ SOURCES += \
     src/configs/structmembers/structmemberconfigreader_simple.cpp \
     src/bsp/struct/bspstructitemattributes.cpp \
     src/bsp/struct/bspstructitemtypeconverter_string.cpp \
-    src/widgets/structlumpviewwidget.cpp
+    src/widgets/structlumpviewwidget.cpp \
+    src/widgets/visibilitychartrenderer.cpp \
+    src/widgets/visibilitychartview.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -120,7 +122,9 @@ HEADERS += \
     src/configs/structmembers/structmemberconfigreader_simple.h \
     src/bsp/struct/bspstructitemattributes.h \
     src/bsp/struct/bspstructitemtypeconverter_string.h \
-    src/widgets/structlumpviewwidget.h
+    src/widgets/structlumpviewwidget.h \
+    src/widgets/visibilitychartrenderer.h \
+    src/widgets/visibilitychartview.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

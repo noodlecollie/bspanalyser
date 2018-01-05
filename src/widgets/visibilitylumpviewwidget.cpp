@@ -1,5 +1,6 @@
 #include "visibilitylumpviewwidget.h"
 #include "ui_visibilitylumpviewwidget.h"
+#include "visibilitychartrenderer.h"
 
 #include "model/applicationmodel.h"
 #include "bsp/viscompressor.h"
@@ -9,11 +10,14 @@ VisibilityLumpViewWidget::VisibilityLumpViewWidget(QWidget *parent) :
     ui(new Ui::VisibilityLumpViewWidget),
     m_pNotesBox(new QTextEdit()),
     m_pLumpDef(),
-    m_nLeafCount(0)
+    m_nLeafCount(0),
+    m_pGraphicsScene(),
+    m_bFitSceneInView(false)
 {
     ui->setupUi(this);
 
     initInformationArea();
+    initGraphicsScene();
 }
 
 VisibilityLumpViewWidget::~VisibilityLumpViewWidget()
@@ -47,6 +51,14 @@ void VisibilityLumpViewWidget::setLumpDef(const QSharedPointer<BSPLumpDef> &lump
     }
 
     m_pLumpDef = lumpDef.staticCast<VisibilityLumpDef>();
+}
+
+void VisibilityLumpViewWidget::initGraphicsScene()
+{
+    ui->graphicsView->setScene(nullptr);
+    m_pGraphicsScene.reset(createEmptyVisChart());
+    ui->graphicsView->setScene(m_pGraphicsScene.data());
+    m_bFitSceneInView = true;
 }
 
 void VisibilityLumpViewWidget::initInformationArea()
@@ -130,4 +142,36 @@ void VisibilityLumpViewWidget::calculateNumberOfLeaves()
     }
 
     m_nLeafCount = lumpSize / structSize;
+}
+
+QGraphicsScene* VisibilityLumpViewWidget::createEmptyVisChart()
+{
+    QGraphicsScene* scene = new QGraphicsScene();
+    VisibilityChartRenderer renderer(*scene);
+
+    /*if ( m_nLeafCount < 1 )
+    {
+        renderer.drawAxes(100, 100);
+        return;
+    }*/
+
+    // TODO
+    renderer.drawDefaultAxes();
+
+    return scene;
+}
+
+void VisibilityLumpViewWidget::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+
+    if ( m_bFitSceneInView )
+    {
+        if ( m_pGraphicsScene )
+        {
+            ui->graphicsView->fitInView(m_pGraphicsScene->sceneRect(), Qt::KeepAspectRatio);
+        }
+
+        m_bFitSceneInView = false;
+    }
 }
