@@ -61,8 +61,8 @@ void VisibilityLumpViewWidget::initGraphicsScene()
 
 void VisibilityLumpViewWidget::updateLabels()
 {
-    ui->lblBytesPerLine->setText(QString::number(VisCompressor::bytesRequiredPerCompressedRow(m_nLeafCount)));
-    ui->lblTotalLeaves->setText(QString::number(m_nLeafCount));
+    ui->lblBytesPerLine->setText(tr("%0 bytes").arg(VisCompressor::bytesRequiredPerCompressedRow(m_nLeafCount)));
+    ui->lblTotalLeaves->setText(tr("%0").arg(m_nLeafCount));
 }
 
 void VisibilityLumpViewWidget::calculateNumberOfLeaves()
@@ -86,7 +86,7 @@ void VisibilityLumpViewWidget::calculateNumberOfLeaves()
 
     if ( lumpSize % structSize != 0 )
     {
-        ui->gbInformation->displayError(QString("Leaves lump size (%0 bytes) was not a multiple of the leaf struct size (%1 bytes).")
+        ui->gbInformation->displayError(tr("Leaves lump size (%0 bytes) was not a multiple of the leaf struct size (%1 bytes).")
                                         .arg(lumpSize)
                                         .arg(structSize));
     }

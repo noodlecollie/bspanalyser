@@ -37,18 +37,11 @@
     </widget>
    </item>
    <item>
-    <widget class="InfoDisplayGroupBox" name="groupBox">
+    <widget class="InfoDisplayGroupBox" name="gbInformation">
      <property name="title">
       <string>Information</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Item:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="4">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -61,6 +54,16 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Item:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -89,6 +92,40 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lblLumpSize">
+        <property name="text">
+         <string>0 bytes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Lump:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Bytes/item:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lblBytesPerItem">
+        <property name="text">
+         <string>0 bytes</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -103,5 +140,25 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sbItemIndex</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>StructLumpViewWidget</receiver>
+   <slot>lumpItemChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>270</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>lumpItemChanged(int)</slot>
+ </slots>
 </ui>

@@ -51,7 +51,7 @@
       <item row="1" column="1">
        <widget class="QLabel" name="lblBytesPerLine">
         <property name="text">
-         <string>0</string>
+         <string>0 bytes</string>
         </property>
        </widget>
       </item>
@@ -73,12 +73,18 @@
         <property name="text">
          <string>Total leaves:</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Uncompressed bytes/leaf:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -96,15 +102,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VisibilityChartView</class>
-   <extends>QGraphicsView</extends>
-   <header>widgets/visibilitychartview.h</header>
-  </customwidget>
-  <customwidget>
    <class>InfoDisplayGroupBox</class>
    <extends>QGroupBox</extends>
    <header>widgets/infodisplaygroupbox.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VisibilityChartView</class>
+   <extends>QGraphicsView</extends>
+   <header>widgets/visibilitychartview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
