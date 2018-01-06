@@ -2,12 +2,15 @@
 #define AXIALLYALIGNEDBOUNDINGBOX_H
 
 #include <QVector3D>
+#include <QMetaType>
 
 class AxiallyAlignedBoundingBox
 {
 public:
     AxiallyAlignedBoundingBox();
     AxiallyAlignedBoundingBox(const QVector3D& inMin, const QVector3D& inMax);
+
+    static int metaTypeId();
 
     QVector3D min() const;
     void setMin(const QVector3D& newMin);
@@ -17,6 +20,8 @@ public:
 
 private:
     void setMinMax(QVector3D v0, QVector3D v1);
+
+    static int m_nMetaTypeId;
 
     QVector3D m_vecMin;
     QVector3D m_vecMax;

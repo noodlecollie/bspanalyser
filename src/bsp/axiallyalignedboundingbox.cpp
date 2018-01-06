@@ -1,5 +1,7 @@
 #include "axiallyalignedboundingbox.h"
 
+int AxiallyAlignedBoundingBox::m_nMetaTypeId = qRegisterMetaType<AxiallyAlignedBoundingBox>();
+
 AxiallyAlignedBoundingBox::AxiallyAlignedBoundingBox()
     : AxiallyAlignedBoundingBox(QVector3D(), QVector3D())
 {
@@ -9,6 +11,11 @@ AxiallyAlignedBoundingBox::AxiallyAlignedBoundingBox(const QVector3D &inMin, con
     : m_vecMin(inMin),
       m_vecMax(inMax)
 {
+}
+
+int AxiallyAlignedBoundingBox::metaTypeId()
+{
+    return m_nMetaTypeId;
 }
 
 QVector3D AxiallyAlignedBoundingBox::min() const

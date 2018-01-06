@@ -1,6 +1,8 @@
 #include "structlumpviewwidget.h"
 #include "ui_structlumpviewwidget.h"
 
+#include "displaystringconversion.h"
+
 namespace
 {
     enum TableColumn
@@ -177,7 +179,7 @@ void StructLumpViewWidget::lumpItemChanged(int item)
             }
         }
 
-        item->setData(Qt::DisplayRole, dataToSet);
+        item->setData(Qt::DisplayRole, DisplayStringConversion::toString(dataToSet));
     }
 }
 

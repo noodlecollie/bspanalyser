@@ -71,7 +71,8 @@ SOURCES += \
     src/widgets/visibilitychartview.cpp \
     src/widgets/infodisplaygroupbox.cpp \
     src/widgets/keyvaluesview.cpp \
-    src/widgets/keyvalueslumpviewwidget.cpp
+    src/widgets/keyvalueslumpviewwidget.cpp \
+    src/widgets/displaystringconversion.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -128,7 +129,8 @@ HEADERS += \
     src/widgets/visibilitychartview.h \
     src/widgets/infodisplaygroupbox.h \
     src/widgets/keyvaluesview.h \
-    src/widgets/keyvalueslumpviewwidget.h
+    src/widgets/keyvalueslumpviewwidget.h \
+    src/widgets/displaystringconversion.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
