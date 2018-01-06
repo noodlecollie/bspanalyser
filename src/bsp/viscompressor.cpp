@@ -77,8 +77,8 @@ quint32 VisCompressor::bytesRequiredPerCompressedRow(quint32 numLeaves)
 
 quint32 VisCompressor::alignedBytesRequiredPerCompressedRow(quint32 numLeaves)
 {
-    size_t unalignedBytes = bytesRequiredPerCompressedRow(numLeaves);
-    size_t remainder = unalignedBytes % 4;
+    quint32 unalignedBytes = bytesRequiredPerCompressedRow(numLeaves);
+    quint32 remainder = unalignedBytes % 4;
 
     return remainder ? unalignedBytes + (4 - remainder) : unalignedBytes;
 }

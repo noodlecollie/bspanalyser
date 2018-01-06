@@ -71,9 +71,10 @@ void KeyValuesView::initRaw()
 void KeyValuesView::initWithGroupBox(const QString &title, QWidget *widget)
 {
     QGroupBox* groupBox = new QGroupBox(title);
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    groupBox->setFlat(true);
 
-    vLayout->setMargin(0);
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(2);
     vLayout->addWidget(widget);
     groupBox->setLayout(vLayout);
 
