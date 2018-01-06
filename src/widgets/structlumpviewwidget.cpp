@@ -165,6 +165,7 @@ void StructLumpViewWidget::lumpItemChanged(int item)
         }
 
         QVariant dataToSet;
+        BSPStructItemTypes::CoreItemType coreType = BSPStructItemTypes::Type_Invalid;
 
         // This will be empty if the lump def doesn't exist.
         if ( !structData.isEmpty() )
@@ -176,10 +177,11 @@ void StructLumpViewWidget::lumpItemChanged(int item)
             {
                 // TODO: Handle arrays.
                 dataToSet = typeConverter->value(structData, 0);
+                coreType = member->itemType();
             }
         }
 
-        item->setData(Qt::DisplayRole, DisplayStringConversion::toString(dataToSet));
+        item->setData(Qt::DisplayRole, DisplayStringConversion::toString(dataToSet, coreType));
     }
 }
 

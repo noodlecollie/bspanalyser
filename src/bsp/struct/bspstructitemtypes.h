@@ -26,7 +26,7 @@
  * Vector3AABB          2x Vector3. Used to specify an axially-aligned bounding box.
  *
  * In addition, an Int32 member can specify an "enum" option which should reference a defined enum
- * in the format file. Instead of numerical values, the enum named values will be displayed instead.
+ * in the format file. Instead of numerical values, the enum named values will be displayed.
  */
 
 class BSPStructItemTypes
@@ -88,8 +88,7 @@ public:
     };
     Q_ENUM(CoreItemType)
 
-    // In a clean enum to avoid all the implementation
-    // bitmashing that goes on in the other enum.
+    // In a clean enum to avoid all the bitmashing that goes on in the other enum.
     // Each entry MUST correspond to a CoreItemType.
     // Only types here are allowed to be specified in a format document.
     enum class PublicItemType
