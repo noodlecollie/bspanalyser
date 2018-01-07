@@ -4,7 +4,11 @@
 #include "configs/structmembers/structmemberconfigreaderfactory.h"
 
 StructLumpConfigReader::StructLumpConfigReader(const QString &lumpName)
-    : AbstractLumpConfigReader(lumpName)
+    : AbstractLumpConfigReader(lumpName),
+      m_pStructLumpDef(),
+      m_nCurrentCoreType(BSPStructItemTypes::Type_Invalid),
+      m_nCurrentPublicType(BSPStructItemTypes::PublicItemType::Int32),
+      m_nCurrentItemCount(0)
 {
 }
 
@@ -35,8 +39,8 @@ void StructLumpConfigReader::readMember(const JSONReaderItemPtr &memberObject)
 {
     QString memberName = memberObject->getObjectItemOfType<QString>("name");
 
-    BSPStructItemTypes::PublicItemType memberType = getPublicType(memberObject, "type");
-    m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(memberType);
+    m_nCurrentPublicType = getPublicType(memberObject, "type");
+    m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(m_nCurrentPublicType);
     m_nCurrentItemCount = 1;
 
     checkForArrayType(memberObject);
@@ -51,6 +55,7 @@ void StructLumpConfigReader::readMember(const JSONReaderItemPtr &memberObject)
     Q_ASSERT(member);
 
     member->setName(memberName);
+    member->setPublicItemType(m_nCurrentPublicType);
 }
 
 void StructLumpConfigReader::checkForArrayType(const JSONReaderItemPtr &memberObject)
@@ -60,6 +65,7 @@ void StructLumpConfigReader::checkForArrayType(const JSONReaderItemPtr &memberOb
         if ( BSPStructItemTypes::coreTypeHasModifier(m_nCurrentCoreType, BSPStructItemTypes::Mod_InterpretAsString) )
         {
             m_nCurrentCoreType = BSPStructItemTypes::Type_StringChar;
+            m_nCurrentPublicType = BSPStructItemTypes::PublicItemType::String;
             m_nCurrentItemCount = memberObject->getObjectItemOfType<qint32>("stringsize");
 
             if ( m_nCurrentItemCount < 1 )
@@ -69,8 +75,8 @@ void StructLumpConfigReader::checkForArrayType(const JSONReaderItemPtr &memberOb
         }
         else
         {
-            BSPStructItemTypes::PublicItemType arrayType = getPublicType(memberObject, "arraytype");
-            m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(arrayType);
+            m_nCurrentPublicType = getPublicType(memberObject, "arraytype");
+            m_nCurrentCoreType = static_cast<BSPStructItemTypes::CoreItemType>(m_nCurrentPublicType);
 
             if ( BSPStructItemTypes::unmodifiedCoreType(m_nCurrentCoreType) == BSPStructItemTypes::Meta_Array )
             {

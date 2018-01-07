@@ -240,7 +240,8 @@
 					"name": "LightStyles",
 					"type": "array",
 					"arraytype": "uint8",
-					"arraycount": 4
+					"arraycount": 4,
+					"displayhex": true
 				},
 				{
 					"name": "LightingOffset",

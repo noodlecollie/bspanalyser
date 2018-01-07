@@ -24,6 +24,11 @@ public:
     QString name() const;
     void setName(const QString& newName);
 
+    // Only used for helping to generate display strings.
+    // Corresponds to the individual item type (ie. should not be array).
+    BSPStructItemTypes::PublicItemType publicItemType() const;
+    void setPublicItemType(BSPStructItemTypes::PublicItemType publicType);
+
     QSharedPointer<BSPStructItemTypeConverter> typeConverter() const;
 
     BSPStructItemAttributes& attributes();
@@ -65,6 +70,7 @@ public:
 private:
     quint32 m_nOffsetInStruct;
     BSPStructItemTypes::CoreItemType m_nItemType;
+    BSPStructItemTypes::PublicItemType m_nPublicItemType;
     quint32 m_nItemCount;
     QString m_strName;
     QSharedPointer<BSPStructItemTypeConverter> m_pConverter;

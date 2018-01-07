@@ -33,7 +33,8 @@ private:
     void updateLumpItemCount();
     void updateUI();
     QByteArray getStructData(quint32 item) const;
-    void setNameItem(int row, const QString& memberName);
+    void setItem(int row, int column, const QString& data);
+    quint32 memberFormatHint(const BSPStructGenericBlock& member) const;
 
     Ui::StructLumpViewWidget *ui;
     QSharedPointer<StructLumpDef> m_pStructLumpDef;

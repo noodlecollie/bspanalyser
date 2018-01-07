@@ -4,12 +4,13 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <QVector4D>
+#include <QColor>
 
 #include "bsp/axiallyalignedboundingbox.h"
 
 namespace DisplayStringConversion
 {
-    QString toString(const QVariant &variant, BSPStructItemTypes::CoreItemType coreType)
+    QString toString(const QVariant &variant, BSPStructItemTypes::CoreItemType coreType, quint32 formatHint)
     {
         switch ( BSPStructItemTypes::unmodifiedCoreType(coreType) )
         {
@@ -40,10 +41,58 @@ namespace DisplayStringConversion
                         .arg(max.z());
             }
 
+            case BSPStructItemTypes::Type_RGB8:
+            {
+                QColor col = variant.value<QColor>();
+                return QString("%0 %1 %2").arg(col.red()).arg(col.green()).arg(col.blue());
+            }
+
+            case BSPStructItemTypes::Type_Int8:
+            {
+                if ( BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
+                {
+                    return variant.toString();
+                }
+
+                // Deliberate fall-through
+            }
+            case BSPStructItemTypes::Type_Int16:
+            case BSPStructItemTypes::Type_Int32:
+            {
+                if ( formatHint & DisplayStringConversion::IntegerAsHex )
+                {
+                    bool success = false;
+                    quint32 value = static_cast<quint32>(variant.toInt(&success));
+
+                    if ( !success )
+                    {
+                        return QString();
+                    }
+
+                    return "0x" + QString::number(value, 16);
+                }
+                else
+                {
+                    return variant.toString();
+                }
+            }
+
             default:
             {
                 return variant.toString();
             }
         }
+    }
+
+    QString typeString(const BSPStructGenericBlock &member)
+    {
+        QString typeString = BSPStructItemTypes::publicItemTypeNameMap().key(member.publicItemType());
+
+        if ( member.itemCount() > 1 )
+        {
+            typeString += QString(" [%0]").arg(member.itemCount());
+        }
+
+        return typeString;
     }
 }

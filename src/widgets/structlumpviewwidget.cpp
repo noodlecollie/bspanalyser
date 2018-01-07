@@ -134,19 +134,20 @@ void StructLumpViewWidget::setTableMemberDefinitions()
     {
         BSPStructGenericBlock* member = m_pStructLumpDef->bspStruct().member(memberIndex);
         QString memberName = member->name();
+        QString typeString = DisplayStringConversion::typeString(*member);
 
-        setNameItem(memberIndex, memberName);
-        // TODO: Types
+        setItem(memberIndex, NameColumn, memberName);
+        setItem(memberIndex, TypeColumn, typeString);
         ui->memberTable->setItem(memberIndex, ValueColumn, new QTableWidgetItem());
     }
 }
 
-void StructLumpViewWidget::setNameItem(int row, const QString &memberName)
+void StructLumpViewWidget::setItem(int row, int column, const QString &data)
 {
     // Here's assuming that Qt deletes the previously owned tabe item when setting a new one.
     QTableWidgetItem* item = new QTableWidgetItem();
-    item->setData(Qt::DisplayRole, memberName);
-    ui->memberTable->setItem(row, NameColumn, item);
+    item->setData(Qt::DisplayRole, data);
+    ui->memberTable->setItem(row, column, item);
 }
 
 void StructLumpViewWidget::lumpItemChanged(int item)
@@ -164,9 +165,6 @@ void StructLumpViewWidget::lumpItemChanged(int item)
             continue;
         }
 
-        QVariant dataToSet;
-        BSPStructItemTypes::CoreItemType coreType = BSPStructItemTypes::Type_Invalid;
-
         // This will be empty if the lump def doesn't exist.
         if ( !structData.isEmpty() )
         {
@@ -175,14 +173,51 @@ void StructLumpViewWidget::lumpItemChanged(int item)
 
             if ( typeConverter )
             {
-                // TODO: Handle arrays.
-                dataToSet = typeConverter->value(structData, 0);
-                coreType = member->itemType();
+                BSPStructItemTypes::CoreItemType coreType = member->itemType();
+
+                if ( member->itemCount() > 1 && !BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
+                {
+                    QStringList list;
+
+                    for ( quint32 itemIndex = 0; itemIndex < member->itemCount(); ++itemIndex )
+                    {
+                        list.append(DisplayStringConversion::toString(typeConverter->value(structData, itemIndex),
+                                                                      coreType,
+                                                                      memberFormatHint(*member)));
+                    }
+
+                    item->setData(Qt::DisplayRole, list.join(", "));
+                }
+                else
+                {
+                    item->setData(Qt::DisplayRole,
+                                  DisplayStringConversion::toString(typeConverter->value(structData, 0),
+                                                                    coreType,
+                                                                    memberFormatHint(*member)));
+                }
             }
         }
-
-        item->setData(Qt::DisplayRole, DisplayStringConversion::toString(dataToSet, coreType));
     }
+}
+
+quint32 StructLumpViewWidget::memberFormatHint(const BSPStructGenericBlock &member) const
+{
+    quint32 formatHint = DisplayStringConversion::NoFormatHint;
+
+    if ( BSPStructItemTypes::coreTypeHasModifier(member.itemType(), BSPStructItemTypes::Mod_IsPrimaryOffset) )
+    {
+        formatHint |= DisplayStringConversion::IntegerAsHex;
+    }
+    else
+    {
+        QVariant hexVariant = member.attributes().attributeValue(BSPStructItemAttributes::Attribute::DisplayHex);
+        if ( hexVariant.type() == QVariant::Bool && hexVariant.toBool() )
+        {
+            formatHint |= DisplayStringConversion::IntegerAsHex;
+        }
+    }
+
+    return formatHint;
 }
 
 QByteArray StructLumpViewWidget::getStructData(quint32 item) const

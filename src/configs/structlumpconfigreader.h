@@ -24,6 +24,7 @@ private:
 
     QSharedPointer<StructLumpDef> m_pStructLumpDef;
     BSPStructItemTypes::CoreItemType m_nCurrentCoreType;
+    BSPStructItemTypes::PublicItemType m_nCurrentPublicType;
     qint32 m_nCurrentItemCount;
 };
 

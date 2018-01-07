@@ -5,6 +5,7 @@
 BSPStructGenericBlock::BSPStructGenericBlock(quint32 inOffset, BSPStructItemTypes::CoreItemType inType, quint32 inItemCount)
     : m_nOffsetInStruct(inOffset),
       m_nItemType(inType),
+      m_nPublicItemType(BSPStructItemTypes::PublicItemType::Int32),
       m_nItemCount(inItemCount),
       m_strName(),
       m_pConverter(),
@@ -62,4 +63,14 @@ BSPStructItemAttributes& BSPStructGenericBlock::attributes()
 const BSPStructItemAttributes& BSPStructGenericBlock::attributes() const
 {
     return m_Attributes;
+}
+
+BSPStructItemTypes::PublicItemType BSPStructGenericBlock::publicItemType() const
+{
+    return m_nPublicItemType;
+}
+
+void BSPStructGenericBlock::setPublicItemType(BSPStructItemTypes::PublicItemType publicType)
+{
+    m_nPublicItemType = publicType;
 }
