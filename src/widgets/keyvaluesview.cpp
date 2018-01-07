@@ -122,7 +122,7 @@ bool KeyValuesView::loadKeyvaluesDataIntoTree(const QByteArray &kv, QString& out
 
         if ( targetname.isString() )
         {
-            column2 = QString("(%0)").arg(targetname.toString());
+            column2 = QString("\"%0\"").arg(targetname.toString());
         }
 
         if ( classname.isString() )

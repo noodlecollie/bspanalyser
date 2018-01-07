@@ -26,8 +26,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         src/main.cpp \
         src/widgets/mainwindow.cpp \
-    src/widgets/hexdisplaywidget.cpp \
-    src/widgets/mainwidget.cpp \
     src/commands/mainwindowcommands.cpp \
     src/bsp/bsplumpdef.cpp \
     src/bsp/bspdatafragment.cpp \
@@ -76,8 +74,6 @@ SOURCES += \
 
 HEADERS += \
         src/widgets/mainwindow.h \
-    src/widgets/hexdisplaywidget.h \
-    src/widgets/mainwidget.h \
     src/commands/mainwindowcommands.h \
     src/bsp/bsplumpdef.h \
     src/bsp/ibspdataitem.h \

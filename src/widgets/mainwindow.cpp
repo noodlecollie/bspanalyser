@@ -3,8 +3,6 @@
 
 #include <QCoreApplication>
 
-#include "mainwidget.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -12,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pApplicationModel(new ApplicationModel(this))
 {
     ui->setupUi(this);
-
-    ui->mainwidget->hexDisplayWidget()->setBSPFile(m_pApplicationModel->bspFileModel());
 
     connect(m_pCommands, &MainWindowCommands::newFileLoaded, this, &MainWindow::bspFileUpdated);
     connect(m_pCommands, &MainWindowCommands::fileCleared, this, &MainWindow::bspFileUpdated);
@@ -34,8 +30,7 @@ ApplicationModel* MainWindow::applicationModel()
 
 void MainWindow::bspFileUpdated()
 {
-    ui->mainwidget->hexDisplayWidget()->loadBSPData();
-    ui->mainwidget->lumpViewArea()->updateLumps();
+    ui->mainwidget->updateLumps();
 }
 
 void MainWindow::showTemporaryStatusMessage(const QString &message, int timeout)
