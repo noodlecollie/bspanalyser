@@ -195,6 +195,20 @@ void StructLumpViewWidget::lumpItemChanged(int item)
                                                                     coreType,
                                                                     memberFormatHint(*member)));
                 }
+
+                if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Type_RGB8 && member->itemCount() == 1 )
+                {
+                    QVariant data = typeConverter->value(structData, 0);
+                    QColor col = data.value<QColor>();
+
+                    float avg = (col.redF() + col.greenF() + col.blueF()) / 3.0f;
+                    if ( avg < 0.5f )
+                    {
+                        item->setData(Qt::ForegroundRole, QBrush(Qt::white));
+                    }
+
+                    item->setData(Qt::BackgroundColorRole, col);
+                }
             }
         }
     }
