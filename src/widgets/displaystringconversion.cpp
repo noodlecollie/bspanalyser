@@ -10,6 +10,8 @@
 
 namespace DisplayStringConversion
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
     QString toString(const QVariant &variant, BSPStructItemTypes::CoreItemType coreType, quint32 formatHint)
     {
         switch ( BSPStructItemTypes::unmodifiedCoreType(coreType) )
@@ -83,6 +85,7 @@ namespace DisplayStringConversion
             }
         }
     }
+#pragma GCC diagnostic pop
 
     QString typeString(const BSPStructGenericBlock &member)
     {

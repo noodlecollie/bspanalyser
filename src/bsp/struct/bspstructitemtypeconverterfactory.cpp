@@ -8,6 +8,8 @@
 
 namespace BSPStructItemTypeConverterFactory
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
     QSharedPointer<BSPStructItemTypeConverter> createConverter(const BSPStructGenericBlock &member)
     {
         BSPStructItemTypeConverter* converter = nullptr;
@@ -60,4 +62,5 @@ namespace BSPStructItemTypeConverterFactory
 
         return QSharedPointer<BSPStructItemTypeConverter>(converter);
     }
+#pragma GCC diagnostic pop
 }
