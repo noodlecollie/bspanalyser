@@ -91,7 +91,7 @@ void StructLumpViewWidget::updateLumpItemCount()
 
 void StructLumpViewWidget::updateUI()
 {
-    ui->lblTotalItems->setText(tr("/ %0").arg(m_nItemCount));
+    ui->lblTotalItems->setText(tr("/ %0").arg(m_nItemCount - 1));
     ui->lblBytesPerItem->setText(tr("%0 bytes").arg(m_pStructLumpDef ? m_pStructLumpDef->bspStruct().size() : 0));
     ui->lblLumpSize->setText(tr("%0 bytes").arg(m_LumpData.count()));
 
