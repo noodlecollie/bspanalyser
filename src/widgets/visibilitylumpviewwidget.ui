@@ -27,14 +27,7 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="VisibilityChartView" name="graphicsView">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
+    <widget class="NotImplementedPlaceholderWidget" name="placeholderWidget" native="true"/>
    </item>
    <item>
     <widget class="InfoDisplayGroupBox" name="gbInformation">
@@ -108,9 +101,10 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VisibilityChartView</class>
-   <extends>QGraphicsView</extends>
-   <header>widgets/visibilitychartview.h</header>
+   <class>NotImplementedPlaceholderWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/notimplementedplaceholderwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

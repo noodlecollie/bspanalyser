@@ -102,9 +102,9 @@ void StructLumpViewWidget::updateUI()
 
     if ( m_nItemCount > 0 )
     {
-        ui->sbItemIndex->setMinimum(1);
-        ui->sbItemIndex->setMaximum(m_nItemCount);
-        ui->sbItemIndex->setValue(1);
+        ui->sbItemIndex->setMinimum(0);
+        ui->sbItemIndex->setMaximum(m_nItemCount - 1);
+        ui->sbItemIndex->setValue(0);
     }
     else
     {
@@ -152,15 +152,12 @@ void StructLumpViewWidget::setItem(int row, int column, const QString &data)
 
 void StructLumpViewWidget::lumpItemChanged(int item)
 {
-    // Item index from the spinbox is 1-based.
-    --item;
-
     QByteArray structData = item >= 0 ? getStructData(item) : QByteArray();
 
     for ( int row = 0; row < ui->memberTable->rowCount(); ++row )
     {
-        QTableWidgetItem* item = ui->memberTable->item(row, ValueColumn);
-        if ( !item )
+        QTableWidgetItem* tableItem = ui->memberTable->item(row, ValueColumn);
+        if ( !tableItem )
         {
             continue;
         }
@@ -186,11 +183,11 @@ void StructLumpViewWidget::lumpItemChanged(int item)
                                                                       memberFormatHint(*member)));
                     }
 
-                    item->setData(Qt::DisplayRole, list.join(", "));
+                    tableItem->setData(Qt::DisplayRole, list.join(", "));
                 }
                 else
                 {
-                    item->setData(Qt::DisplayRole,
+                    tableItem->setData(Qt::DisplayRole,
                                   DisplayStringConversion::toString(typeConverter->value(structData, 0),
                                                                     coreType,
                                                                     memberFormatHint(*member)));
@@ -204,10 +201,10 @@ void StructLumpViewWidget::lumpItemChanged(int item)
                     float avg = (col.redF() + col.greenF() + col.blueF()) / 3.0f;
                     if ( avg < 0.5f )
                     {
-                        item->setData(Qt::ForegroundRole, QBrush(Qt::white));
+                        tableItem->setData(Qt::ForegroundRole, QBrush(Qt::white));
                     }
 
-                    item->setData(Qt::BackgroundColorRole, col);
+                    tableItem->setData(Qt::BackgroundColorRole, col);
                 }
             }
         }

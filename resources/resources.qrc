@@ -2,4 +2,7 @@
     <qresource prefix="/formats">
         <file alias="nightfire.json">formats/nightfire.json</file>
     </qresource>
+    <qresource prefix="/img">
+        <file alias="sadface">img/sadface.png</file>
+    </qresource>
 </RCC>

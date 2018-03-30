@@ -70,7 +70,8 @@ SOURCES += \
     src/widgets/infodisplaygroupbox.cpp \
     src/widgets/keyvaluesview.cpp \
     src/widgets/keyvalueslumpviewwidget.cpp \
-    src/widgets/displaystringconversion.cpp
+    src/widgets/displaystringconversion.cpp \
+    src/widgets/notimplementedplaceholderwidget.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -126,13 +127,15 @@ HEADERS += \
     src/widgets/infodisplaygroupbox.h \
     src/widgets/keyvaluesview.h \
     src/widgets/keyvalueslumpviewwidget.h \
-    src/widgets/displaystringconversion.h
+    src/widgets/displaystringconversion.h \
+    src/widgets/notimplementedplaceholderwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
     src/widgets/visibilitylumpviewwidget.ui \
     src/widgets/structlumpviewwidget.ui \
-    src/widgets/keyvalueslumpviewwidget.ui
+    src/widgets/keyvalueslumpviewwidget.ui \
+    src/widgets/notimplementedplaceholderwidget.ui
 
 RESOURCES += \
     resources/resources.qrc

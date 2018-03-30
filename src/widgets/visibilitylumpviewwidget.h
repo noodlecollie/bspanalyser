@@ -27,22 +27,15 @@ public:
     virtual QWidget* asWidget() override;
     virtual void loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment) override;
 
-protected:
-    virtual void showEvent(QShowEvent *event) override;
-
 private:
     void setLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
     void updateLabels();
     void calculateNumberOfLeaves();
-    void initGraphicsScene();
-    QGraphicsScene* createEmptyVisChart();
 
     Ui::VisibilityLumpViewWidget *ui;
 
     QSharedPointer<VisibilityLumpDef> m_pLumpDef;
     quint32 m_nLeafCount;
-    QScopedPointer<QGraphicsScene> m_pGraphicsScene;
-    bool m_bFitSceneInView;
 };
 
 #endif // VISIBILITYLUMPVIEWWIDGET_H
