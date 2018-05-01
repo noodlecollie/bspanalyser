@@ -70,14 +70,23 @@ void VisCompressor::decompress(const QByteArray &inCompressed, QByteArray &outUn
     }
 }
 
-quint32 VisCompressor::bytesRequiredPerCompressedRow(quint32 numLeaves)
+QByteArray VisCompressor::uncompressedRow(const QByteArray &uncompressedData, quint32 numLeaves, quint32 row)
+{
+    quint32 rowSize = bytesRequiredPerUncompressedRow(numLeaves);
+    quint32 offset = row * rowSize;
+
+    // Empty byte array will be returned if the index is out of range.
+    return uncompressedData.mid(offset, rowSize);
+}
+
+quint32 VisCompressor::bytesRequiredPerUncompressedRow(quint32 numLeaves)
 {
     return (numLeaves + 7) / 8;
 }
 
-quint32 VisCompressor::alignedBytesRequiredPerCompressedRow(quint32 numLeaves)
+quint32 VisCompressor::alignedBytesRequiredPerUncompressedRow(quint32 numLeaves)
 {
-    quint32 unalignedBytes = bytesRequiredPerCompressedRow(numLeaves);
+    quint32 unalignedBytes = bytesRequiredPerUncompressedRow(numLeaves);
     quint32 remainder = unalignedBytes % 4;
 
     return remainder ? unalignedBytes + (4 - remainder) : unalignedBytes;

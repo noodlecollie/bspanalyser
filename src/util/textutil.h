@@ -2,10 +2,12 @@
 #define TEXTUTIL_H
 
 #include <QFont>
+#include <QByteArray>
 
 namespace TextUtil
 {
-    QFont monospacedFont(int size);
+    QFont monospacedFont(int pointSize);
+    QString hexString(const QByteArray& data, quint32 bytesPerBlock = 0);
 }
 
 #endif // TEXTUTIL_H

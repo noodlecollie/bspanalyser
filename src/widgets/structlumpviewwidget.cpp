@@ -52,7 +52,6 @@ void StructLumpViewWidget::initTable()
 {
     ui->memberTable->setColumnCount(TableColumnCount);
     ui->memberTable->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("Type") << tr("Value"));
-    ui->memberTable->verticalHeader()->setDefaultSectionSize(20);
 
     QHeaderView* horizontalHeader = ui->memberTable->horizontalHeader();
     for ( int column = NameColumn; column < TableColumnCount; ++column )

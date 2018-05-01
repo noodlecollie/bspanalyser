@@ -40,7 +40,6 @@ SOURCES += \
     src/configs/jsonreaderitem.cpp \
     src/widgets/lumpviewfactory.cpp \
     src/util/textutil.cpp \
-    src/widgets/visibilitylumpviewwidget.cpp \
     src/bsp/viscompressor.cpp \
     src/bsp/visibilitylumpdef.cpp \
     src/bsp/structlumpdef.cpp \
@@ -65,13 +64,12 @@ SOURCES += \
     src/bsp/struct/bspstructitemattributes.cpp \
     src/bsp/struct/bspstructitemtypeconverter_string.cpp \
     src/widgets/structlumpviewwidget.cpp \
-    src/widgets/visibilitychartrenderer.cpp \
-    src/widgets/visibilitychartview.cpp \
     src/widgets/infodisplaygroupbox.cpp \
     src/widgets/keyvaluesview.cpp \
     src/widgets/keyvalueslumpviewwidget.cpp \
     src/widgets/displaystringconversion.cpp \
-    src/widgets/notimplementedplaceholderwidget.cpp
+    src/widgets/notimplementedplaceholderwidget.cpp \
+    src/widgets/visibilitylumpviewwidget.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -95,7 +93,6 @@ HEADERS += \
     src/widgets/lumpviewfactory.h \
     src/widgets/ilumpviewwidget.h \
     src/util/textutil.h \
-    src/widgets/visibilitylumpviewwidget.h \
     src/bsp/viscompressor.h \
     src/bsp/visibilitylumpdef.h \
     src/bsp/structlumpdef.h \
@@ -122,13 +119,12 @@ HEADERS += \
     src/bsp/struct/bspstructitemattributes.h \
     src/bsp/struct/bspstructitemtypeconverter_string.h \
     src/widgets/structlumpviewwidget.h \
-    src/widgets/visibilitychartrenderer.h \
-    src/widgets/visibilitychartview.h \
     src/widgets/infodisplaygroupbox.h \
     src/widgets/keyvaluesview.h \
     src/widgets/keyvalueslumpviewwidget.h \
     src/widgets/displaystringconversion.h \
-    src/widgets/notimplementedplaceholderwidget.h
+    src/widgets/notimplementedplaceholderwidget.h \
+    src/widgets/visibilitylumpviewwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

@@ -27,15 +27,24 @@ public:
     virtual QWidget* asWidget() override;
     virtual void loadLumpData(const QSharedPointer<BSPLumpDef>& lumpDef, const BSPDataFragment &fragment) override;
 
+private slots:
+    void updateHexDisplay();
+
 private:
     void setLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
     void updateLabels();
     void calculateNumberOfLeaves();
+    void updateTable();
+    void updateTableRow(quint32 row, QStringList& headers);
+    void setVisData(const BSPDataFragment& fragment);
+    void updateAllUi();
+    void setUpHexDisplay();
 
     Ui::VisibilityLumpViewWidget *ui;
 
     QSharedPointer<VisibilityLumpDef> m_pLumpDef;
     quint32 m_nLeafCount;
+    QByteArray m_VisData;
 };
 
 #endif // VISIBILITYLUMPVIEWWIDGET_H
