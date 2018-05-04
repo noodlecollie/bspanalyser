@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/formats">
         <file alias="nightfire.json">formats/nightfire.json</file>
+        <file alias="halflife.json">formats/halflife.json</file>
     </qresource>
     <qresource prefix="/img">
         <file alias="sadface">img/sadface.png</file>

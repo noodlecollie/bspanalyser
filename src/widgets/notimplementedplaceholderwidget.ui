@@ -121,7 +121,7 @@
    <item>
     <widget class="QLabel" name="description">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you fancy it, you can contribute this element at &lt;a href=&quot;https://github.com/x6herbius/bspanalyser&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/x6herbius/bspanalyser&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

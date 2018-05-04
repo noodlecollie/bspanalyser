@@ -27,12 +27,6 @@ QSharedPointer<BSPLumpDef> BSPLumpDef::createEmptyLumpDef(const QString& name, L
 
     switch (type)
     {
-        case LumpType::Keyvalues:
-        {
-            lumpDef = QSharedPointer<BSPLumpDef>(new BSPLumpDef());
-            break;
-        }
-
         case LumpType::Struct:
         {
             lumpDef = QSharedPointer<BSPLumpDef>(new StructLumpDef());
@@ -45,17 +39,21 @@ QSharedPointer<BSPLumpDef> BSPLumpDef::createEmptyLumpDef(const QString& name, L
             break;
         }
 
+        case LumpType::Keyvalues:
+        case LumpType::EmbeddedTextures:
+        {
+            lumpDef = QSharedPointer<BSPLumpDef>(new BSPLumpDef());
+            break;
+        }
+
         default:
         {
-            break;
+            throw EnumValueNotFoundException();
         }
     }
 
-    if ( lumpDef )
-    {
-        lumpDef->setName(name);
-        lumpDef->setType(type);
-    }
+    lumpDef->setName(name);
+    lumpDef->setType(type);
 
     return lumpDef;
 }

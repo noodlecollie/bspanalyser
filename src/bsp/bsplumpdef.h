@@ -14,9 +14,10 @@ public:
     // Different possible types for lumps.
     enum class LumpType
     {
-        Keyvalues,  // Holds ASCII keyvalues data for entities.
-        Struct,     // Holds some number data items of a given structure.
-        VisData     // Holds visibility data.
+        Keyvalues,          // Holds ASCII keyvalues data for entities.
+        Struct,             // Holds some number data items of a given structure.
+        VisData,            // Holds visibility data.
+        EmbeddedTextures    // Contains texture files.
     };
     Q_ENUM(LumpType)
 

@@ -3,6 +3,7 @@
 #include "visibilitylumpconfigreader.h"
 #include "keyvalueslumpconfigreader.h"
 #include "structlumpconfigreader.h"
+#include "embeddedtexturesconfigreader.h"
 
 AbstractLumpConfigReader::AbstractLumpConfigReader()
     : m_strLumpName(),
@@ -43,9 +44,14 @@ QSharedPointer<AbstractLumpConfigReader> AbstractLumpConfigReader::createReader(
             return QSharedPointer<AbstractLumpConfigReader>(new VisibilityLumpConfigReader(lumpName));
         }
 
+        case BSPLumpDef::LumpType::EmbeddedTextures:
+        {
+            return QSharedPointer<AbstractLumpConfigReader>(new EmbeddedTexturesConfigReader(lumpName));
+        }
+
         default:
         {
-            return QSharedPointer<AbstractLumpConfigReader>();
+            throw EnumValueNotFoundException();
         }
     }
 }

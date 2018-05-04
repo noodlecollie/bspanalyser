@@ -69,7 +69,8 @@ SOURCES += \
     src/widgets/keyvalueslumpviewwidget.cpp \
     src/widgets/displaystringconversion.cpp \
     src/widgets/notimplementedplaceholderwidget.cpp \
-    src/widgets/visibilitylumpviewwidget.cpp
+    src/widgets/visibilitylumpviewwidget.cpp \
+    src/configs/embeddedtexturesconfigreader.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -124,7 +125,8 @@ HEADERS += \
     src/widgets/keyvalueslumpviewwidget.h \
     src/widgets/displaystringconversion.h \
     src/widgets/notimplementedplaceholderwidget.h \
-    src/widgets/visibilitylumpviewwidget.h
+    src/widgets/visibilitylumpviewwidget.h \
+    src/configs/embeddedtexturesconfigreader.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

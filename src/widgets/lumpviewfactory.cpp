@@ -3,6 +3,7 @@
 #include "keyvalueslumpviewwidget.h"
 #include "visibilitylumpviewwidget.h"
 #include "structlumpviewwidget.h"
+#include "notimplementedplaceholderwidget.h"
 
 LumpViewFactory::LumpViewFactory(const QSharedPointer<BSPLumpDef> &lumpDef)
     : m_pLumpDef(lumpDef)
@@ -36,7 +37,8 @@ ILumpViewWidget* LumpViewFactory::createWidget() const
 
         default:
         {
-            return nullptr;
+            return new NotImplementedPlaceholderWidget(QString("Unsupported lump type '%0'.")
+                                                       .arg(BSPLumpDef::lumpTypeNameMap().key(m_pLumpDef->type())));
         }
     }
 }

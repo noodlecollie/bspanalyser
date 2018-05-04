@@ -44,8 +44,19 @@ quint32 BSPStructItemTypes::sizeOfCoreType(CoreItemType type)
             return 2 * 3 * sizeof(float);
         }
 
+        case Type_I16Vector3AABB:
+        {
+            return 2 * 3 * sizeof(qint16);
+        }
+
+        case Type_I32Vector3AABB:
+        {
+            return 2 * 3 * sizeof(qint32);
+        }
+
         default:
         {
+            Q_ASSERT(false);
             return 0;
         }
     }

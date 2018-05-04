@@ -294,7 +294,8 @@
 				{
 					"name": "VisibilityOffset",
 					"type": "primaryoffset32",
-					"offsetlump": "Visibility"
+					"offsetlump": "Visibility",
+					"maxsignifiesinvalid": true
 				},
 				{
 					"name": "Bounds",

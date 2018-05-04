@@ -60,9 +60,11 @@ public:
         Type_FVector4 = 6,
         Type_RGB8 = 7,
         Type_FVector3AABB = 8,
+        Type_I16Vector3AABB = 9,
+        Type_I32Vector3AABB = 10,
 
         // Meta - depend on further config data for type resolution
-        Meta_Array = 9,
+        Meta_Array = 11,
 
         // ==============
         // Modified Types
@@ -71,6 +73,11 @@ public:
         Type_UInt8 = Type_Int8 | Mod_IsUnsigned,
         Type_UInt16 = Type_Int16 | Mod_IsUnsigned,
         Type_UInt32 = Type_Int32 | Mod_IsUnsigned,
+
+        Type_PrimaryIndex16 = Type_UInt16 | Mod_IsPrimaryIndex,
+        Type_PrimaryOffset16 = Type_UInt16 | Mod_IsPrimaryOffset,
+        Type_SecondaryIndex16 = Type_UInt16 | Mod_IsSecondaryIndex,
+        Type_BinaryIndex16 = Type_Int16 | Mod_IsBinaryIndex,
 
         Type_PrimaryIndex32 = Type_UInt32 | Mod_IsPrimaryIndex,
         Type_PrimaryOffset32 = Type_UInt32 | Mod_IsPrimaryOffset,
@@ -101,6 +108,11 @@ public:
         UInt32 = Type_UInt32,
         Float = Type_Float,
 
+        PrimaryIndex16 = Type_PrimaryIndex16,
+        PrimaryOffset16 = Type_PrimaryOffset16,
+        SecondaryIndex16 = Type_SecondaryIndex16,
+        BinaryIndex16 = Type_BinaryIndex16,
+
         PrimaryIndex32 = Type_PrimaryIndex32,
         PrimaryOffset32 = Type_PrimaryOffset32,
         SecondaryIndex32 = Type_SecondaryIndex32,
@@ -109,6 +121,8 @@ public:
         Vector3 = Type_FVector3,
         Vector4 = Type_FVector4,
         Vector3AABB = Type_FVector3AABB,
+        I16Vector3AABB = Type_I16Vector3AABB,
+        I32Vector3AABB = Type_I32Vector3AABB,
         RGB8 = Type_RGB8,
 
         String = Type_String,

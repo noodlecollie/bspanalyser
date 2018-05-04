@@ -131,7 +131,7 @@ void VisibilityLumpViewWidget::updateTableRow(quint32 row, QStringList& headers)
         // TODO: This shouldn't happen, but we're still in the process of
         // sorting out how vis rows should be handled. Don't crash if the
         // index is out of range.
-        if ( byteIndex >= rowData.size() )
+        if ( byteIndex >= static_cast<quint32>(rowData.size()) )
         {
             break;
         }

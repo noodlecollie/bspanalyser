@@ -23,7 +23,7 @@ void KeyValuesLumpViewWidget::loadLumpData(const QSharedPointer<BSPLumpDef> &lum
     Q_UNUSED(lumpDef);
 
     QByteArray lumpData = fragment.data();
-    ui->lblSize->setText(tr("Total size: %0 bytes").arg(lumpData.count()));
+    ui->lblSize->setText(tr("%0 bytes").arg(lumpData.count()));
 
     QString errorString;
     ui->kvView->loadLumpData(lumpData, errorString);
