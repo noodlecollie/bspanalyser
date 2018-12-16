@@ -16,14 +16,15 @@ public:
     void initialise();
 
     bool hasFormat(quint32 version) const;
-    QSharedPointer<QByteArray> format(quint32 version) const;
+    QSharedPointer<QByteArray> format(const QByteArray& fileData) const;
     QString sourceFileName(quint32 version) const;
 
 private:
     void loadFormat(const QString& filePath);
 
-    QHash<quint32, QSharedPointer<QByteArray>> m_hshFormatFiles;
-    QHash<quint32, QString> m_hshFormatFileNames;
+    QHash<quint64, QSharedPointer<QByteArray>> m_hshFormatFiles;
+    QHash<quint64, QString> m_hshFormatFileNames;
+    QHash<quint32, bool> m_hshVersionHasSubVersions;
 };
 
 #endif // BSPFORMATCOLLECTION_H

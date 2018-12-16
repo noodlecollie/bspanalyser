@@ -25,6 +25,20 @@ quint32 BSPFormatReader::readVersion(const QJsonDocument& document, QString& err
     return version;
 }
 
+bool BSPFormatReader::readSubVersion(const QJsonDocument& document, quint32& subVersion, QString& error)
+{
+    try
+    {
+        subVersion = readSubVersionInternal(document);
+        return true;
+    }
+    catch (GenericException& exception)
+    {
+        error = exception.message();
+        return false;
+    }
+}
+
 bool BSPFormatReader::read(const QJsonDocument &document, BSPFileStructure& outFile, QString &error)
 {
     bool success = false;
@@ -61,9 +75,13 @@ quint32 BSPFormatReader::readVersionInternal(const QJsonDocument& document)
     return version;
 }
 
+quint32 BSPFormatReader::readSubVersionInternal(const QJsonDocument& document)
+{
+    return JSONReaderItem::getRootObjectItem(document)->getObjectItemOfType<quint32>("subVersion");
+}
+
 void BSPFormatReader::readJsonDocument(const QJsonDocument& document)
 {
-    m_pCurrentFile->setVersion(readVersionInternal(document));
     readLumpList(JSONReaderItem::getRootObjectItem(document));
 }
 

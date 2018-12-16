@@ -63,14 +63,14 @@ void MainWindowCommands::loadFile(const QString &fileName)
 
     const QByteArray& contents = fileModel->contents();
 
-    if ( static_cast<quint32>(contents.length()) < sizeof(quint32) )
+    if ( static_cast<quint32>(contents.length()) < 2 * sizeof(quint32) )
     {
         throw GenericException("File length was too short.");
     }
 
     const quint32* versionPtr = reinterpret_cast<const quint32*>(contents.constData());
     BSPFormatCollection& formatCollection = mainWindow->applicationModel()->bspFormatCollection();
-    QSharedPointer<QByteArray> formatData = formatCollection.format(*versionPtr);
+    QSharedPointer<QByteArray> formatData = formatCollection.format(contents);
 
     if ( !formatData )
     {

@@ -18,9 +18,11 @@ public:
 
     bool read(const QJsonDocument& document, BSPFileStructure& outFile, QString& error);
     quint32 readVersion(const QJsonDocument& document, QString& error);
+    bool readSubVersion(const QJsonDocument& document, quint32& subVersion, QString& error);
 
 private:
     quint32 readVersionInternal(const QJsonDocument& document);
+    quint32 readSubVersionInternal(const QJsonDocument& document);
     void readJsonDocument(const QJsonDocument& document);
     void readLumpList(const JSONReaderItemPtr& root);
     void readAllLumps(const JSONReaderItemPtr& lumpsList, const JSONReaderItemPtr& lumpItemsObject);

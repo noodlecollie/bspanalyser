@@ -10,7 +10,8 @@ Q_LOGGING_CATEGORY(lcBSPFormatCollection, "BSPFormatCollection")
 
 BSPFormatCollection::BSPFormatCollection()
     : m_hshFormatFiles(),
-      m_hshFormatFileNames()
+      m_hshFormatFileNames(),
+      m_hshVersionHasSubVersions()
 {
 
 }
@@ -31,8 +32,17 @@ bool BSPFormatCollection::hasFormat(quint32 version) const
     return m_hshFormatFiles.contains(version);
 }
 
-QSharedPointer<QByteArray> BSPFormatCollection::format(quint32 version) const
+QSharedPointer<QByteArray> BSPFormatCollection::format(const QByteArray& data) const
 {
+    const quint32* versionPtr = reinterpret_cast<const quint32*>(data.constData());
+    quint64 version = static_cast<quint64>(versionPtr[0]);
+
+    if ( m_hshVersionHasSubVersions.contains(version) )
+    {
+        // Include sub-version.
+        version |= static_cast<quint64>(versionPtr[1]) << 32;
+    }
+
     return m_hshFormatFiles.value(version, QSharedPointer<QByteArray>());
 }
 
@@ -68,18 +78,52 @@ void BSPFormatCollection::loadFormat(const QString &filePath)
         return;
     }
 
+    // First check for formats which don't have sub-versions.
+    // The unadorned version number can just be used as a key.
+    if ( m_hshFormatFiles.contains(version) && !m_hshVersionHasSubVersions.value(version) )
+    {
+        qCWarning(lcBSPFormatCollection).nospace() << "Error reading format JSON from " << filePath
+                                                   << ". A format document for version " << version << " already exists at "
+                                                   << m_hshFormatFileNames.value(version) << ".";
+        return;
+    }
+
+    quint32 subVersion = 0;
+    bool hasSubVersion = formatReader.readSubVersion(jsonDoc, subVersion, errorString);
+
+    // Sub-versions get or'd in with the version.
+    quint64 versionKey = (static_cast<quint64>(subVersion) << 32) | static_cast<quint64>(version);
+
+    if ( m_hshFormatFiles.contains(versionKey) )
+    {
+        qCWarning(lcBSPFormatCollection).nospace() << "Error reading format JSON from " << filePath
+                                                   << ". A format document for version " << version << ", sub-version "
+                                                   << subVersion << " already exists at " << m_hshFormatFileNames.value(versionKey) << ".";
+        return;
+    }
+
     QSharedPointer<QByteArray> jsonBinaryData(new QByteArray());
-    m_hshFormatFiles.insert(version, jsonBinaryData);
-    m_hshFormatFileNames.insert(version, filePath);
+    m_hshFormatFiles.insert(versionKey, jsonBinaryData);
+    m_hshFormatFileNames.insert(versionKey, filePath);
+
+    if ( hasSubVersion )
+    {
+        m_hshVersionHasSubVersions.insert(version, true);
+    }
+    else if ( !m_hshVersionHasSubVersions.contains(version) )
+    {
+        m_hshVersionHasSubVersions.insert(version, false);
+    }
 
     int length = 0;
     const char* rawData = jsonDoc.rawData(&length);
     jsonBinaryData->resize(length);
     memcpy(jsonBinaryData->data(), rawData, length);
 
-    qCDebug(lcBSPFormatCollection) << "Loaded"
-                                   << (filePath.startsWith(":") ? "built-in" : "custom")
-                                   << "format" << filePath;
+    qCDebug(lcBSPFormatCollection).nospace() << "Loaded "
+                                             << (filePath.startsWith(":") ? "built-in" : "custom")
+                                             << " format " << filePath << " for BSP version "
+                                             << version << (hasSubVersion ? QString(", sub-version %0").arg(subVersion).toLatin1().constData() : "") << ".";
 }
 
 QString BSPFormatCollection::sourceFileName(quint32 version) const
