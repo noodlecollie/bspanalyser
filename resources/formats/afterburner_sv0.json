@@ -1,23 +1,29 @@
 {
-	"version": 30,
+	"version": 43,
+	"subVersion": 0,
 
 	"lumps":
 	[
 		"Entities",
 		"Planes",
 		"Textures",
+		"Materials",
 		"Vertices",
 		"Visibility",
 		"Nodes",
-		"TexInfo",
-		"Faces",
+		"Surfaces",
 		"Lighting",
-		"ClipNodes",
 		"Leaves",
 		"MarkSurfaces",
 		"Edges",
 		"SurfEdges",
-		"Models"
+		"Models",
+		"Projections",
+		"NodeMarkSurfaces",
+		"ClipNodes0",
+		"ClipNodes1",
+		"ClipNodes2",
+		"ClipNodes3"
 	],
 
 	"enums":
@@ -143,7 +149,27 @@
 		},
 		"Textures":
 		{
-			"type": "embeddedtextures"
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Path",
+					"type": "string",
+					"stringsize": 64
+				}
+			]
+		},
+		"Materials":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "Path",
+					"type": "string",
+					"stringsize": 64
+				}
+			]
 		},
 		"Vertices":
 		{
@@ -186,15 +212,15 @@
 				},
 				{
 					"name": "Bounds",
-					"type": "i16vector3aabb"
+					"type": "vector3aabb"
 				},
 				{
-					"name": "FirstFace",
-					"type": "primaryindex16",
-					"indexlump": "Faces"
+					"name": "FirstNodeMarkSurface",
+					"type": "primaryindex32",
+					"indexlump": "NodeMarkSurfaces"
 				},
 				{
-					"name": "NumFaces",
+					"name": "NumNodeMarkSurfaces",
 					"type": "uint16"
 				}
 			],
@@ -202,38 +228,13 @@
 			[
 				{
 					"type": "foreignblock",
-					"name": "NodeFaces",
-					"sourceindex": "FirstFace",
-					"sourcecount": "NumFaces"
+					"name": "NodeMarkSurfaces",
+					"sourceindex": "FirstNodeMarkSurface",
+					"sourcecount": "NumNodeMarkSurfaces"
 				}
 			]
 		},
-		"TexInfo":
-		{
-			"type": "struct",
-			"members":
-			[
-				{
-					"name": "SAxis",
-					"type": "vector4"
-				},
-				{
-					"name": "TAxis",
-					"type": "vector4"
-				},
-				{
-					"name": "MipTexIndex",
-					"type": "primaryindex32",
-					"indexlump": "Textures"
-				},
-				{
-					"name": "Flags",
-					"type": "uint32",
-					"displayHex": true
-				}
-			]
-		},
-		"Faces":
+		"Surfaces":
 		{
 			"type": "struct",
 			"members":
@@ -244,7 +245,17 @@
 					"indexlump": "Planes"
 				},
 				{
-					"name": "PlaneSide",
+					"name": "TextureIndex",
+					"type": "primaryindex16",
+					"indexlump": "Textures"
+				},
+				{
+					"name": "MaterialIndex",
+					"type": "primaryindex16",
+					"indexlump": "Materials"
+				},
+				{
+					"name": "FaceOppositeToPlane",
 					"type": "uint16"
 				},
 				{
@@ -257,10 +268,6 @@
 					"type": "uint16"
 				},
 				{
-					"name": "TexInfoIndex",
-					"type": "primaryindex16"
-				},
-				{
 					"name": "LightStyles",
 					"type": "array",
 					"arraytype": "uint8",
@@ -271,6 +278,16 @@
 					"name": "LightingOffset",
 					"type": "primaryoffset32",
 					"offsetlump": "Lighting"
+				},
+				{
+					"name": "TextureProjectionIndex",
+					"type": "primaryindex16",
+					"indexlump": "Projections"
+				},
+				{
+					"name": "LightmapProjectionIndex",
+					"type": "primaryindex16",
+					"indexlump": "Projections"
 				}
 			],
 			"attributes":
@@ -294,30 +311,6 @@
 				}
 			]
 		},
-		"ClipNodes":
-		{
-			"type": "struct",
-			"members":
-			[
-				{
-					"name": "PlaneIndex",
-					"type": "primaryindex32",
-					"indexlump": "Planes"
-				},
-				{
-					"name": "Child0",
-					"type": "binaryindex16",
-					"positiveindex": "Nodes",
-					"negativeindex": "LeafContents"
-				},
-				{
-					"name": "Child1",
-					"type": "binaryindex16",
-					"positiveindex": "Nodes",
-					"negativeindex": "LeafContents"
-				}
-			]
-		},
 		"Leaves":
 		{
 			"type": "struct",
@@ -336,7 +329,7 @@
 				},
 				{
 					"name": "Bounds",
-					"type": "i16vector3aabb"
+					"type": "vector3aabb"
 				},
 				{
 					"name": "FirstMarkSurface",
@@ -371,9 +364,9 @@
 			"members":
 			[
 				{
-					"name": "FaceIndex",
+					"name": "SuraceIndex",
 					"type": "primaryindex16",
-					"indexlump": "Faces"
+					"indexlump": "Surfaces"
 				}
 			]
 		},
@@ -424,34 +417,34 @@
 				{
 					"name": "HeadNode0",
 					"type": "primaryindex32",
-					"indexlump": "ClipNodes"
+					"indexlump": "ClipNodes0"
 				},
 				{
 					"name": "HeadNode1",
 					"type": "primaryindex32",
-					"indexlump": "ClipNodes"
+					"indexlump": "ClipNodes1"
 				},
 				{
 					"name": "HeadNode2",
 					"type": "primaryindex32",
-					"indexlump": "ClipNodes"
+					"indexlump": "ClipNodes2"
 				},
 				{
 					"name": "HeadNode3",
 					"type": "primaryindex32",
-					"indexlump": "ClipNodes"
+					"indexlump": "ClipNodes3"
 				},
 				{
-					"name": "VisLeaves",
+					"name": "VisleafCount",
 					"type": "uint32"
 				},
 				{
-					"name": "FirstFace",
+					"name": "FirstSurface",
 					"type": "primaryindex32",
-					"indexlump": "Faces"
+					"indexlump": "Surfaces"
 				},
 				{
-					"name": "NumFaces",
+					"name": "NumSurfaces",
 					"type": "uint32"
 				}
 			],
@@ -460,8 +453,32 @@
 				{
 					"type": "foreignblock",
 					"name": "Surfaces",
-					"sourceindex": "FirstFace",
-					"sourcecount": "NumFaces"
+					"sourceindex": "FirstSurface",
+					"sourcecount": "NumSurfaces"
+				}
+			]
+		},
+		"ClipNodes":
+		{
+			"type": "struct",
+			"members":
+			[
+				{
+					"name": "PlaneIndex",
+					"type": "primaryindex32",
+					"indexlump": "Planes"
+				},
+				{
+					"name": "Child0",
+					"type": "binaryindex16",
+					"positiveindex": "Nodes",
+					"negativeindex": "LeafContents"
+				},
+				{
+					"name": "Child1",
+					"type": "binaryindex16",
+					"positiveindex": "Nodes",
+					"negativeindex": "LeafContents"
 				}
 			]
 		}
