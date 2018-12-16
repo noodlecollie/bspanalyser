@@ -16,6 +16,12 @@ public:
     quint32 version() const;
     void setVersion(quint32 newVersion);
 
+    quint32 subVersion() const;
+    void setSubVersion(quint32 newSubVersion);
+
+    bool hasSubVersion() const;
+    void setHasSubVersion(bool hasSV);
+
     void addLumpDef(const QSharedPointer<BSPLumpDef>& lump);
     int lumpDefCount() const;
     void clearLumpDefs();
@@ -24,6 +30,8 @@ public:
 
 private:
     quint32 m_nVersion;
+    quint32 m_nSubVersion;
+    bool m_bHasSubVersion;
     QVector<QSharedPointer<BSPLumpDef>> m_liLumpDefs;
 };
 

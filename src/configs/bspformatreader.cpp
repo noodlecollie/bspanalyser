@@ -82,6 +82,17 @@ quint32 BSPFormatReader::readSubVersionInternal(const QJsonDocument& document)
 
 void BSPFormatReader::readJsonDocument(const QJsonDocument& document)
 {
+    m_pCurrentFile->setVersion(readVersionInternal(document));
+
+    try
+    {
+        m_pCurrentFile->setSubVersion(readSubVersionInternal(document));
+    }
+    catch (GenericException&)
+    {
+        m_pCurrentFile->setHasSubVersion(false);
+    }
+
     readLumpList(JSONReaderItem::getRootObjectItem(document));
 }
 

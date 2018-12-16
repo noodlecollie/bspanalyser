@@ -2,6 +2,8 @@
 
 BSPFileStructure::BSPFileStructure()
     : m_nVersion(0),
+      m_nSubVersion(0),
+      m_bHasSubVersion(false),
       m_liLumpDefs()
 {
 
@@ -21,6 +23,33 @@ quint32 BSPFileStructure::version() const
 void BSPFileStructure::setVersion(quint32 newVersion)
 {
     m_nVersion = newVersion;
+}
+
+quint32 BSPFileStructure::subVersion() const
+{
+    return m_bHasSubVersion ? m_nSubVersion : 0;
+}
+
+void BSPFileStructure::setSubVersion(quint32 newSubVersion)
+{
+    m_nSubVersion = newSubVersion;
+    m_bHasSubVersion = true;
+}
+
+bool BSPFileStructure::hasSubVersion() const
+{
+    return m_bHasSubVersion;
+}
+
+void BSPFileStructure::setHasSubVersion(bool hasSV)
+{
+    if ( m_bHasSubVersion == hasSV )
+    {
+        return;
+    }
+
+    m_bHasSubVersion = hasSV;
+    m_nSubVersion = 0;
 }
 
 void BSPFileStructure::addLumpDef(const QSharedPointer<BSPLumpDef>& lump)
