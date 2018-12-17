@@ -3,6 +3,7 @@
 #include "bspdefs.h"
 #include "structlumpdef.h"
 #include "visibilitylumpdef.h"
+#include "model/bspfilemodel.h"
 
 namespace
 {
@@ -64,30 +65,32 @@ const EnumNameMap<BSPLumpDef::LumpType>& BSPLumpDef::lumpTypeNameMap()
     return typeNameMap;
 }
 
-BSPDataFragment BSPLumpDef::getDataFragment(const QByteArray &data) const
+BSPDataFragment BSPLumpDef::getDataFragment(const BSPFileModel &data) const
 {
+    const QByteArray& contents = data.contents();
+
     if ( !isValid() )
     {
-        return BSPDataFragment(data);
+        return BSPDataFragment(contents);
     }
 
-    quint32 dataLength = data.length();
-    quint32 offset = headerLumpByteOffset();
+    quint32 length = contents.length();
+    quint32 offset = headerLumpByteOffset(data);
 
-    if ( dataLength < offset + BSPDefs::HEADER_LUMP_DEF_BYTES )
+    if ( length < offset + BSPDefs::HEADER_LUMP_DEF_BYTES )
     {
-        return BSPDataFragment(data);
+        return BSPDataFragment(contents);
     }
 
-    const HeaderLump* headerLump = reinterpret_cast<const HeaderLump*>(data.constData() + offset);
+    const HeaderLump* headerLump = reinterpret_cast<const HeaderLump*>(contents.constData() + offset);
 
     // The lump info from the BSP header then tells us the offset and length of the actual data.
-    if ( dataLength < headerLump->offset + headerLump->length )
+    if ( length < headerLump->offset + headerLump->length )
     {
-        return BSPDataFragment(data);
+        return BSPDataFragment(contents);
     }
 
-    return BSPDataFragment(data, headerLump->offset, headerLump->length);
+    return BSPDataFragment(contents, headerLump->offset, headerLump->length);
 }
 
 bool BSPLumpDef::isValid() const
@@ -120,9 +123,9 @@ void BSPLumpDef::setIndex(quint32 newIndex)
     m_nIndex = newIndex;
 }
 
-quint32 BSPLumpDef::headerLumpByteOffset() const
+quint32 BSPLumpDef::headerLumpByteOffset(const BSPFileModel &data) const
 {
-    return BSPDefs::VERSION_BYTES + (m_nIndex * BSPDefs::HEADER_LUMP_DEF_BYTES);
+    return data.lumpTableOffset() + (m_nIndex * BSPDefs::HEADER_LUMP_DEF_BYTES);
 }
 
 BSPLumpDef::LumpType BSPLumpDef::type() const

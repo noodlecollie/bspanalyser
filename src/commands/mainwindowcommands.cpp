@@ -79,13 +79,16 @@ void MainWindowCommands::loadFile(const QString &fileName)
 
     // Don't need to validate, as this data is from a previously valid document.
     QJsonDocument jsonDoc = QJsonDocument::fromBinaryData(*formatData, QJsonDocument::BypassValidation);
+    BSPFileStructure& fileStructure = *mainWindow->applicationModel()->bspFileStructure();
     BSPFormatReader reader;
     QString errorString;
 
-    if ( !reader.read(jsonDoc, *mainWindow->applicationModel()->bspFileStructure(), errorString) )
+    if ( !reader.read(jsonDoc, fileStructure, errorString) )
     {
         throw GenericException(QString("Failed to read format file '%0'. %1").arg(formatCollection.sourceFileName(*versionPtr)).arg(errorString));
     }
+
+    fileModel->setHasSubVersion(fileStructure.hasSubVersion());
 }
 
 void MainWindowCommands::processLoadedFile(const QString& fileName)

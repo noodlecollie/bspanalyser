@@ -18,9 +18,17 @@ public:
     bool load(const QString& filePath);
     void clear();
 
+    quint32 version() const;
+    quint32 subVersion() const;
+    quint64 lumpTableOffset() const;
+
+    bool hasSubVersion() const;
+    void setHasSubVersion(bool hasSV);
+
 private:
     QString m_strFilePath;
     QByteArray m_arrData;
+    bool m_bHasSubVersion;
 };
 
 #endif // BSPFILEMODEL_H

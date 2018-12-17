@@ -27,7 +27,7 @@ public:
     static const EnumNameMap<LumpType>& lumpTypeNameMap();
 
     // Returns the entire lump data from the file.
-    virtual BSPDataFragment getDataFragment(const QByteArray &data) const override;
+    virtual BSPDataFragment getDataFragment(const BSPFileModel &data) const override;
 
     QString name() const;
     void setName(const QString& newName);
@@ -41,7 +41,7 @@ public:
     bool isValid() const;
 
 private:
-    quint32 headerLumpByteOffset() const;
+    quint32 headerLumpByteOffset(const BSPFileModel &data) const;
 
     QString m_strName;
     quint32 m_nIndex;

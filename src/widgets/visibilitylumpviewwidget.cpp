@@ -86,7 +86,7 @@ void VisibilityLumpViewWidget::calculateNumberOfLeaves()
         return;
     }
 
-    BSPDataFragment leavesFragment = leavesLump->getDataFragment(ApplicationModel::globalPointer()->bspFileModel()->contents());
+    BSPDataFragment leavesFragment = leavesLump->getDataFragment(*ApplicationModel::globalPointer()->bspFileModel());
     quint32 structSize = leavesLump->bspStruct().size();
     quint32 lumpSize = leavesFragment.length();
 

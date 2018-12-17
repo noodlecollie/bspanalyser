@@ -458,7 +458,34 @@
 				}
 			]
 		},
-		"ClipNodes":
+        "Projections":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "S",
+                    "type": "vector4"
+                },
+                {
+                    "name": "T",
+                    "type": "vector4"
+                }
+            ]
+        },
+        "NodeMarkSurfaces":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "SuraceIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Surfaces"
+                }
+            ]
+        },
+        "ClipNodes0":
 		{
 			"type": "struct",
 			"members":
@@ -481,6 +508,78 @@
 					"negativeindex": "LeafContents"
 				}
 			]
-		}
+        },
+        "ClipNodes1":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "Child0",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                },
+                {
+                    "name": "Child1",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                }
+            ]
+        },
+        "ClipNodes2":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "Child0",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                },
+                {
+                    "name": "Child1",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                }
+            ]
+        },
+        "ClipNodes3":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "Child0",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                },
+                {
+                    "name": "Child1",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                }
+            ]
+        }
 	}
 }
