@@ -265,7 +265,7 @@
 				},
 				{
 					"name": "NumSurfEdges",
-					"type": "uint16"
+                    "type": "uint32"
 				},
 				{
 					"name": "LightStyles",
