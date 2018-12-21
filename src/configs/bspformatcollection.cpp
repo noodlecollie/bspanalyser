@@ -37,7 +37,7 @@ QSharedPointer<QByteArray> BSPFormatCollection::format(const QByteArray& data) c
     const quint32* versionPtr = reinterpret_cast<const quint32*>(data.constData());
     quint64 version = static_cast<quint64>(versionPtr[0]);
 
-    if ( m_hshVersionHasSubVersions.contains(version) )
+    if ( m_hshVersionHasSubVersions.value(version, false) )
     {
         // Include sub-version.
         version |= static_cast<quint64>(versionPtr[1]) << 32;
