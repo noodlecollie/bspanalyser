@@ -221,7 +221,7 @@
 				},
 				{
 					"name": "NumNodeMarkSurfaces",
-					"type": "uint16"
+                    "type": "uint32"
 				}
 			],
 			"attributes":
