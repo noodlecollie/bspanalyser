@@ -71,7 +71,8 @@ SOURCES += \
     src/widgets/notimplementedplaceholderwidget.cpp \
     src/widgets/visibilitylumpviewwidget.cpp \
     src/configs/embeddedtexturesconfigreader.cpp \
-    src/widgets/valuesearchwidget.cpp
+    src/widgets/valuesearchwidget.cpp \
+    src/model/valuesearchworker.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -128,7 +129,8 @@ HEADERS += \
     src/widgets/notimplementedplaceholderwidget.h \
     src/widgets/visibilitylumpviewwidget.h \
     src/configs/embeddedtexturesconfigreader.h \
-    src/widgets/valuesearchwidget.h
+    src/widgets/valuesearchwidget.h \
+    src/model/valuesearchworker.h
 
 FORMS += \
         src/widgets/mainwindow.ui \

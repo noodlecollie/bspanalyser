@@ -151,7 +151,7 @@ void StructLumpViewWidget::setItem(int row, int column, const QString &data)
 
 void StructLumpViewWidget::lumpItemChanged(int item)
 {
-    QByteArray structData = item >= 0 ? getStructData(item) : QByteArray();
+    QByteArray structData = getStructData(item);
 
     for ( int row = 0; row < ui->memberTable->rowCount(); ++row )
     {
@@ -230,20 +230,12 @@ quint32 StructLumpViewWidget::memberFormatHint(const BSPStructGenericBlock &memb
     return formatHint;
 }
 
-QByteArray StructLumpViewWidget::getStructData(quint32 item) const
+QByteArray StructLumpViewWidget::getStructData(int item) const
 {
-    if ( m_LumpData.isEmpty() || !m_pStructLumpDef )
+    if ( item < 0 || !m_pStructLumpDef )
     {
         return QByteArray();
     }
 
-    quint32 structSize = m_pStructLumpDef->bspStruct().size();
-    quint32 endOfRequestedItem = (item + 1) * structSize;
-
-    if ( endOfRequestedItem > static_cast<quint32>(m_LumpData.count()) )
-    {
-        return QByteArray();
-    }
-
-    return m_LumpData.mid(item * structSize, structSize);
+    return m_pStructLumpDef->getDataForItem(m_LumpData, static_cast<quint32>(item));
 }

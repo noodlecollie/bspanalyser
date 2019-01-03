@@ -13,7 +13,7 @@ ValueSearchWidget::ValueSearchWidget(QWidget *parent) :
     connect(ui->selectAllButton, &QPushButton::clicked, this, &ValueSearchWidget::selectAllButtonPressed);
     updateSelectAllButtonState();
 
-    // Populate at the beginning to disable everything that needs it.
+    // Populate at the beginning to initialise disabled states.
     populate();
 }
 
@@ -34,8 +34,15 @@ QString ValueSearchWidget::searchValue() const
 
 QVector<QString> ValueSearchWidget::searchLumps() const
 {
-    // TODO
-    return QVector<QString>();
+    QVector<QString> lumpNames;
+    QList<QListWidgetItem*> selectedItems = ui->lumpSelectWidget->selectedItems();
+
+    for ( QListWidgetItem* item : selectedItems )
+    {
+        lumpNames.append(item->text());
+    }
+
+    return lumpNames;
 }
 
 void ValueSearchWidget::clear()

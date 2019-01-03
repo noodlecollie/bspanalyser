@@ -20,9 +20,6 @@ public:
     QString searchValue() const;
     QVector<QString> searchLumps() const;
 
-signals:
-    void searchExecuted();
-
 public slots:
     void clear();
     void populate();

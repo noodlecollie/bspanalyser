@@ -11,6 +11,7 @@ public:
     StructLumpDef();
 
     BSPStruct& bspStruct();
+    QByteArray getDataForItem(const QByteArray& lumpData, quint32 item) const;
 
 private:
     BSPStruct m_Struct;
