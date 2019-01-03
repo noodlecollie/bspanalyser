@@ -1,7 +1,10 @@
 #include "structlumpviewwidget.h"
 #include "ui_structlumpviewwidget.h"
 
-#include "displaystringconversion.h"
+#include "bsp/displaystringconversion.h"
+#include "exceptions/genericexception.h"
+
+Q_LOGGING_CATEGORY(lcStructLumpViewWidget, "StructLumpViewWidget")
 
 namespace
 {
@@ -76,7 +79,7 @@ void StructLumpViewWidget::updateLumpItemCount()
     }
 
     quint32 structSize = m_pStructLumpDef->bspStruct().size();
-    quint32 lumpDataSize = m_LumpData.count();
+    quint32 lumpDataSize = static_cast<quint32>(m_LumpData.count());
 
     if ( lumpDataSize % structSize != 0 )
     {
@@ -99,18 +102,9 @@ void StructLumpViewWidget::updateUI()
     // setValue() is called.
     ui->sbItemIndex->blockSignals(true);
 
-    if ( m_nItemCount > 0 )
-    {
-        ui->sbItemIndex->setMinimum(0);
-        ui->sbItemIndex->setMaximum(m_nItemCount - 1);
-        ui->sbItemIndex->setValue(0);
-    }
-    else
-    {
-        ui->sbItemIndex->setMinimum(0);
-        ui->sbItemIndex->setMaximum(0);
-        ui->sbItemIndex->setValue(0);
-    }
+    ui->sbItemIndex->setMinimum(0);
+    ui->sbItemIndex->setMaximum(m_nItemCount > 0 ? static_cast<int>(m_nItemCount - 1) : 0);
+    ui->sbItemIndex->setValue(0);
 
     ui->sbItemIndex->blockSignals(false);
 
@@ -161,73 +155,15 @@ void StructLumpViewWidget::lumpItemChanged(int item)
             continue;
         }
 
-        // This will be empty if the lump def doesn't exist.
-        if ( !structData.isEmpty() )
+        try
         {
-            BSPStructGenericBlock* member = m_pStructLumpDef->bspStruct().member(row);
-            QSharedPointer<BSPStructItemTypeConverter> typeConverter = member->typeConverter();
-
-            if ( typeConverter )
-            {
-                BSPStructItemTypes::CoreItemType coreType = member->itemType();
-
-                if ( member->itemCount() > 1 && !BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
-                {
-                    QStringList list;
-
-                    for ( quint32 itemIndex = 0; itemIndex < member->itemCount(); ++itemIndex )
-                    {
-                        list.append(DisplayStringConversion::toString(typeConverter->value(structData, itemIndex),
-                                                                      coreType,
-                                                                      memberFormatHint(*member)));
-                    }
-
-                    tableItem->setData(Qt::DisplayRole, list.join(", "));
-                }
-                else
-                {
-                    tableItem->setData(Qt::DisplayRole,
-                                  DisplayStringConversion::toString(typeConverter->value(structData, 0),
-                                                                    coreType,
-                                                                    memberFormatHint(*member)));
-                }
-
-                if ( BSPStructItemTypes::unmodifiedCoreType(coreType) == BSPStructItemTypes::Type_RGB8 && member->itemCount() == 1 )
-                {
-                    QVariant data = typeConverter->value(structData, 0);
-                    QColor col = data.value<QColor>();
-
-                    float avg = (col.redF() + col.greenF() + col.blueF()) / 3.0f;
-                    if ( avg < 0.5f )
-                    {
-                        tableItem->setData(Qt::ForegroundRole, QBrush(Qt::white));
-                    }
-
-                    tableItem->setData(Qt::BackgroundColorRole, col);
-                }
-            }
+            DisplayStringConversion::displayStringFromMemberData(*m_pStructLumpDef, structData, static_cast<quint32>(row));
+        }
+        catch (const GenericException& ex)
+        {
+            qCWarning(lcStructLumpViewWidget) << "Error converting value at row" << row << "to string:" << ex.message();
         }
     }
-}
-
-quint32 StructLumpViewWidget::memberFormatHint(const BSPStructGenericBlock &member) const
-{
-    quint32 formatHint = DisplayStringConversion::NoFormatHint;
-
-    if ( BSPStructItemTypes::coreTypeHasModifier(member.itemType(), BSPStructItemTypes::Mod_IsPrimaryOffset) )
-    {
-        formatHint |= DisplayStringConversion::IntegerAsHex;
-    }
-    else
-    {
-        QVariant hexVariant = member.attributes().attributeValue(BSPStructItemAttributes::Attribute::DisplayHex);
-        if ( hexVariant.type() == QVariant::Bool && hexVariant.toBool() )
-        {
-            formatHint |= DisplayStringConversion::IntegerAsHex;
-        }
-    }
-
-    return formatHint;
 }
 
 QByteArray StructLumpViewWidget::getStructData(int item) const
@@ -237,5 +173,12 @@ QByteArray StructLumpViewWidget::getStructData(int item) const
         return QByteArray();
     }
 
-    return m_pStructLumpDef->getDataForItem(m_LumpData, static_cast<quint32>(item));
+    try
+    {
+        return m_pStructLumpDef->getDataForIndex(m_LumpData, static_cast<quint32>(item));
+    }
+    catch (const GenericException&)
+    {
+        return QByteArray();
+    }
 }

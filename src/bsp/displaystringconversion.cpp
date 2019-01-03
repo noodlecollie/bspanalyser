@@ -7,6 +7,8 @@
 #include <QColor>
 
 #include "bsp/axiallyalignedboundingbox.h"
+#include "bsp/structlumpdef.h"
+#include "exceptions/genericexception.h"
 
 namespace DisplayStringConversion
 {
@@ -97,5 +99,69 @@ namespace DisplayStringConversion
         }
 
         return typeString;
+    }
+
+    QString displayStringForMember(const StructLumpDef& lumpDef, const QByteArray& lumpData, quint32 itemIndex, quint32 memberIndex)
+    {
+        return displayStringFromMemberData(lumpDef, lumpDef.getDataForIndex(lumpData, itemIndex), memberIndex);
+    }
+
+    QString displayStringFromMemberData(const StructLumpDef& lumpDef, const QByteArray& memberData, quint32 memberIndex)
+    {
+        BSPStructGenericBlock* member = lumpDef.bspStruct().member(static_cast<int>(memberIndex));
+
+        if ( !member )
+        {
+            throw GenericException(QString("Invalid member at index %0.").arg(memberIndex));
+        }
+
+        QSharedPointer<BSPStructItemTypeConverter> typeConverter = member->typeConverter();
+
+        if ( !typeConverter )
+        {
+            throw GenericException(QString("No type converter present for member '%0' at index %1.").arg(member->name()).arg(memberIndex));
+        }
+
+        BSPStructItemTypes::CoreItemType coreType = member->itemType();
+
+        if ( member->itemCount() > 1 && !BSPStructItemTypes::coreTypeHasModifier(coreType, BSPStructItemTypes::Mod_InterpretAsString) )
+        {
+            QStringList list;
+
+            for ( quint32 itemIndex = 0; itemIndex < member->itemCount(); ++itemIndex )
+            {
+                list.append(DisplayStringConversion::toString(typeConverter->value(memberData, itemIndex),
+                                                              coreType,
+                                                              formatHintForMember(*member)));
+            }
+
+            return list.join(", ");
+        }
+        else
+        {
+            return DisplayStringConversion::toString(typeConverter->value(memberData, 0),
+                                                     coreType,
+                                                     formatHintForMember(*member));
+        }
+    }
+
+    quint32 formatHintForMember(const BSPStructGenericBlock &member)
+    {
+        quint32 formatHint = DisplayStringConversion::NoFormatHint;
+
+        if ( BSPStructItemTypes::coreTypeHasModifier(member.itemType(), BSPStructItemTypes::Mod_IsPrimaryOffset) )
+        {
+            formatHint |= DisplayStringConversion::IntegerAsHex;
+        }
+        else
+        {
+            QVariant hexVariant = member.attributes().attributeValue(BSPStructItemAttributes::Attribute::DisplayHex);
+            if ( hexVariant.type() == QVariant::Bool && hexVariant.toBool() )
+            {
+                formatHint |= DisplayStringConversion::IntegerAsHex;
+            }
+        }
+
+        return formatHint;
     }
 }

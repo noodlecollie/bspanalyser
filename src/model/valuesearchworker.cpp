@@ -2,8 +2,9 @@
 
 #include "bsp/bspfilestructure.h"
 #include "bsp/bspdatafragment.h"
-#include "model/applicationmodel.h"
 #include "bsp/structlumpdef.h"
+#include "bsp/displaystringconversion.h"
+#include "model/applicationmodel.h"
 
 ValueSearchWorker::ValueSearchWorker(QObject *parent)
     : QObject(parent),
@@ -77,13 +78,22 @@ void ValueSearchWorker::processValuesForMatchingMembers(const QSharedPointer<Str
 {
     BSPFileModel* fileModel = ApplicationModel::globalPointer()->bspFileModel();
     BSPDataFragment dataFragment = lumpDef->getDataFragment(*fileModel);
-    QByteArray data = dataFragment.data();
-    quint32 itemCount = data.count()/lumpDef->bspStruct().size();
+    QByteArray lumpData = dataFragment.data();
+    quint32 itemCount = static_cast<quint32>(lumpData.count())/lumpDef->bspStruct().size();
 
-    for ( quint32 index = 0; index < itemCount; ++index )
+    for ( quint32 itemIndex = 0; itemIndex < itemCount; ++itemIndex )
     {
-        QByteArray itemData = lumpDef->getDataForItem(data, index);
+        for ( int memberIndex : memberIndices )
+        {
+            QString displayString = DisplayStringConversion::displayStringForMember(*lumpDef, lumpData, itemIndex, static_cast<quint32>(memberIndex));
+            if ( displayString == m_strValueToFind )
+            {
+                m_SearchResults.append(LumpItemPair(lumpDef->name(), itemIndex));
 
-        // TODO
+                // We don't want to add this item to the search results more than once,
+                // so return as soon as one of the members matches.
+                return;
+            }
+        }
     }
 }

@@ -67,7 +67,7 @@ SOURCES += \
     src/widgets/infodisplaygroupbox.cpp \
     src/widgets/keyvaluesview.cpp \
     src/widgets/keyvalueslumpviewwidget.cpp \
-    src/widgets/displaystringconversion.cpp \
+    src/bsp/displaystringconversion.cpp \
     src/widgets/notimplementedplaceholderwidget.cpp \
     src/widgets/visibilitylumpviewwidget.cpp \
     src/configs/embeddedtexturesconfigreader.cpp \
@@ -125,7 +125,7 @@ HEADERS += \
     src/widgets/infodisplaygroupbox.h \
     src/widgets/keyvaluesview.h \
     src/widgets/keyvalueslumpviewwidget.h \
-    src/widgets/displaystringconversion.h \
+    src/bsp/displaystringconversion.h \
     src/widgets/notimplementedplaceholderwidget.h \
     src/widgets/visibilitylumpviewwidget.h \
     src/configs/embeddedtexturesconfigreader.h \
