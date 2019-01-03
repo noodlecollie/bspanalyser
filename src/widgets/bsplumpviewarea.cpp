@@ -8,6 +8,7 @@
 #include "model/applicationmodel.h"
 #include "widgets/lumpviewfactory.h"
 #include "widgets/ilumpviewwidget.h"
+#include "widgets/valuesearchwidget.h"
 
 namespace
 {
@@ -22,18 +23,21 @@ namespace
 
 BSPLumpViewArea::BSPLumpViewArea(QWidget *parent)
     : QWidget(parent),
+      m_pSideTabWidget(new QTabWidget()),
       m_pLumpTable(new QTableWidget()),
+      m_pValueSearchWidget(new ValueSearchWidget()),
       m_pDataArea(new QTabWidget())
 {
     initDataArea();
     initLumpTable();
+    initSideTabWidget();
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
     hLayout->setSpacing(0);
 
     QSplitter* splitter = new QSplitter();
-    splitter->addWidget(m_pLumpTable);
+    splitter->addWidget(m_pSideTabWidget);
     splitter->addWidget(m_pDataArea);
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 7);
@@ -57,6 +61,8 @@ void BSPLumpViewArea::updateLumps()
         m_pLumpTable->setItem(lumpIndex, LumpNameColumn, new QTableWidgetItem(lumpDef->name()));
         m_pLumpTable->setItem(lumpIndex, LumpTypeColumn, new QTableWidgetItem(BSPLumpDef::lumpTypeNameMap().key(lumpDef->type())));
     }
+
+    m_pValueSearchWidget->populate();
 }
 
 void BSPLumpViewArea::initDataArea()
@@ -68,6 +74,12 @@ void BSPLumpViewArea::initDataArea()
     connect(m_pDataArea->tabBar(), &QTabBar::tabCloseRequested, this, &BSPLumpViewArea::handleTabCloseRequest);
 
     clearDataArea();
+}
+
+void BSPLumpViewArea::initSideTabWidget()
+{
+    m_pSideTabWidget->addTab(m_pLumpTable, tr("&Lumps"));
+    m_pSideTabWidget->addTab(m_pValueSearchWidget, tr("&Search"));
 }
 
 void BSPLumpViewArea::initLumpTable()

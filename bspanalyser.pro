@@ -70,7 +70,8 @@ SOURCES += \
     src/widgets/displaystringconversion.cpp \
     src/widgets/notimplementedplaceholderwidget.cpp \
     src/widgets/visibilitylumpviewwidget.cpp \
-    src/configs/embeddedtexturesconfigreader.cpp
+    src/configs/embeddedtexturesconfigreader.cpp \
+    src/widgets/valuesearchwidget.cpp
 
 HEADERS += \
         src/widgets/mainwindow.h \
@@ -126,14 +127,16 @@ HEADERS += \
     src/widgets/displaystringconversion.h \
     src/widgets/notimplementedplaceholderwidget.h \
     src/widgets/visibilitylumpviewwidget.h \
-    src/configs/embeddedtexturesconfigreader.h
+    src/configs/embeddedtexturesconfigreader.h \
+    src/widgets/valuesearchwidget.h
 
 FORMS += \
         src/widgets/mainwindow.ui \
     src/widgets/visibilitylumpviewwidget.ui \
     src/widgets/structlumpviewwidget.ui \
     src/widgets/keyvalueslumpviewwidget.ui \
-    src/widgets/notimplementedplaceholderwidget.ui
+    src/widgets/notimplementedplaceholderwidget.ui \
+    src/widgets/valuesearchwidget.ui
 
 RESOURCES += \
     resources/resources.qrc

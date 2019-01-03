@@ -9,6 +9,7 @@
 #include "bsp/bspfilestructure.h"
 
 class ILumpViewWidget;
+class ValueSearchWidget;
 
 class BSPLumpViewArea : public QWidget
 {
@@ -36,6 +37,7 @@ private:
 
     static QLabel* createPlaceholderTabContents();
 
+    void initSideTabWidget();
     void initDataArea();
     void initLumpTable();
     void clearDataArea();
@@ -44,7 +46,9 @@ private:
     PlaceholderAction getPlaceholderTabAction() const;
     void loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef>& lumpDef, ILumpViewWidget* lumpView);
 
+    QTabWidget* m_pSideTabWidget;
     QTableWidget* m_pLumpTable;
+    ValueSearchWidget* m_pValueSearchWidget;
     QTabWidget* m_pDataArea;
 };
 
