@@ -27,14 +27,19 @@ public slots:
 private slots:
     void updateSelectAllButtonState();
     void selectAllButtonPressed();
+    void handleItemSelectionChanged();
+    void performSearch();
 
 private:
     Ui::ValueSearchWidget *ui;
 
     bool bspFileIsValid() const;
+    bool canRunSearch() const;
+    int selectedLumpCount() const;
     void populateLumpSelector();
     void clearResultsTable();
     void refreshGeneralControls();
+    void refreshSearchButtonEnabledState();
 };
 
 #endif // VALUESEARCHWIDGET_H

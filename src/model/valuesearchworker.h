@@ -18,16 +18,10 @@ public:
 
     ValueSearchWorker(QObject* parent = Q_NULLPTR);
 
-    QString propertyName() const;
-    void setPropertyName(const QString& prop);
-
-    QString valueToFind() const;
-    void setValueToFind(const QString& val);
-
-    QVector<LumpItemPair> performSearch();
+    QVector<LumpItemPair> performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames);
 
 private:
-    void processLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef);
+    void processLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef, const QVector<QString>& lumpNames);
     void processValuesForMatchingMembers(const QSharedPointer<StructLumpDef>& lumpDef, const QVector<int>& memberIndices);
 
     QString m_strPropertyName;

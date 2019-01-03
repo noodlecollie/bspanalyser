@@ -1,5 +1,8 @@
 #include "valuesearchwidget.h"
 #include "ui_valuesearchwidget.h"
+
+#include <QtDebug>
+
 #include "model/applicationmodel.h"
 #include "bsp/bspfilestructure.h"
 
@@ -9,9 +12,13 @@ ValueSearchWidget::ValueSearchWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->lumpSelectWidget, &QListWidget::itemSelectionChanged, this, &ValueSearchWidget::updateSelectAllButtonState);
+    connect(ui->lumpSelectWidget, &QListWidget::itemSelectionChanged, this, &ValueSearchWidget::handleItemSelectionChanged);
     connect(ui->selectAllButton, &QPushButton::clicked, this, &ValueSearchWidget::selectAllButtonPressed);
     updateSelectAllButtonState();
+
+    connect(ui->propertySearch, &QLineEdit::textChanged, this, &ValueSearchWidget::refreshSearchButtonEnabledState);
+    connect(ui->valueSearch, &QLineEdit::textChanged, this, &ValueSearchWidget::refreshSearchButtonEnabledState);
+    connect(ui->searchButton, &QPushButton::clicked, this, &ValueSearchWidget::performSearch);
 
     // Populate at the beginning to initialise disabled states.
     populate();
@@ -107,16 +114,28 @@ void ValueSearchWidget::refreshGeneralControls()
 {
     const bool valid = bspFileIsValid();
 
-    ui->searchButton->setEnabled(valid);
     ui->propertySearch->setEnabled(valid);
     ui->valueSearch->setEnabled(valid);
     ui->resultsView->setEnabled(valid);
     ui->selectAllButton->setEnabled(valid);
+
+    refreshSearchButtonEnabledState();
+}
+
+void ValueSearchWidget::refreshSearchButtonEnabledState()
+{
+    ui->searchButton->setEnabled(bspFileIsValid() && canRunSearch());
+}
+
+void ValueSearchWidget::handleItemSelectionChanged()
+{
+    refreshSearchButtonEnabledState();
+    updateSelectAllButtonState();
 }
 
 void ValueSearchWidget::updateSelectAllButtonState()
 {
-    const int selectedCount = ui->lumpSelectWidget->selectedItems().count();
+    const int selectedCount = selectedLumpCount();
 
     if ( selectedCount > 0 )
     {
@@ -130,7 +149,7 @@ void ValueSearchWidget::updateSelectAllButtonState()
 
 void ValueSearchWidget::selectAllButtonPressed()
 {
-    const int selectedCount = ui->lumpSelectWidget->selectedItems().count();
+    const int selectedCount = selectedLumpCount();
 
     if ( selectedCount > 0 )
     {
@@ -142,8 +161,28 @@ void ValueSearchWidget::selectAllButtonPressed()
     }
 }
 
+void ValueSearchWidget::performSearch()
+{
+    ValueSearchWorker& worker = ApplicationModel::globalPointer()->valueSearchWorker();
+    QVector<ValueSearchWorker::LumpItemPair> results = worker.performSearch(ui->propertySearch->text().trimmed(), ui->valueSearch->text(), searchLumps());
+
+    // TODO: Do something with these.
+    qDebug() << "Search results:" << results;
+}
+
 bool ValueSearchWidget::bspFileIsValid() const
 {
     BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
     return bspFileStructure && bspFileStructure->lumpDefCount() > 0;
+}
+
+bool ValueSearchWidget::canRunSearch() const
+{
+    return !ui->propertySearch->text().trimmed().isEmpty() &&
+           selectedLumpCount() > 0;
+}
+
+int ValueSearchWidget::selectedLumpCount() const
+{
+    return ui->lumpSelectWidget->selectedItems().count();
 }

@@ -4,6 +4,8 @@
 #include <QObject>
 
 #include "bspfilemodel.h"
+#include "valuesearchworker.h"
+
 #include "bsp/bspfilestructure.h"
 #include "configs/bspformatcollection.h"
 
@@ -19,6 +21,7 @@ public:
     BSPFileModel* bspFileModel();
     BSPFileStructure* bspFileStructure();
     BSPFormatCollection& bspFormatCollection();
+    ValueSearchWorker& valueSearchWorker();
 
 private:
     static ApplicationModel* m_pGlobalModel;
@@ -26,6 +29,7 @@ private:
     BSPFileModel* m_pBSPFileModel;
     BSPFileStructure m_BSPFileStructure;
     BSPFormatCollection m_BSPFormatCollection;
+    ValueSearchWorker m_SearchWorker;
 };
 
 #endif // APPLICATIONMODEL_H

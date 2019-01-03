@@ -13,42 +13,25 @@ ValueSearchWorker::ValueSearchWorker(QObject *parent)
 {
 }
 
-QString ValueSearchWorker::propertyName() const
+QVector<ValueSearchWorker::LumpItemPair> ValueSearchWorker::performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames)
 {
-    return m_strPropertyName;
-}
+    m_strPropertyName = propertyName;
+    m_strValueToFind = matchValue;
 
-void ValueSearchWorker::setPropertyName(const QString& prop)
-{
-    m_strPropertyName = prop;
-}
-
-QString ValueSearchWorker::valueToFind() const
-{
-    return m_strValueToFind;
-}
-
-void ValueSearchWorker::setValueToFind(const QString& val)
-{
-    m_strValueToFind = val;
-}
-
-QVector<ValueSearchWorker::LumpItemPair> ValueSearchWorker::performSearch()
-{
     m_SearchResults = QVector<LumpItemPair>();
     BSPFileStructure* fileStructure = ApplicationModel::globalPointer()->bspFileStructure();
 
     for ( int index = 0; index < fileStructure->lumpDefCount(); ++index )
     {
-        processLumpDef(fileStructure->lumpDef(index));
+        processLumpDef(fileStructure->lumpDef(index), lumpNames);
     }
 
     return m_SearchResults;
 }
 
-void ValueSearchWorker::processLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef)
+void ValueSearchWorker::processLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef, const QVector<QString>& lumpNames)
 {
-    if ( lumpDef->type() != BSPLumpDef::LumpType::Struct )
+    if ( lumpDef->type() != BSPLumpDef::LumpType::Struct || !lumpNames.contains(lumpDef->name()) )
     {
         return;
     }

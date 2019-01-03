@@ -6,7 +6,8 @@ ApplicationModel::ApplicationModel(QObject* parent)
     : QObject(parent),
       m_pBSPFileModel(new BSPFileModel(this)),
       m_BSPFileStructure(),
-      m_BSPFormatCollection()
+      m_BSPFormatCollection(),
+      m_SearchWorker()
 {
     Q_ASSERT(!m_pGlobalModel);
     m_pGlobalModel = this;
@@ -39,4 +40,9 @@ BSPFileStructure* ApplicationModel::bspFileStructure()
 BSPFormatCollection& ApplicationModel::bspFormatCollection()
 {
     return m_BSPFormatCollection;
+}
+
+ValueSearchWorker& ApplicationModel::valueSearchWorker()
+{
+    return m_SearchWorker;
 }

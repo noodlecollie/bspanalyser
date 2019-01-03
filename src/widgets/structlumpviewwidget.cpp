@@ -155,13 +155,47 @@ void StructLumpViewWidget::lumpItemChanged(int item)
             continue;
         }
 
+        BSPStructGenericBlock* member = m_pStructLumpDef->bspStruct().member(row);
+        Q_ASSERT(member);
+
+        QSharedPointer<BSPStructItemTypeConverter> typeConverter = member->typeConverter();
+        if ( !typeConverter )
+        {
+            continue;
+        }
+
+        QString displayString;
+
         try
         {
-            DisplayStringConversion::displayStringFromMemberData(*m_pStructLumpDef, structData, static_cast<quint32>(row));
+            displayString = DisplayStringConversion::displayStringFromMemberData(*m_pStructLumpDef, structData, static_cast<quint32>(row));
         }
         catch (const GenericException& ex)
         {
             qCWarning(lcStructLumpViewWidget) << "Error converting value at row" << row << "to string:" << ex.message();
+            displayString = QString();
+        }
+
+        if ( displayString.isNull() )
+        {
+            continue;
+        }
+
+        tableItem->setData(Qt::DisplayRole, displayString);
+
+        if ( BSPStructItemTypes::unmodifiedCoreType(member->itemType()) == BSPStructItemTypes::Type_RGB8 && member->itemCount() == 1 )
+        {
+            QVariant data = typeConverter->value(structData, 0);
+            QColor col = data.value<QColor>();
+
+            // Change the colour of the text if it would be difficult to read against the background.
+            float avg = static_cast<float>(col.redF() + col.greenF() + col.blueF()) / 3.0f;
+            if ( avg < 0.5f )
+            {
+                tableItem->setData(Qt::ForegroundRole, QBrush(Qt::white));
+            }
+
+            tableItem->setData(Qt::BackgroundColorRole, col);
         }
     }
 }
