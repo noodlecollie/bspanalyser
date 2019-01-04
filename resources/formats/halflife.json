@@ -229,7 +229,7 @@
 				{
 					"name": "Flags",
 					"type": "uint32",
-					"displayHex": true
+                    "displayhex": true
 				}
 			]
 		},
@@ -265,7 +265,7 @@
 					"type": "array",
 					"arraytype": "uint8",
 					"arraycount": 4,
-					"displayHex": true
+                    "displayhex": true
 				},
 				{
 					"name": "LightingOffset",
@@ -352,7 +352,7 @@
 					"type": "array",
 					"arraytype": "uint8",
 					"arraycount": 4,
-					"displayHex": true
+                    "displayhex": true
 				}
 			],
 			"attributes":

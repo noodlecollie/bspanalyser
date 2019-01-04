@@ -110,6 +110,11 @@ namespace DisplayStringConversion
     {
         BSPStructGenericBlock* member = lumpDef.bspStruct().member(static_cast<int>(memberIndex));
 
+        if ( member->name() == "LightStyles" )
+        {
+            bool stop = true;
+        }
+
         if ( !member )
         {
             throw GenericException(QString("Invalid member at index %0.").arg(memberIndex));
