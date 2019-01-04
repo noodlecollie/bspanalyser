@@ -9,6 +9,7 @@
 #include "widgets/lumpviewfactory.h"
 #include "widgets/ilumpviewwidget.h"
 #include "widgets/valuesearchwidget.h"
+#include "structlumpviewwidget.h"
 
 namespace
 {
@@ -80,6 +81,8 @@ void BSPLumpViewArea::initSideTabWidget()
 {
     m_pSideTabWidget->addTab(m_pLumpTable, tr("&Lumps"));
     m_pSideTabWidget->addTab(m_pValueSearchWidget, tr("&Search"));
+
+    connect(m_pValueSearchWidget, &ValueSearchWidget::searchResultChosen, this, &BSPLumpViewArea::handleSearchResultChosen);
 }
 
 void BSPLumpViewArea::initLumpTable()
@@ -124,27 +127,34 @@ void BSPLumpViewArea::handleTabCloseRequest(int index)
 
 void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 {
-    if ( column < 0 || column >= m_pLumpTable->columnCount() || row < 0 || row >= m_pLumpTable->rowCount() )
+    Q_UNUSED(column);
+
+    openTabForLump(row);
+}
+
+void BSPLumpViewArea::openTabForLump(int lumpIndex)
+{
+    if ( lumpIndex < 0 || lumpIndex >= m_pLumpTable->rowCount() )
     {
         return;
     }
 
     BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
 
-    int existingTabIndex = tabIndexForLump(row);
+    int existingTabIndex = tabIndexForLump(lumpIndex);
     if ( existingTabIndex >= 0 )
     {
         m_pDataArea->setCurrentIndex(existingTabIndex);
         return;
     }
 
-    QTableWidgetItem* item = m_pLumpTable->item(row, LumpNameColumn);
+    QTableWidgetItem* item = m_pLumpTable->item(lumpIndex, LumpNameColumn);
     if ( !item )
     {
         return;
     }
 
-    QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(row);
+    QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(lumpIndex);
     if ( !lumpDef )
     {
         return;
@@ -160,8 +170,35 @@ void BSPLumpViewArea::handleLumpCellDoubleClicked(int row, int column)
 
     m_pDataArea->addTab(viewWidget->asWidget(), lumpDef->name());
     m_pDataArea->setCurrentIndex(m_pDataArea->count() - 1);
-    m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(row));
+    m_pDataArea->tabBar()->setTabData(m_pDataArea->count() - 1, QVariant(lumpIndex));
     updateDataAreaTabs();
+}
+
+void BSPLumpViewArea::handleSearchResultChosen(quint32 lumpIndex, quint32 itemIndex)
+{
+    openTabForLump(static_cast<int>(lumpIndex));
+
+    BSPFileStructure* bspFileStructure = ApplicationModel::globalPointer()->bspFileStructure();
+    QSharedPointer<BSPLumpDef> lumpDef = bspFileStructure->lumpDef(lumpIndex);
+
+    if ( !lumpDef || lumpDef->type() != BSPLumpDef::LumpType::Struct )
+    {
+        return;
+    }
+
+    QWidget* viewWidget = m_pDataArea->currentWidget();
+    if ( !viewWidget )
+    {
+        return;
+    }
+
+    StructLumpViewWidget* structWidget = qobject_cast<StructLumpViewWidget*>(viewWidget);
+    if ( !structWidget )
+    {
+        return;
+    }
+
+    structWidget->setCurrentItem(static_cast<int>(itemIndex));
 }
 
 void BSPLumpViewArea::loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef> &lumpDef, ILumpViewWidget *lumpView)

@@ -13,12 +13,12 @@ ValueSearchWorker::ValueSearchWorker(QObject *parent)
 {
 }
 
-QVector<ValueSearchWorker::LumpItemPair> ValueSearchWorker::performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames)
+QVector<ValueSearchWorker::SearchResult> ValueSearchWorker::performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames)
 {
     m_strPropertyName = propertyName;
     m_strValueToFind = matchValue;
 
-    m_SearchResults = QVector<LumpItemPair>();
+    m_SearchResults = QVector<SearchResult>();
     BSPFileStructure* fileStructure = ApplicationModel::globalPointer()->bspFileStructure();
 
     for ( int index = 0; index < fileStructure->lumpDefCount(); ++index )
@@ -71,11 +71,11 @@ void ValueSearchWorker::processValuesForMatchingMembers(const QSharedPointer<Str
             QString displayString = DisplayStringConversion::displayStringForMember(*lumpDef, lumpData, itemIndex, static_cast<quint32>(memberIndex));
             if ( displayString == m_strValueToFind )
             {
-                m_SearchResults.append(LumpItemPair(lumpDef->name(), itemIndex));
+                m_SearchResults.append(SearchResult(lumpDef->index(), lumpDef->name(), itemIndex));
 
                 // We don't want to add this item to the search results more than once,
-                // so return as soon as one of the members matches.
-                return;
+                // so stop as soon as one of the members matches.
+                break;
             }
         }
     }

@@ -216,3 +216,14 @@ QByteArray StructLumpViewWidget::getStructData(int item) const
         return QByteArray();
     }
 }
+
+void StructLumpViewWidget::setCurrentItem(int index)
+{
+    if ( index < 0 || static_cast<quint32>(index) >= m_nItemCount )
+    {
+        return;
+    }
+
+    // Set the number select box, which will trigger the update.
+    ui->sbItemIndex->setValue(index);
+}

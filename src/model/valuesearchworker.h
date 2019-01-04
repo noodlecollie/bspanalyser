@@ -14,11 +14,30 @@ class ValueSearchWorker : public QObject
 {
     Q_OBJECT
 public:
-    typedef QPair<QString, quint32> LumpItemPair;
+    struct SearchResult
+    {
+        quint32 lumpIndex;
+        QString lumpName;
+        quint32 itemIndex;
+
+        SearchResult(quint32 lumpIndex, const QString& lumpName, quint32 itemIndex)
+            : lumpIndex(lumpIndex),
+              lumpName(lumpName),
+              itemIndex(itemIndex)
+        {
+        }
+
+        SearchResult()
+            : lumpIndex(0),
+              lumpName(),
+              itemIndex(0)
+        {
+        }
+    };
 
     ValueSearchWorker(QObject* parent = Q_NULLPTR);
 
-    QVector<LumpItemPair> performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames);
+    QVector<SearchResult> performSearch(const QString& propertyName, const QString& matchValue, const QVector<QString>& lumpNames);
 
 private:
     void processLumpDef(const QSharedPointer<BSPLumpDef>& lumpDef, const QVector<QString>& lumpNames);
@@ -26,7 +45,7 @@ private:
 
     QString m_strPropertyName;
     QString m_strValueToFind;
-    QVector<LumpItemPair> m_SearchResults;
+    QVector<SearchResult> m_SearchResults;
 };
 
 #endif // VALUESEARCHWORKER_H

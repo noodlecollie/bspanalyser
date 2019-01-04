@@ -27,6 +27,8 @@ public:
     virtual QWidget* asWidget() override;
     virtual void loadLumpData(const QSharedPointer<BSPLumpDef> &lumpDef, const BSPDataFragment &fragment) override;
 
+    void setCurrentItem(int index);
+
 private slots:
     void lumpItemChanged(int item);
 

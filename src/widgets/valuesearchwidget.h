@@ -20,6 +20,9 @@ public:
     QString searchValue() const;
     QVector<QString> searchLumps() const;
 
+signals:
+    void searchResultChosen(quint32 lumpIndex, quint32 itemIndex);
+
 public slots:
     void clear();
     void populate();
@@ -29,6 +32,7 @@ private slots:
     void selectAllButtonPressed();
     void handleItemSelectionChanged();
     void performSearch();
+    void handleResultCellDoubleClicked(int row, int column);
 
 private:
     Ui::ValueSearchWidget *ui;

@@ -18,7 +18,11 @@ ValueSearchWidget::ValueSearchWidget(QWidget *parent) :
 
     connect(ui->propertySearch, &QLineEdit::textChanged, this, &ValueSearchWidget::refreshSearchButtonEnabledState);
     connect(ui->valueSearch, &QLineEdit::textChanged, this, &ValueSearchWidget::refreshSearchButtonEnabledState);
+    connect(ui->resultsView, &QTableWidget::cellDoubleClicked, this, &ValueSearchWidget::handleResultCellDoubleClicked);
+
     connect(ui->searchButton, &QPushButton::clicked, this, &ValueSearchWidget::performSearch);
+    connect(ui->propertySearch, &QLineEdit::returnPressed, this, &ValueSearchWidget::performSearch);
+    connect(ui->valueSearch, &QLineEdit::returnPressed, this, &ValueSearchWidget::performSearch);
 
     // Populate at the beginning to initialise disabled states.
     populate();
@@ -164,10 +168,39 @@ void ValueSearchWidget::selectAllButtonPressed()
 void ValueSearchWidget::performSearch()
 {
     ValueSearchWorker& worker = ApplicationModel::globalPointer()->valueSearchWorker();
-    QVector<ValueSearchWorker::LumpItemPair> results = worker.performSearch(ui->propertySearch->text().trimmed(), ui->valueSearch->text(), searchLumps());
+    QVector<ValueSearchWorker::SearchResult> results = worker.performSearch(ui->propertySearch->text().trimmed(), ui->valueSearch->text(), searchLumps());
 
-    // TODO: Do something with these.
-    qDebug() << "Search results:" << results;
+    clearResultsTable();
+    ui->resultsView->setRowCount(results.count());
+
+    for ( int resultIndex = 0; resultIndex < results.count(); ++resultIndex )
+    {
+        ValueSearchWorker::SearchResult result = results.at(resultIndex);
+        QTableWidgetItem* lump = new QTableWidgetItem(result.lumpName);
+        QTableWidgetItem* itemIndex = new QTableWidgetItem(QString("%0").arg(result.itemIndex));
+
+        lump->setData(Qt::UserRole, QVariant(result.lumpIndex));
+        itemIndex->setData(Qt::UserRole, QVariant(result.itemIndex));
+
+        ui->resultsView->setItem(resultIndex, 0, lump);
+        ui->resultsView->setItem(resultIndex, 1, itemIndex);
+    }
+}
+
+void ValueSearchWidget::handleResultCellDoubleClicked(int row, int column)
+{
+    Q_UNUSED(column);
+
+    QTableWidgetItem* lumpIndexItem = ui->resultsView->item(row, 0);
+    QTableWidgetItem* itemIndexItem = ui->resultsView->item(row, 1);
+
+    if ( !lumpIndexItem || !itemIndexItem )
+    {
+        return;
+    }
+
+    emit searchResultChosen(lumpIndexItem->data(Qt::UserRole).value<quint32>(),
+                            itemIndexItem->data(Qt::UserRole).value<quint32>());
 }
 
 bool ValueSearchWidget::bspFileIsValid() const

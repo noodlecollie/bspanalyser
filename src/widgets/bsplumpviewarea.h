@@ -26,6 +26,7 @@ public slots:
 private slots:
     void handleTabCloseRequest(int index);
     void handleLumpCellDoubleClicked(int row, int column);
+    void handleSearchResultChosen(quint32 lumpIndex, quint32 itemIndex);
 
 private:
     enum PlaceholderAction
@@ -45,6 +46,7 @@ private:
     int tabIndexForLump(int lumpIndex) const;
     PlaceholderAction getPlaceholderTabAction() const;
     void loadBSPDataIntoLumpView(const QSharedPointer<BSPLumpDef>& lumpDef, ILumpViewWidget* lumpView);
+    void openTabForLump(int lumpIndex);
 
     QTabWidget* m_pSideTabWidget;
     QTableWidget* m_pLumpTable;
