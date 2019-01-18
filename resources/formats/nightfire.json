@@ -302,21 +302,21 @@
 					"type": "vector3aabb"
 				},
 				{
-					"name": "SurfacesIndex",
+                    "name": "LeafSurfacesIndex",
 					"type": "primaryindex32",
 					"indexlump": "LeafSurfaces"
 				},
 				{
-					"name": "SurfacesCount",
+                    "name": "LeafSurfacesCount",
 					"type": "uint32"
 				},
 				{
-					"name": "BrushesIndex",
+                    "name": "LeafBrushesIndex",
 					"type": "primaryindex32",
 					"indexlump": "LeafBrushes"
 				},
 				{
-					"name": "BrushesCount",
+                    "name": "LeafBrushesCount",
 					"type": "uint32"
 				}
 			],
@@ -325,14 +325,14 @@
 				{
 					"type": "foreignblock",
 					"name": "LeafSurfaces",
-					"sourceindex": "SurfacesIndex",
-					"sourcecount": "SurfacesCount"
+                    "sourceindex": "LeafSurfacesIndex",
+                    "sourcecount": "LeafSurfacesCount"
 				},
 				{
 					"type": "foreignblock",
 					"name": "LeafBrushes",
-					"sourceindex": "BrushesIndex",
-					"sourcecount": "BrushesCount"
+                    "sourceindex": "LeafBrushesIndex",
+                    "sourcecount": "LeafBrushesCount"
 				}
 			]
 		},
@@ -376,12 +376,12 @@
 					"arraycount": 4
 				},
 				{
-					"name": "BrushesIndex",
+                    "name": "LeavesIndex",
 					"type": "primaryindex32",
-					"indexlump": "Brushes"
+                    "indexlump": "Leaves"
 				},
 				{
-					"name": "BrushesCount",
+                    "name": "LeavesCount",
 					"type": "uint32"
 				},
 				{
@@ -398,13 +398,13 @@
 			[
 				{
 					"type": "foreignblock",
-					"name": "ModelBrushes",
-					"sourceindex": "BrushesIndex",
-					"sourcecount": "BrushesCount"
+                    "name": "Leaves",
+                    "sourceindex": "LeavesIndex",
+                    "sourcecount": "LeavesCount"
 				},
 				{
 					"type": "foreignblock",
-					"name": "ModelSurfaces",
+                    "name": "Surfaces",
 					"sourceindex": "SurfacesIndex",
 					"sourcecount": "SurfacesCount"
 				}
