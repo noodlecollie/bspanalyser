@@ -436,9 +436,9 @@
 			"members":
 			[
 				{
-					"name": "TextureIndex",
+                    "name": "SurfaceIndex",
 					"type": "primaryindex32",
-					"indexlump": "Textures"
+                    "indexlump": "Surfaces"
 				},
 				{
 					"name": "PlaneIndex",
