@@ -93,7 +93,9 @@ void StructLumpViewWidget::updateLumpItemCount()
 
 void StructLumpViewWidget::updateUI()
 {
-    ui->lblTotalItems->setText(tr("/ %0").arg(m_nItemCount - 1));
+    const qint32 validItems = m_nItemCount > 0 ? static_cast<qint32>(m_nItemCount - 1) : 0;
+
+    ui->lblTotalItems->setText(tr("/ %0").arg(validItems));
     ui->lblBytesPerItem->setText(tr("%0 bytes").arg(m_pStructLumpDef ? m_pStructLumpDef->bspStruct().size() : 0));
     ui->lblLumpSize->setText(tr("%0 bytes").arg(m_LumpData.count()));
 
@@ -103,10 +105,13 @@ void StructLumpViewWidget::updateUI()
     ui->sbItemIndex->blockSignals(true);
 
     ui->sbItemIndex->setMinimum(0);
-    ui->sbItemIndex->setMaximum(m_nItemCount > 0 ? static_cast<int>(m_nItemCount - 1) : 0);
+    ui->sbItemIndex->setMaximum(validItems);
     ui->sbItemIndex->setValue(0);
+    ui->sbItemIndex->setEnabled(m_nItemCount > 0);
 
     ui->sbItemIndex->blockSignals(false);
+
+    ui->memberTable->setEnabled(m_nItemCount > 0);
 
     // If the item index isn't valid, the table cells will be emptied.
     lumpItemChanged(ui->sbItemIndex->value());
@@ -145,6 +150,12 @@ void StructLumpViewWidget::setItem(int row, int column, const QString &data)
 
 void StructLumpViewWidget::lumpItemChanged(int item)
 {
+    // Don't bother if we have no items at all.
+    if ( m_nItemCount < 1 )
+    {
+        return;
+    }
+
     QByteArray structData = getStructData(item);
 
     for ( int row = 0; row < ui->memberTable->rowCount(); ++row )
@@ -173,6 +184,11 @@ void StructLumpViewWidget::lumpItemChanged(int item)
         catch (const GenericException& ex)
         {
             qCWarning(lcStructLumpViewWidget) << "Error converting value at row" << row << "to string:" << ex.message();
+            displayString = QString();
+        }
+        catch(...)
+        {
+            qCWarning(lcStructLumpViewWidget) << "Unexpected error converting value at row" << row << "to string.";
             displayString = QString();
         }
 

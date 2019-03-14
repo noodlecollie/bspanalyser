@@ -1,0 +1,469 @@
+{
+    "version": 43,
+
+    "lumps":
+    [
+        "Entities",
+        "Planes",
+        "Textures",
+        "Vertices",
+        "Visibility",
+        "Nodes",
+        "TexInfo",
+        "Faces",
+        "Lighting",
+        "ClipNodes",
+        "Leaves",
+        "MarkSurfaces",
+        "Edges",
+        "SurfEdges",
+        "Models"
+    ],
+
+    "enums":
+    [
+        {
+            "name": "PlaneType",
+            "values":
+            [
+                {
+                    "name": "XAxis",
+                    "value": 0
+                },
+                {
+                    "name": "YAxis"
+                },
+                {
+                    "name": "ZAxis"
+                },
+                {
+                    "name": "XAxisClosest"
+                },
+                {
+                    "name": "YAxisClosest"
+                },
+                {
+                    "name": "ZAxisClosest"
+                }
+            ]
+        },
+        {
+            "name": "LeafContents",
+            "values":
+            [
+                {
+                    "name": "Empty",
+                    "value": -1
+                },
+                {
+                    "name": "Solid",
+                    "value": -2
+                },
+                {
+                    "name": "Water",
+                    "value": -3
+                },
+                {
+                    "name": "Slime",
+                    "value": -4
+                },
+                {
+                    "name": "Lava",
+                    "value": -5
+                },
+                {
+                    "name": "Sky",
+                    "value": -6
+                },
+                {
+                    "name": "Origin",
+                    "value": -7
+                },
+                {
+                    "name": "Clip",
+                    "value": -8
+                },
+                {
+                    "name": "Current0",
+                    "value": -9
+                },
+                {
+                    "name": "Current90",
+                    "value": -10
+                },
+                {
+                    "name": "Current180",
+                    "value": -11
+                },
+                {
+                    "name": "Current270",
+                    "value": -12
+                },
+                {
+                    "name": "CurrentUp",
+                    "value": -13
+                },
+                {
+                    "name": "CurrentDown",
+                    "value": -14
+                },
+                {
+                    "name": "Translucent",
+                    "value": -15
+                }
+            ]
+        }
+    ],
+
+    "lumpitems":
+    {
+        "Entities":
+        {
+            "type": "keyvalues"
+        },
+        "Planes":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Normal",
+                    "type": "vector3"
+                },
+                {
+                    "name": "Distance",
+                    "type": "float"
+                },
+                {
+                    "name": "Type",
+                    "type": "int32",
+                    "enum": "PlaneType"
+                }
+            ]
+        },
+        "Textures":
+        {
+            "type": "embeddedtextures"
+        },
+        "Vertices":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Position",
+                    "type": "vector3"
+                }
+            ]
+        },
+        "Visibility":
+        {
+            "type": "visdata",
+            "rle": true,
+            "leaveslump": "Leaves"
+        },
+        "Nodes":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "Child0",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "Leaves"
+                },
+                {
+                    "name": "Child1",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "Leaves"
+                },
+                {
+                    "name": "Bounds",
+                    "type": "i16vector3aabb"
+                },
+                {
+                    "name": "FirstFace",
+                    "type": "primaryindex16",
+                    "indexlump": "Faces"
+                },
+                {
+                    "name": "NumFaces",
+                    "type": "uint16"
+                }
+            ],
+            "attributes":
+            [
+                {
+                    "type": "foreignblock",
+                    "name": "NodeFaces",
+                    "sourceindex": "FirstFace",
+                    "sourcecount": "NumFaces"
+                }
+            ]
+        },
+        "TexInfo":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "SAxis",
+                    "type": "vector4"
+                },
+                {
+                    "name": "TAxis",
+                    "type": "vector4"
+                },
+                {
+                    "name": "MipTexIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Textures"
+                },
+                {
+                    "name": "Flags",
+                    "type": "uint32",
+                    "displayhex": true
+                }
+            ]
+        },
+        "Faces":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex16",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "PlaneSide",
+                    "type": "uint16"
+                },
+                {
+                    "name": "FirstSurfEdge",
+                    "type": "primaryindex32",
+                    "indexlump": "SurfEdges"
+                },
+                {
+                    "name": "NumSurfEdges",
+                    "type": "uint16"
+                },
+                {
+                    "name": "TexInfoIndex",
+                    "type": "primaryindex16"
+                },
+                {
+                    "name": "LightStyles",
+                    "type": "array",
+                    "arraytype": "uint8",
+                    "arraycount": 4,
+                    "displayhex": true
+                },
+                {
+                    "name": "LightingOffset",
+                    "type": "primaryoffset32",
+                    "offsetlump": "Lighting"
+                }
+            ],
+            "attributes":
+            [
+                {
+                    "type": "foreignblock",
+                    "name": "SurfaceEdges",
+                    "sourceindex": "FirstSurfEdge",
+                    "sourcecount": "NumSurfEdges"
+                }
+            ]
+        },
+        "Lighting":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Colour",
+                    "type": "rgb8"
+                }
+            ]
+        },
+        "ClipNodes":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "PlaneIndex",
+                    "type": "primaryindex32",
+                    "indexlump": "Planes"
+                },
+                {
+                    "name": "Child0",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                },
+                {
+                    "name": "Child1",
+                    "type": "binaryindex16",
+                    "positiveindex": "Nodes",
+                    "negativeindex": "LeafContents"
+                }
+            ]
+        },
+        "Leaves":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Contents",
+                    "type": "int32",
+                    "enum": "LeafContents"
+                },
+                {
+                    "name": "VisibilityOffset",
+                    "type": "primaryoffset32",
+                    "offsetlump": "Visibility",
+                    "maxsignifiesinvalid": true
+                },
+                {
+                    "name": "Bounds",
+                    "type": "i16vector3aabb"
+                },
+                {
+                    "name": "FirstMarkSurface",
+                    "type": "primaryindex16",
+                    "indexlump": "MarkSurfaces"
+                },
+                {
+                    "name": "NumMarkSurfaces",
+                    "type": "uint16"
+                },
+                {
+                    "name": "AmbientSoundLevels",
+                    "type": "array",
+                    "arraytype": "uint8",
+                    "arraycount": 4,
+                    "displayhex": true
+                }
+            ],
+            "attributes":
+            [
+                {
+                    "type": "foreignblock",
+                    "name": "LeafMarkSurfaces",
+                    "sourceindex": "FirstMarkSurface",
+                    "sourcecount": "NumMarkSurfaces"
+                }
+            ]
+        },
+        "MarkSurfaces":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "FaceIndex",
+                    "type": "primaryindex16",
+                    "indexlump": "Faces"
+                }
+            ]
+        },
+        "Edges":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Vertex0",
+                    "type": "primaryindex16",
+                    "indexlump": "Vertices"
+                },
+                {
+                    "name": "Vertex1",
+                    "type": "primaryindex16",
+                    "indexlump": "Vertices"
+                }
+            ]
+        },
+        "SurfEdges":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "EdgeIndex",
+                    "type": "binaryindex32",
+                    "positiveindex": "Edges",
+                    "negativeindex": "Edges",
+                    "negativebehaviour": "absolute"
+                }
+            ]
+        },
+        "Models":
+        {
+            "type": "struct",
+            "members":
+            [
+                {
+                    "name": "Bounds",
+                    "type": "vector3aabb"
+                },
+                {
+                    "name": "Origin",
+                    "type": "vector3"
+                },
+                {
+                    "name": "HeadNode0",
+                    "type": "primaryindex32",
+                    "indexlump": "ClipNodes"
+                },
+                {
+                    "name": "HeadNode1",
+                    "type": "primaryindex32",
+                    "indexlump": "ClipNodes"
+                },
+                {
+                    "name": "HeadNode2",
+                    "type": "primaryindex32",
+                    "indexlump": "ClipNodes"
+                },
+                {
+                    "name": "HeadNode3",
+                    "type": "primaryindex32",
+                    "indexlump": "ClipNodes"
+                },
+                {
+                    "name": "VisLeaves",
+                    "type": "uint32"
+                },
+                {
+                    "name": "FirstFace",
+                    "type": "primaryindex32",
+                    "indexlump": "Faces"
+                },
+                {
+                    "name": "NumFaces",
+                    "type": "uint32"
+                }
+            ],
+            "attributes":
+            [
+                {
+                    "type": "foreignblock",
+                    "name": "Surfaces",
+                    "sourceindex": "FirstFace",
+                    "sourcecount": "NumFaces"
+                }
+            ]
+        }
+    }
+}

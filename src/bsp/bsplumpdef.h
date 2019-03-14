@@ -41,7 +41,7 @@ public:
     bool isValid() const;
 
 private:
-    quint32 headerLumpByteOffset(const BSPFileModel &data) const;
+    quint64 headerLumpByteOffset(const BSPFileModel &data) const;
 
     QString m_strName;
     quint32 m_nIndex;

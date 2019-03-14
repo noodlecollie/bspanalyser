@@ -74,8 +74,8 @@ BSPDataFragment BSPLumpDef::getDataFragment(const BSPFileModel &data) const
         return BSPDataFragment(contents);
     }
 
-    quint32 length = contents.length();
-    quint32 offset = headerLumpByteOffset(data);
+    quint32 length = static_cast<quint32>(contents.length());
+    quint64 offset = headerLumpByteOffset(data);
 
     if ( length < offset + BSPDefs::HEADER_LUMP_DEF_BYTES )
     {
@@ -123,7 +123,7 @@ void BSPLumpDef::setIndex(quint32 newIndex)
     m_nIndex = newIndex;
 }
 
-quint32 BSPLumpDef::headerLumpByteOffset(const BSPFileModel &data) const
+quint64 BSPLumpDef::headerLumpByteOffset(const BSPFileModel &data) const
 {
     return data.lumpTableOffset() + (m_nIndex * BSPDefs::HEADER_LUMP_DEF_BYTES);
 }
